@@ -1,3 +1,3 @@
 # Human Resource Stack
-## HR Management System a, PRoject Management System and Timesheet
+## HR Management System, Project Management System and Timesheet
 
