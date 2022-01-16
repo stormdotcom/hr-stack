@@ -1,9 +1,10 @@
+// Components
+import {useEffect} from "react"
 import SignIn from "./pages/SignIn/SignIn"
 import Home from "./pages/Home/Home"
 import Timesheet from "./pages/Timesheet/Timesheet"
 import ErrorPage from "./pages/Error/Error"
 import SelfService from "./pages/SelfService/SelfService"
-import { Routes, Route } from "react-router-dom";
 import Seperation from "./pages/SelfService/Separation/Separation"
 import Transfer from "./pages/SelfService/Transfer/Transfer"
 import Cab from "./pages/SelfService/Cab/Cab"
@@ -22,20 +23,46 @@ import Performance from "./pages/Performance/Performance"
 import LearningsReq from "./pages/SelfService/ManageReq/LearningsReq"
 import RaisedIssue from "./pages/SelfService/ManageReq/RaisedIssue"
 
-
+// APIs
+import { fetchEmployeeData } from './api/employee';
+import { Routes, Route, useNavigate } from "react-router-dom";
+import {Navigate} from "react-router-dom"
+import { logout} from "./redux/login/loginSlice"
+import { initial, fetchProfile, errorfetching} from "./redux/employee/employeeSlice"
+import {  useDispatch} from "react-redux"
+import jwtDecode from "jwt-decode"
 
 
 function App() {
+  let user = JSON.parse(localStorage.getItem('employee'))
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (user?.token) {
+        const decodedToken = jwtDecode(user.token)
+        if (decodedToken.exp * 1000 < new Date().getTime()) {
+          dispatch(logout("Session Time Out"))
+          navigate("/signin")
+        }
+          dispatch(initial())
+        fetchEmployeeData(user.result._id)
+        .then((res)=> dispatch(fetchProfile(res.data)))
+        .catch(err=> dispatch(errorfetching(err.message)))
+    } 
+}, [navigate])
 
   return (
     <>
     <Routes>
-      {/* <Route path="/" element={isAuth ? <Navigate to="/home" /> : <SignIn /> } /> */}
-      <Route exact path="/signin" element={ <SignIn /> } />
       <Route exact path="/*" element={<ErrorPage />} />
+      <Route exact path="/signin" element={ user ? <Navigate to="/" /> :<SignIn />} />
+
+
       {/* Protected routes */}
-      <Route element={<ProtectedRoute />}>
-       <Route exact path="/" element={<Home /> } />
+      <Route  element= {<ProtectedRoute />}>
+       <Route exact path="/" element={ <Home /> } />
        <Route exact path="/selfservice" element={<SelfService />} />
        <Route exact path="/selfservice/separation" element={<Seperation />} />
        <Route exact path="/selfservice/transfer" element={<Transfer />} />
@@ -55,9 +82,7 @@ function App() {
        <Route exact path="/skillsets" element={<SkillSets />} />
        <Route exact path="/performance" element={<Performance />} />
 
-   
       </Route>
-
     </Routes>
     </>
   );
@@ -65,4 +90,3 @@ function App() {
 
 export default App;
 
-// gik-xbda-hwu

@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
-import TextEditor from '../../../components/TextEditor/TextEditor';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Editor } from "react-draft-wysiwyg";
@@ -22,7 +21,7 @@ function Transfer() {
     },
     validate: values=>{
       let error={}
-      let raw = HTML.parse(values.codedText)
+    
       if(values.codedText){
         error.codedText="*Required "
       } 

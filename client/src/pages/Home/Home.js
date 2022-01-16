@@ -1,21 +1,38 @@
-import React from 'react'
+import React, {useEffect, useState}  from 'react'
 import Navbar from "../../components/NavBar/NavBar";
+import { useNavigate } from 'react-router-dom';
 import "./styles.css"
 import {MdBusinessCenter} from "react-icons/md"
 import {VscProject} from "react-icons/vsc"
 import {FaRegCalendarTimes} from 'react-icons/fa'
 import {AiFillStar} from "react-icons/ai"
+import { useSelector, useDispatch} from "react-redux"
+import { Alert, CircularProgress } from '@mui/material';
+import{getEvents} from "../../api/employee"
+
 function Home() {
+  const {data, isloading, error} = useSelector(state => state.employee)
+  const [event, setEvent] = useState({})
+  const navigate = useNavigate()
+  useEffect(() => {
+    getEvents().then(res => {
+      setEvent(res.data)
+    })
+  }, [navigate])
+
+
     return (
       <>
       <div className="home">
+        {isloading && !data ? <div className='flex justify-center align-center'> <CircularProgress color="info" style={{padding: "50px"}} /></div> : <>
+        {error && <div className='flex justify-center align-center'> <Alert severity="error">{error}!</Alert> </div>}
           <div className="cardTop">
           <div className='flex justify-center cardItem'>
             <div className="homeTopIcon"> 
             <MdBusinessCenter className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>Shared Services</h5>
+            <h5 className=' pl-1 font-semibold'> {data?.projectAllocated?.Project}</h5>
               <h6 className='pl-1 text-secondary'>Current Project</h6>
             </div>
             
@@ -25,7 +42,7 @@ function Home() {
             <VscProject className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>1</h5>
+            <h5 className=' pl-1 font-semibold'>{data?.projectAllocated?.Status ? 1: 0 }</h5>
               <h6 className='pl-1 text-secondary'>Allocated Project</h6>
             </div>
             
@@ -88,14 +105,8 @@ function Home() {
                 <h6 className='mt-4 text text-center font-bold '>Events </h6>
                 <img height="150px" style={{width: "100%"}} src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'  alt="eventsWallpaper"/>
                 <div className='px-5 py-2'>
-                  <h6 className='font-semibold my-2'>Company Anniversary </h6>
-                  <p className='text-sm'> Contrary to popular belief, Lorem Ipsum is not simply random text. 
-                    It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
-                     Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the 
-                     more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of 
-                     the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 
-                     1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, 
-                     written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.</p>
+                  <h6 className='font-semibold my-2'>{event.title} </h6>
+                  <p className='text-sm'> {event.description}</p>
                 </div>
             </div>
             <div className='homeEvent'>
@@ -116,6 +127,7 @@ function Home() {
 
 
           </div>
+          </>}
         
       </div>
       <Navbar />

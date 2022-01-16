@@ -5,3 +5,9 @@
     padding-left: 15%;
     overflow-y: scroll;
 }
+.swal2-styled.swal2-confirm {
+    background: none !important;
+    background-color: #278acb !important;
+    text-transform: uppercase;
+    font-weight: 700;
+}

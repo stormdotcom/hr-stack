@@ -1,0 +1,31 @@
+
+###
+POST http://localhost:4000/admin/createUser
+content-type: application/json
+
+{
+    "email": "admin@hrstack.com",
+    "password": "password",
+    "fullname":"Super Man"
+}
+###
+GET http://localhost:4000/hr/fetchStats
+
+
+###
+POST http://localhost:4000/admin/signin
+content-type: application/json
+
+{
+    "email": "admin@hrstack.com",
+    "password": "password"
+}
+###
+POST http://localhost:4000/hr/createHR
+content-type: application/json
+
+{
+    "email": "wicky@gmail.com",
+    "fullname":"Wicky John",
+    "password": "password"
+}

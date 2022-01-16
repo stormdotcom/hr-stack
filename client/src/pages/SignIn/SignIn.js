@@ -3,22 +3,49 @@ import "./styles.css"
 import {FaUserAlt} from "react-icons/fa";
 import {RiLockPasswordFill} from "react-icons/ri"
 import Stack from "../../components/NavBar/Stack-logo.svg";
-import {Link } from "react-router-dom"
+import {Link, useNavigate } from "react-router-dom"
 import { useFormik } from 'formik';
+import {loginFail, loginPending, loginSuccess} from "../../redux/login/loginSlice"
+import {useDispatch, useSelector} from "react-redux"
+import { CircularProgress } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import { signIn } from '../../api/employee';
 function SignIn() {
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { isLoading, error } = useSelector(state => state.login)
+  const handleSubmit =async (values)=>{
+    try {
+      
+      dispatch(loginPending())
+      signIn(values).then((res)=> {
+        dispatch(loginSuccess(res.data.result))
+        localStorage.setItem('employee', JSON.stringify(res.data))
+        navigate("/")
+        
+      }).catch(err=> dispatch(loginFail(err.response.data.message)))
+
+
+    } catch (error) { 
+      dispatch(loginFail(error.message))
+      
+    }
+  }
   const formik = useFormik({
     initialValues:{
-      username:"",
+      email:"",
       password:""
     },
     onSubmit: values=> {
-      console.log(values)
+
+      handleSubmit(values)
 
     },
     validate: values=>{
       let error={}
-      if(!values.username) {
-        error.username="*Username Required"
+      if(!values.email) {
+        error.email="*Email Required"
       }
       if(!values.password) {
         error.password="*Password Required"
@@ -39,21 +66,22 @@ function SignIn() {
                 <img  alt="logo"  height="20px" src={Stack} /> 
             </div>
             <div className='mb-4'>
+              {error &&     <Alert severity="error">{error}!</Alert> }
             <div className=" shadow appearance-none border rounded w-full py-2 pl-1 flex">
               <FaUserAlt className='mx-2' />
             <input
               className=""
               onChange={formik.handleChange}
-              value={formik.values.username}
+              value={formik.values.email}
               onBlur={formik.handleBlur}
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Username"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
             />
            
           </div>
-          {formik.touched.username && formik.errors.username  ? <small className='ml-1 error'> {formik.errors.username} </small> : null}
+          {formik.touched.email && formik.errors.email  ? <small className='ml-1 error'> {formik.errors.email} </small> : null}
             </div>
         
           <div className="mb-6">
@@ -74,7 +102,8 @@ function SignIn() {
            
           </div>
           <div className=" items-center justify-center">
-            <button type='submit' className="button-1 w-full my-2">
+          {isLoading && <div className='flex justify-center items-center'><CircularProgress  color="info" size={20}  /> <small className='px-1'>Logging in</small> </div> }
+            <button type='submit' className="button-1 w-full my-2"> 
               Sign In
             </button>
             <Link className="inline-block  align-baseline font-light text-sm text-blue hover:text-blue-darker" to="/forget-password"

@@ -5,14 +5,22 @@ import "./styles.css"
 import DateToday from '../DateToday/DateToday';
 import {Logout,Person, Notifications} from '@mui/icons-material';
 import SideBar from "../SideBar/SideBar"
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
-function NavBar() {
-  const navigate = useNavigate()
-  const handleLogout = ()=>{
+import {useSelector, useDispatch} from "react-redux"
+import { logout} from "../../redux/login/loginSlice"
+import {final} from "../../redux/employee/employeeSlice"
 
+function NavBar() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = ()=>{
+    dispatch(final())
+    dispatch(logout('Logged out Successfully'))
     navigate("/signin")
+
   }
+  const {data} = useSelector(state=> state.employee)
 
     return (
         <div>
@@ -24,9 +32,9 @@ function NavBar() {
     <Navbar.Collapse id="basic-navbar-nav" className='ml-auto'>
       <Nav className="ml-auto flex items-end">
         <Nav.Link href="#link"><Notifications /></Nav.Link>
-        <NavDropdown title="Ajmal Nasumudeen" id="basic-nav-dropdown">
+        <NavDropdown title={data.fullname} id="basic-nav-dropdown">
         <NavDropdown.Item >  <DateToday/> </NavDropdown.Item>
-          <NavDropdown.Item > <Link to="/profile"><Person />  Profile </Link> </NavDropdown.Item>
+          <NavDropdown.Item onClick={()=> {navigate("/profile")}} > <Person />  Profile </NavDropdown.Item>
           <NavDropdown.Item onClick={handleLogout}> <Logout />  Logout </NavDropdown.Item>
         </NavDropdown>
       </Nav>

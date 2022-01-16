@@ -10,11 +10,11 @@ function RaisedIssue() {
         <>
         <div className='viewPay'>
 
-        <nav class="rounded-md w-full">
-  <ol class="list-reset flex">
+        <nav className="rounded-md w-full">
+  <ol className="list-reset flex">
     <li> <Link to="/selfservice">Self Service </Link></li>
-    <li><span class="text-gray-500 mx-2">/</span></li>
-    <li class="text-gray-500">Manage Requests</li>
+    <li><span className="text-gray-500 mx-2">/</span></li>
+    <li className="text-gray-500">Manage Requests</li>
   </ol>
 </nav>
         <div className="container my-5 tableView py-4 overflow-x-auto">
