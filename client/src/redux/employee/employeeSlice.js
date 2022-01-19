@@ -7,7 +7,8 @@ import { createSlice } from "@reduxjs/toolkit";
         error:"",
         error1:"",
         data:{},
-        company:{}
+        company:{},
+        leaveReq:[]
     },
     reducers:{
         initial:(state)=>{
@@ -19,6 +20,12 @@ import { createSlice } from "@reduxjs/toolkit";
         editProfile:(state, {payload})=>{
             state.isloading=false;
             state.data = {...state, payload}
+            state.isloading=false
+        },
+        fetchLeaveStatus:(state, {payload})=>{
+          
+            state.isloading=false;
+            state.leaveReq = payload
             state.isloading=false
         },
         fetchProfile:(state, {payload})=>{
@@ -46,6 +53,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const {reducer , actions} = employeeSlice
 
-export const {editProfile, fetchProfile, initial, errorfetching, fetchCompany, gotData, final, errorcompany } = actions
+export const {editProfile, fetchProfile, initial, fetchLeaveStatus, errorfetching, fetchCompany, gotData, final, errorcompany } = actions
 
 export default reducer;

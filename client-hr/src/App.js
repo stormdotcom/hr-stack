@@ -12,18 +12,14 @@ import LeaveReq from "./pages/Management/ManageReq/LeaveReq"
 import VehicleReq from "./pages/Management/ManageReq/VehicleReq"
 import AssetsReq from "./pages/Management/ManageReq/AssetsReq"
 import ViewPaySlip from "./pages/Management/ViewPaySlip/ViewPaySlip"
-import Leave from "./pages/LeaveReq/Leave"
-import RaiseIssue from "./pages/RaiseIssue/RaiseIssue"
+import LearningsReq from "./pages/Management/ManageReq/LearningsReq"
 import ProtectedRoute from "./routes/ProtectedRoutes/ProtectedRoute"
-import Learnings from "./pages/Learnings/Learnings"
-import SkillSets from "./pages/SkillSets/SkillSets"
-import Performance from "./pages/Performance/Performance"
 import AddEmployee from "./pages/AddEmployee/AddEmployee"
 import RaisedIssue from "./pages/Management/ManageReq/RaisedIssue"
 
 // APIs
 import { fetchEmployeeData, fetchStats as fetchAllStats } from './api/api';
-import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import {Navigate} from "react-router-dom"
 import { logout} from "./redux/login/loginSlice"
 import { initial, fetchProfile, errorfetching, fetchStats, final} from "./redux/hr/hrSlice"
@@ -79,14 +75,10 @@ function App() {
        <Route exact path="/management/all-requests/leave" element={<LeaveReq />} />
        <Route exact path="/management/all-requests/vehicle" element={<VehicleReq />} />
        <Route exact path="/management/all-requests/assets" element={<AssetsReq />} />
-       <Route exact path="/add-employee" element={<AddEmployee />} />
+       <Route exact path="/management/all-requests/learnings" element={<LearningsReq />} />
        <Route exact path="/management/all-requests/tickets" element={<RaisedIssue />} />
        <Route exact path="/timesheet" element={<Timesheet />} />
-       <Route exact path="/leave" element={<Leave />} />
-       <Route exact path="/tickets" element={<RaiseIssue />} />
-       <Route exact path="/learnings" element={<Learnings />} />
-       <Route exact path="/skillsets" element={<SkillSets />} />
-       <Route exact path="/performance" element={<Performance />} />
+       <Route exact path="/add-employee" element={<AddEmployee />} />
       </Route>
     </Routes>
     </>

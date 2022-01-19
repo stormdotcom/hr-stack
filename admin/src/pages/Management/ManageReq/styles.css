@@ -7,6 +7,10 @@
     margin-bottom: 1%;
     width: 80%;
 }
+.button-groups1 {
+
+  justify-content: start !important;
+}
 @media only screen and (max-width: 1000px) {
     .button-groups {
         margin: 1px auto;

@@ -1,17 +1,55 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
+import { ObjectId } from 'mongodb';
 import Admin from "../models/Admin.js"
 import jwt from "jsonwebtoken"
 import Employees from "../models/Employees.js"
 import Assets from "../models/Assets.js"
+import Issues from "../models/Issues.js"
+
+export const delayIssue = async (req, res)=>{
+
+    const {id, data} = req.body;
+
+    try {
+        const result = await Issues.findOneAndUpdate({_id:ObjectId(id)}, {onDelay:true, comments:data})
+   
+        if(!result) return res.status(400).json({message: "not updated"})
+
+        res.status(200).json({message: "not updated"})
+    } catch (error) {
+        console.log(error.message)
+        res.status(400).json({message: "something went wrong"})
+    }
+}
+
+export const resolveIssue = async (req, res)=>{
+
+    const {id, data} = req.body;
+    try {
+        const result = await Issues.findOneAndUpdate({_id:ObjectId(id)}, {resolved:true, comments:data})
+   
+        if(!result) return res.status(400).json({message: "not updated"})
+
+        res.status(200).json({message: "not updated"})
+    } catch (error) {
+        console.log(error.message)
+        res.status(400).json({message: "something went wrong"})
+    }
+}
 
 export const  fetchStats= async(req, res)=>{
     try {
         const employeeCount = await Employees.count()
         const totalAssets =  await Assets.count()
         // const pendingTickets = await Tickets.count()
-        const pendingTickets = 3
-        res.status(200).json({employeeCount, totalAssets, pendingTickets})
+        const pendingTickets =  await Issues.find({}, {resolved:{ne:true}}).count()
+        const result2 =  await Issues.find( {priority:'High'})
+        const onDelayTickets =  await Issues.find({}, {onDelay:{ne:true}}).count()
+        const result3 = await Assets.find({}, {availableStatus: {ne:false}})
+        let availbleAssets = result3.length
+        let highPriorityTickets = result2.length
+        res.status(200).json({employeeCount, totalAssets, pendingTickets, highPriorityTickets, onDelayTickets, availbleAssets})
 
     } catch (error) {
       res.status(500).json({message:error.message})
@@ -45,7 +83,7 @@ export const addAsset = async(req, res)=>{
 
 export const adminSignin = (async(req, res)=>{
     const{ email, password} = req.body;
-    console.log(req.body)
+
     try {
         if(!email || !password) return  res.status(404).json({ message: "Bad credentials"})
 
@@ -93,7 +131,7 @@ export const createAdmin = async (req, res)=>{
 
       const organisationEmail= nameLowerCase+"@exampleCompany.com"
 
-      console.log(result._id.toString())
+
       let code = result._id.toString()
           code = code.substr(code.length - 5).toUpperCase();
       let empID = "EC"+code;

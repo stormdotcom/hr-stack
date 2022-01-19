@@ -4,29 +4,96 @@ import { useNavigate} from 'react-router-dom'
 import {AiFillCaretRight} from "react-icons/ai"
 import { Link } from 'react-router-dom'
 import "./styles.css"
+import { useSelector } from 'react-redux'
+import {approveLearning, declineLearning} from "../../../api/api"
+import moment from "moment"
+import Swal from "sweetalert2"
 function LearningsReq() {
     const navigate = useNavigate()
+    const {learnings} = useSelector(state => state.requests)
+    const handleView = (data, name, id, type)=>{
+        Swal.fire({
+            title: '<strong>'+  type +'</strong>',
+            html:
+            ' <b>'+ name+ '</b> | ' +
+            ' <b>'+ id + '\n </b>' +
+            '</br>'
+            +"\n"+ data+  "\n",
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+        })
+    }
+    const handleApprove =  (userID)=>{
+        Swal.fire({
+            title: 'Approve request?',
+            showCancelButton: true,
+            confirmButtonText: 'Approve',
+            denyButtonText: `Back`,
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+                const { value: url } = await Swal.fire({
+                    input: 'url',
+                    inputLabel: 'Video URL',
+                    inputPlaceholder: 'Enter the URL',
+                    inputValidator: (value) => {
+                        if (!value) {
+                          return 'You need to Enter the URL!'
+                        }
+                    }   
+                  }) 
+                  let data = {videoURL:url, userID: userID}
+                  approveLearning(data).then((res)=> Swal.fire( 'Success!',   'Approved!',   'success' ))
+                                        .catch((err)=> Swal.fire( 'Failed!',   'Failed Approval!',   'info' ))  
+
+            } 
+          })
+
+          
+    }
+    const handleDecline =  (userID)=>{
+        Swal.fire({
+            title: 'Decline ?',
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            denyButtonText: `Back`,
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+                let data = {id: userID}
+                declineLearning(data).then((res)=> Swal.fire( 'Success!',   'Declined!',   'success' ))
+                                      .catch((err)=> Swal.fire( 'Failed!',   'Failed Updating!',   'info' ))  
+            } 
+          })
+          
+    }
+    const viewURL = (url)=>{
+        Swal.fire({
+            icon: 'info',
+            text: 'Something went wrong!',
+            html:'<a href='+url+' target="_blank" >Click here</a>',
+          })
+    }
+    console.log(learnings)
     return (
         <>
         <div className='viewPay'>
 
-        <nav class="rounded-md w-full">
-  <ol class="list-reset flex">
-    <li> <Link to="/selfservice">Self Service </Link></li>
-    <li><span class="text-gray-500 mx-2">/</span></li>
-    <li class="text-gray-500">Manage Requests</li>
+        <nav className="rounded-md w-full">
+  <ol className="list-reset flex">
+    <li> <Link to="/selfservice">Management </Link></li>
+    <li><span className="text-gray-500 mx-2">/</span></li>
+    <li className="text-gray-500">Manage Requests</li>
   </ol>
 </nav>
         <div className="container my-5 tableView py-4 overflow-x-auto">
             <div className='button-groups'> 
-            <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/selfservice/all-requests')}} > All Requests</div>
-                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/selfservice/all-requests/leave')}}> Leave Requests</div>
-                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/selfservice/all-requests/vehicle')}}> Vehicle Requests</div>
-                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/selfservice/all-requests/assets')}}> Assets Requests</div>
-                <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/selfservice/all-requests/learnings')}}> Learnings </div>
-                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/selfservice/all-requests/tickets')}}> View Tickets</div>
+            <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests')}} > All Requests</div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/leave')}}> Leave Requests</div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/vehicle')}}> Vehicle Requests</div>
+                <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/learnings')}}> Learnings </div>
              </div>
-             <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Learnings Requests </h6>
+             <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Learning Requests </h6>
+             {learnings.length ?
                         <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>
@@ -63,80 +130,48 @@ function LearningsReq() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white ">
-                                <tr className="whitespace-nowrap">
+                            {learnings.map((ele)=>{
+                                return (
+                                    <tr className="whitespace-nowrap">
                                     <td className="px-6 py-4 text-sm text-gray-500">
-                                    ₹ 45000.00
+                                    {ele.fullname}
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm text-gray-900">
-                                        ₹1020.00
+                                        {ele.empID}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500">    ₹2020.00</div>
+                                        <div className="text-sm text-gray-500"> {ele.technology} </div>
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-500">
-                                    %10
+                                    {ele.platform}
                                     </td>
                                     <td className="text-sm px-6 py-4">
-                                    ₹500020.00
+                                    {ele.courseType}
                                     </td>
                                     <td className="text-sm px-6 py-4">
-                                    ₹500020.00
+                                   <div className='button-sm-1 text-sm my-1' onClick={()=> viewURL(ele.resourceURL)}>View URL</div>
                                     </td>
                                     <td className="text-sm px-6 py-4">
-                                    ₹500020.00
+                                    {moment(ele.requestedDate).utc().format('DD-MM-YYYY')}   
                                     </td>
                                     <td className="text-sm px-6 py-4">
-                                    ₹500020.00
+                                    {ele.approvedStatus ? "Approved" : "Not Approved"}
                                     </td>
                                     <td className="text-sm px-6 py-4">
-                                    ₹500020.00
+                                        <div className='button-sm-1 text-sm my-1' onClick={()=>handleView(ele.comments, ele.fullname, ele.empID, "Learnings Request")}> View </div>
                                     </td>
                                     <td className="text-sm px-6 py-4">
-                                    ₹500020.00
+                                    <div className='button-sm-1 text-sm my-1' onClick={()=> handleApprove(ele._id)}>Approve</div>
+                                    <div className='button-sm-2 text-sm my-1' onClick={()=> handleDecline(ele._id)} >Deline</div>
                                     </td>
-                                </tr>
-                                <tr className="whitespace-nowrap">
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                    ₹ 45000.00
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-900">
-                                        ₹1020.00
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500">    ₹2020.00</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                    %10
-                                    </td>
-                                    <td className="text-sm px-6 py-4">
-                                    ₹500020.00
-                                    </td>
-                                    <td className="text-sm px-6 py-4">
-                                    ₹500020.00
-                                    </td>
-                                    <td className="text-sm px-6 py-4">
-                                    ₹500020.00
-                                    </td>
-                                    <td className="text-sm px-6 py-4">
-                                    ₹500020.00
-                                    </td>
-                                    <td className="text-sm px-6 py-4">
-                                    ₹500020.00
-                                    </td>
-                                    <td className="text-sm px-6 py-4">
-                                    <div className='button-sm-1 text-sm my-1'>Approve</div>
-                                    <div className='button-sm-2 text-sm my-1'>Deline</div>
-                                    </td>
-                    
-                                </tr>
-    
-                        
+                                </tr> 
+                                )
+                            })}
+                       
                             </tbody>
-                        </table>
+                        </table> : <div className='flex justify-center'> <p>No data</p> </div> }
                     </div>
         </div>
         <NavBar />

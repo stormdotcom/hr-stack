@@ -4,9 +4,10 @@
     padding-left: 15%;
     overflow-y: scroll;
 }
-.cardTopHR {
+.cardTopAdmin {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
     align-items: center;
     padding: 20px 50px;
     margin: 0 auto;
@@ -16,7 +17,9 @@
     border-radius: 15px;
     border: 1px solid #919191;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-
+}
+.cardItem {
+    margin: 3% 5%;
 }
 .hrCards {
     display: flex;

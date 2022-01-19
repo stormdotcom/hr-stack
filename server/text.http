@@ -9,7 +9,7 @@ content-type: application/json
     "fullname":"Super Man"
 }
 ###
-GET http://localhost:4000/hr/fetchStats
+GET http://localhost:4000/hr/getAllLeaveRequest
 
 
 ###

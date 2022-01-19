@@ -1,23 +1,21 @@
 import React, {useEffect, useState} from 'react'
 import NavBar from '../../components/NavBar/NavBar'
-import { Calendar, dateFnsLocalizer, Views   } from 'react-big-calendar'
+import { Calendar, dateFnsLocalizer   } from 'react-big-calendar'
 import Swal from 'sweetalert2'
-import moment from 'moment'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
 import enIN from 'date-fns/locale/en-IN'
 import { useNavigate } from 'react-router-dom'
-import { getTimeSheet, timeIn, timeOut, timeInStats, timeOutStats, getEvents } from '../../api/employee'
+import { getTimeSheet, timeIn, timeOut, timeInStats, timeOutStats } from '../../api/employee'
 import { errorfetching, fetchTimeSheet } from '../../redux/timesheet/timeSheetSlice'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Alert } from '@mui/material'
 import "./styles.css"
 import "./react-big-calendar.css"
 
-const allViews = Object.keys(Views).map(k => Views[k])
-const allView = ["month", "day"]
+const allView = ["month", "work_week"]
 const locales = {
     'en-IN': enIN,
   }
@@ -82,7 +80,7 @@ function Timesheet() {
       timeOutStats(user?.result._id).then(res=> setTimeOutBtn(res.data.status))
       .catch(err=> dispatch(errorfetching(err.message)))
 
-  }, [navigate, timeInBtn, timeOutBtn])
+  }, [navigate,timeOutBtn, timeInBtn, user])
     return (
         <div>
             <div className='timeSheet'>

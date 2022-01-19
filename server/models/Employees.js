@@ -13,7 +13,7 @@ Designation:{
      },
 
 organisationEmail:{type: String, required:true},
-
+onBoard:{type: Boolean, required:true, default:false},
 email:{type: String, required:true},
 
 dateOfJoin:{type: Date,required: true},

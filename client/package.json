@@ -35,9 +35,11 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-youtube": "^7.14.0",
     "styled-components": "^5.3.3",
     "sweetalert2": "^11.3.4",
-    "web-vitals": "^2.1.2"
+    "web-vitals": "^2.1.2",
+    "weekday": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

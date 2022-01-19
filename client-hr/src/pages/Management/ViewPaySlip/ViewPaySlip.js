@@ -16,11 +16,11 @@ function ViewPaySlip() {
     return (
         <>
         <div className='viewPay'>
-        <nav class="rounded-md w-full">
-  <ol class="list-reset flex">
+        <nav className="rounded-md w-full">
+  <ol className="list-reset flex">
     <li> <Link to="/selfservice">Self Service </Link></li>
-    <li><span class="text-gray-500 mx-2">/</span></li>
-    <li class="text-gray-500">View Pay-Slip</li>
+    <li><span className="text-gray-500 mx-2">/</span></li>
+    <li className="text-gray-500">View Pay-Slip</li>
   </ol>
 </nav>
           {viewed ? <div  className="overflow-x-auto"> <ViewSlip handleClose={handleClose} /> </div> :
@@ -33,55 +33,55 @@ function ViewPaySlip() {
         <table class="min-w-full">
           <thead class="border-b">
             <tr>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
                 #
               </th>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
                 Month
               </th>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
               Working Days
               </th>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
               Days Payable
               </th>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
               Total Amount
               </th>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
               Deductions
               </th>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
               Net Pay
               </th>
-              <th scope="col" class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
+              <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
               View / Download
               </th>
               
             </tr>
           </thead>
           <tbody>
-            <tr class="border-b font-medium">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">     1 </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+            <tr className="border-b font-medium">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">     1 </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               Sep
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
             30
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               30
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               1,000,000.00
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 30,000.00
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 70,000.00
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap flex justify-around border-none">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap flex justify-around border-none">
                   <button className='button-1' onClick={handleView}>View Slip </button>
                   <button className='button-2' >Download Slip </button>
 
@@ -89,26 +89,26 @@ function ViewPaySlip() {
             </tr>
 {/*  */}
 <tr class="border-b font-medium">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">     1 </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">     1 </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               Oct
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
             30
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               30
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               1,000,000.00
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 30,000.00
               </td>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 70,000.00
               </td>
-              <td class="text-sm text-gray-900 font-semibold px-6 py-4  flex justify-around border-none">
+              <td className="text-sm text-gray-900 font-semibold px-6 py-4  flex justify-around border-none">
               <button className='button-1'>View Slip </button>
                   <button className='button-2'>Download Slip </button>
               </td>

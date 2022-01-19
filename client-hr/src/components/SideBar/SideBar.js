@@ -66,11 +66,8 @@ const SideBar = () => {
              <MenuItem  className="sideBarItem"  onClick={()=> {navigate("/")}} icon={<FiHome />}>  <p>Home</p> </MenuItem> 
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/management")}} icon={<FaHandPointer />}>  <p>Managements </p> </MenuItem>
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/timesheet")}} icon={<BsFillCalendarWeekFill />}> <p> Time Sheet </p></MenuItem>
-              <MenuItem className="sideBarItem" onClick={()=> {navigate("/leave")}} icon={<AiTwotoneEdit />}> <p> Leave </p></MenuItem>
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/tickets")}} icon={<RiCustomerService2Fill />}> <p> Tickets </p></MenuItem>
-              <MenuItem className="sideBarItem" onClick={()=> {navigate("/learnings")}} icon={<FaUserGraduate />}> <p> Learnings </p></MenuItem>
-              <MenuItem className="sideBarItem" onClick={()=> {navigate("/skillsets")}} icon={<GiSkills />}> <p> Skill Sets </p> </MenuItem>
-              <MenuItem className="sideBarItem" onClick={()=> {navigate("/performance")}} icon={<MdOutlineSpeed />}><p> Perfomance </p> </MenuItem>
+            
             </Menu>
           </SidebarContent>
         </ProSidebar>

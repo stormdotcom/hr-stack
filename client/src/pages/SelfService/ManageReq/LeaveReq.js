@@ -10,7 +10,6 @@ import {leaveApprove, leaveDecline} from "../../../api/employee"
 import Swal from "sweetalert2"
 import { CircularProgress } from '@mui/material'
 function LeaveReq() {
-
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { reqData} = useSelector(state => state.request)

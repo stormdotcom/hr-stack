@@ -37,7 +37,6 @@ function App() {
         dispatch(initial())
         fetchAllStats()
         .then((res)=>  {
-          console.log(res.data)
           dispatch(fetchStats(res.data))
         }) 
         .catch(err=> dispatch(errorfetching(err.message)))
@@ -52,13 +51,14 @@ function App() {
       <Route exact path="/*" element={<ErrorPage />} />
       {/* <Route exact path="/signin" element={<SignIn />} /> */}
       <Route exact path="/signin" element={ user ? <Navigate to="/" /> :<SignIn />} />
-
-
+      
       {/* Protected routes */}
       <Route  element= {<ProtectedRoute />}>
        <Route exact path="/" element={ <HomeAdmin /> } />
        <Route exact path="/management" element={<Management />} />
        <Route exact path="/management/addevents" element={<AddEvents />} />
+       <Route exact path="/assets" element={<AddAssets />} />
+       <Route exact path="/add-assets" element={<AddAssets />} />
        <Route exact path="/management/assets" element={<AddAssets />} />
        <Route exact path="/management/all-requests" element={<ManageReq />} />
        <Route exact path="/management/all-requests/assets" element={<AssetsReq />} />

@@ -6,11 +6,95 @@ import Employees from "../models/Employees.js"
 import jwt from "jsonwebtoken";
 import { dateToEpoch2 } from "../helpers/datehelper.js";
 import Events from "../models/Events.js";
+import Issues from "../models/Issues.js"
 import LeaveManage from "../models/LeaveMange.js";
+import Learnings from "../models/Learnings.js"
+
+export const getMyLearnings = async (req, res)=>{
+  const {id} = req.query
+  try {
+    const result = await Learnings.find({userID:id, approvedStatus: {$eq: true}})
+    if(!result) return res.status(400).json({message:"no e-learnings found"})
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const submitLearningRequest = async (req, res)=>{
+  console.log(req.body)
+  try {
+    const result = await Learnings.create(req.body)
+    if(!result) return res.status(400).json({message:"No created"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+}
+
+export const checkLeaveStatus = async(req, res)=>{
+  const {id} = req.query
+  try {
+    const result =await LeaveManage.aggregate([ {$sort: {fromDate: -1}}, {$limit: 2},{$match: {userID: id}}])
+    console.log(result)
+    if(!result.length) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json(error.message)
+  }
+}
+
+export const setPriority = async (req, res)=>{
+  const {id, Priority} = req.body;
+  try {
+    const result = await Issues.findOneAndUpdate({_id:ObjectId(id)}, {$set:{priority:Priority}})
+    if(!result) return res.status(400).json({message: "Can't update"})
+    res.status(200).json({status:true})
+
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message: "Seomething went wrong"})
+    
+  }
+}
+
+export const myTickets = async (req, res)=>{
+  const {userID} = req.query;
+  try {
+      const result =await Issues.find({userID}, {resolved:false})
+      if(!result) return res.status(400).json({message: "No Tickets found"})
+      res.status(200).json(result)
+  } catch (error) {
+    res.status(400).json({message: "Something went wrong"})
+  }
+}
+export const allActiveTicket = async (req, res)=>{
+  try {
+      const result =await Issues.find({resolved:false})
+      if(!result) return res.status(400).json({message: "No Tickets found"})
+      res.status(200).json(result)
+  } catch (error) {
+    res.status(400).json({message: "Something went wrong"})
+  }
+}
+
+export const submitTicket = async(req, res)=>{
+  try {
+    const result = await Issues.create(req.body)
+    if(!result) return res.status(400).json({message:"not created"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+    
+  }
+}
 
 export const leaveApprove = async(req, res) =>{
   const {id, userID, fromDate, toDate, leaveType} = req.body
-  console.log(req.body)
+
   const date = dateToEpoch2(new Date(fromDate))
 if(leaveType==="Casual") {
   await LeaveManage.findOneAndUpdate({_id:ObjectId(id)}, {$set:{approvedStatus:true, submittedStatus:true}}).then(async(result)=>{
@@ -24,7 +108,6 @@ if(leaveType==="Casual") {
       end:toDate,  
       hours:0
       }}} ).then((result)=>{  
-      console.log(result)
       res.status(200).json({status:true})
       }).catch((err=> res.status(400).json(err.message)))
     }).catch((err=> res.status(400).json(err.message)))
@@ -42,7 +125,6 @@ if(leaveType==="Sick") {
      end:toDate,  
      hours:0
      }}} ).then((result)=>{  
-     console.log(result)
      res.status(200).json({status:true})
      }).catch((err=> res.status(400).json(err.message)))
    }).catch((err=> res.status(400).json(err.message)))
@@ -51,7 +133,7 @@ if(leaveType==="Sick") {
 }
 export const leaveDecline = async(req, res) =>{
   const {userID, data} = req.body
-  console.log(req.body)
+
   try {
     const result = await LeaveManage.findOneAndUpdate({_id:ObjectId(userID)}, {$set:{submittedStatus:true, comments:data}})
     console.log(result)
@@ -138,8 +220,8 @@ export const timeOutStats = async(req, res)=>{
     //if(!timesheetArray.length) return res.status(200).json({status:false}) ///no timesheet inserted
     const isExists = timesheetArray.find(element=> element.day===date)
     if(!isExists) return res.status(404).json({message:false})  // no current day existed
-    if(isExists.title==="Pending") res.status(200).json({status:true})
-    if(isExists.title==="Submitted" || isExists.title==="Approved") res.status(200).json({status:false}) 
+    if(isExists.title==="Pending") return res.status(200).json({status:true})
+    if(isExists.title==="Submitted" || isExists.title==="Approved") return res.status(200).json({status:false}) 
     
   } catch (error) {
     res.status(500).json(error.message)
@@ -173,7 +255,7 @@ export const  setTimeOut= async(req, res)=>{
   const {id } = req.body;
 
   const date = dateToEpoch2(new Date)
-  console.log(date)
+
   try {
 
       const employeeData = await Employees.findOneAndUpdate({userID:ObjectId(id), 
@@ -198,7 +280,6 @@ export const  setTimeOut= async(req, res)=>{
 export const  setTimeIn= async(req, res)=>{
   const {id } = req.body;
   const date = dateToEpoch2(new Date)
-  console.log(date)
   try {
      let employeeData= await Employees.findOneAndUpdate({userID:id}, 
         {$push:{timeSheet:{
@@ -247,7 +328,7 @@ export const  fetchEmployeData= async(req, res)=>{
 export const signin = async (req, res)=>{
 
         const {email, password} = req.body;
-        console.log(req.body)
+
         try {
             if(!email || !password) return  res.status(404).json({ message: "Bad credentials"})
 

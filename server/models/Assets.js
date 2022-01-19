@@ -5,7 +5,8 @@ const assetSchema = mongoose.Schema({
     assetModel: {type: String, required:true},
     assetCategory: {type: String, required:true},
     assetType:{type: String, required:true},
-    status:{type: Boolean, required:true, default:true},
+    healthStatus:{type: Boolean, required:true, default:true},
+    availableStatus:{type: Boolean, required:true, default:true},
     description:{type:String },
     alloactedTo:{type: Object}
    

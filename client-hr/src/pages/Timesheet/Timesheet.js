@@ -54,7 +54,7 @@ function Timesheet() {
   const handleNotify = (empID, day)=>{
     console.log(empID, day)
   }
-  console.log(data)
+
     return (
         <div>
             <div className='timeSheet'>

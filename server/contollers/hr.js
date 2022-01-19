@@ -1,12 +1,66 @@
 import mongoose from 'mongoose';
+import {ObjectId} from "mongodb"
 import bcrypt from "bcrypt"
 import User from "../models/User.js"
 import Employees from "../models/Employees.js"
 import jwt from "jsonwebtoken";
 import Events from '../models/Events.js';
+import { dateToEpoch2 } from "../helpers/datehelper.js";
+import LeaveManage from '../models/LeaveMange.js';
+import Learnings from '../models/Learnings.js';
+
+export const declineLearning = async (req, res)=>{
+  const  {id} = req.body 
+  console.log(id)
+  try {
+    const result = await Learnings.findOneAndUpdate({_id:ObjectId(id)},{$set:{rejectedStatus:true}})
+    if(!result) return res.status(400).json({message:"No data updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const approveLearning = async (req, res)=>{
+  const {userID, videoURL} = req.body
+  try {
+    const result = await Learnings.findOneAndUpdate({_id:ObjectId(userID)}, {$set:{approvedStatus:true, videoID:videoURL}})
+    if(!result) return res.status(400).json({message:"Not updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getAllLeaveRequest = async(req, res)=>{
+  try {
+
+    const result = await LeaveManage.find({}, {submittedStatus: false})
+      if(!result) return res.status(400).json({message:"No Data "})
+      res.status(200).json(result)
+    
+  } catch (error) { 
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getLearningRequest = async(req, res)=>{
+  try {
+      const result = await Learnings.find({approvedStatus:false})
+      if(!result) return res.status(400).json({message:"no data found in learnings"})
+      res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json(error.message)
+    
+  }
+}
+
 
 export const createEvent = async (req, res)=> {
-  console.log(req.body)
+
   const {start, end, title,time, description, type, selectedFlle} = req.body
   try {
       const result = await Events.create({start, end, title, description,time, type, selectedFlle})
@@ -23,8 +77,8 @@ export const createEvent = async (req, res)=> {
 export const timeSheetApprove = async (req, res)=>{
   const {empID, day} = req.body;
 try {
-    const result =await Employees.findOneAndUpdate({_id:empID, 
-      'timeSheet.$.day':day},{$set:{'timeSheet.$.title': "Approved"}})
+    const result =await Employees.findOneAndUpdate({_id:ObjectId(empID), 
+      'timeSheet.day':day},{$set:{'timeSheet.$.title': "Approved"}})
       if(result) return res.status(200).json({status:true})
       res.status(404).json({message:"No timesheet data found"})
 } catch (error) {
@@ -38,9 +92,10 @@ export const getPendingTimeSheet = async(req, res)=>{
   try {
     const allEmployee = await Employees.aggregate([ {$project:{timeSheet:1, fullname:1, projectAllocated:1}}  ])
     if(!allEmployee) return res.status(404).json({message:"No employees Found"})
-    const result = allEmployee.find((ele)=>ele=> ele.timeSheet.title==="Pending" || ele.timeSheet.title==="Submitted")
+    const result = allEmployee.find((ele)=>ele=> ele.timeSheet.title==="Pending"  &&  ele.timeSheet.title==="Submitted")
+
     if(!result) return res.status(404).json({message:"No Data Found"})
-    console.log(result)
+
     res.status(200).json([allEmployee])
 
   } catch (error) {
@@ -49,16 +104,22 @@ export const getPendingTimeSheet = async(req, res)=>{
 }
 
 export const  fetchStats= async(req, res)=>{
+  const day=  dateToEpoch2(new Date)
       try {
           const employeeCount = await Employees.count()
-          const employeesOnLeave = 1
-          const timeSheetPending = await Employees.aggregate([
+          const result0 =await Employees.aggregate([ {$match:  {'timeSheet.tilte':"Pending"}}, 
+            { $project:{timeSheet:1, _id:0}} ])
+          const result = await Employees.aggregate([
             {$match:  {'timeSheet.tilte':"Pending"}}, 
             { $project:{timeSheet:1, _id:0}}
           ])
-          console.log(timeSheetPending)
-          
-          res.status(200).json({employeeCount, employeesOnLeave, timeSheetPending})
+          const result1 = await Employees.find({ onBoard: false })
+          const result2 = await Employees.find({'timeSheet.$.day':day})
+          let timeSheetPending =result.length
+          let onboardPending = result1.length
+          let employeesOnLeave =result0.length
+          let notSubmittedToday = result2.length
+          res.status(200).json({employeeCount, employeesOnLeave, timeSheetPending, onboardPending, notSubmittedToday})
 
       } catch (error) {
 
@@ -82,7 +143,7 @@ export const  fetchAllEmployeData= async(req, res)=>{
 export const signin = async (req, res)=>{
 
         const {email, password} = req.body;
-        console.log(req.body)
+
         try {
             if(!email || !password) return  res.status(401).json({ message: "Bad credentials"})
 
@@ -128,7 +189,6 @@ export const createHR = async (req, res)=>{
 
           const nameLowerCase = fullname.toLowerCase().replace(/\s/g, '')
 
-          console.log(result._id.toString())
           let code = result._id.toString()
               code = code.substr(code.length - 5).toUpperCase();
 

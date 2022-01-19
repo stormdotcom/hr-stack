@@ -13,13 +13,12 @@ import { createSlice } from "@reduxjs/toolkit";
             state.isloading=true
         },
         fetchStats:(state, {payload})=>{
-            console.log(payload)
             state.error="";
             state.stats = payload
             state.isloading=false
         },
         errorfetching:(state, {payload})=>{
-            console.log(payload)
+     
             state.isloading=false;
             state.error=payload;
         },

@@ -1,39 +1,44 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
 import { useNavigate} from 'react-router-dom'
 import {AiFillCaretRight} from "react-icons/ai"
 import { Link } from 'react-router-dom'
-import {getLeaveRequest} from "../../../api/employee"
-import { initial, fetchRequest } from '../../../redux/requests/requestSlice'
+import {getLeaveRequest, activeTickets} from "../../../api/employee"
+import { initial, fetchRequest, fetchTickets } from '../../../redux/requests/requestSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import "./styles.css"
-import { CircularProgress } from '@mui/material'
 import Swal from "sweetalert2"
 function ManageReq() {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(initial())
-        getLeaveRequest().then(res=> dispatch(fetchRequest(res.data)))
-        .catch(err=> console.log(err.message))
-    }, [navigate])
-    const {reqData} = useSelector(state => state.request)
-    console.log(reqData)
-    let isloading=false
-    if(!reqData.length) isloading=true
-    const handleView = (data, name, id)=>{
-        Swal.fire({
-            title: '<strong>Leave Reason</strong>',
-            html:
-              ' <b>'+ name+ '</b> | ' +
-              ' <b>'+ id + '\n'+ '</b>' +
-              '</br>'
-              +"\n"+ data+  "\n",
-            showCloseButton: true,
-            showCancelButton: true,
-            focusConfirm: false,
-          })
-    }
+        const {data} =  useSelector(state => state.employee)
+        const navigate = useNavigate()
+        const dispatch = useDispatch()
+        useEffect(() => {
+            if(data?.Designation?.isManager) {
+            
+            dispatch(initial())
+            getLeaveRequest().then(res=> dispatch(fetchRequest(res.data)))
+            .catch(err=> console.log(err.message))
+
+            activeTickets().then(res=> dispatch(fetchTickets(res.data)))
+            .catch(err=> console.log(err.message))
+        }
+        }, [navigate])
+        const {reqData, tickets} = useSelector(state => state.request);
+        let isloading=false
+        if(!reqData.length && !tickets.length) isloading=true
+        const handleView = (data, name, id, type)=>{
+            Swal.fire({
+                title: '<strong>'+  type +'</strong>',
+                html:
+                ' <b>'+ name+ '</b> | ' +
+                ' <b>'+ id + '\n </b>' +
+                '</br>'
+                +"\n"+ data+  "\n",
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+            })
+        }
 
  
     return (
@@ -82,8 +87,7 @@ function ManageReq() {
                                     </th> */}
                                 </tr>
                             </thead>
-                            {isloading ? <tbody><tr> <CircularProgress /> </tr> </tbody> : 
-                          
+                            {isloading ? <tbody><tr> <td> No Data...</td> </tr> </tbody> : 
                             <tbody className="bg-white ">
                                 {reqData.map((ele, i)=>{
                                     return(
@@ -106,19 +110,37 @@ function ManageReq() {
                                         {ele.approvedStatus ? "Approved" : "Pending"}
                                         </td>
                                         <td className="text-sm px-6 py-4">
-                                        <div className='button-sm-1'onClick={()=>handleView(ele.reason, ele.fullname, ele.empID)}>View </div>
+                                        <div className='button-sm-1'onClick={()=>handleView(ele.reason, ele.fullname, ele.empID, "Leave")}>View </div>
                                         </td>
-                                        {/* <td className="text-sm px-6 py-4">
-                                        ₹500020.00
-                                        </td> */}
-                        
                                     </tr>
                                     );
                                 })}
-
-                        
-    
-                        
+                                 {tickets.map((ele, i)=>{
+                                    return(
+                                        <tr className="whitespace-nowrap" key={i}>
+                                        <td className="px-6 py-4 text-sm text-gray-500">
+                                       {ele.employeeName}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-900">
+                                            {ele.employeeID}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-500">    {ele.project}</div>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">
+                                          Technical Issue
+                                        </td>
+                                        <td className="text-sm px-6 py-4">
+                                        {ele.resolved ? "Resolved" : "Pending"}
+                                        </td>
+                                        <td className="text-sm px-6 py-4">
+                                        <div className='button-sm-1'onClick={()=>handleView(ele.issue, ele.employeeName, ele.employeeID, "Tech Issue")}>View </div>
+                                        </td>
+                                    </tr>
+                                    );
+                                })}
                             </tbody>
                               }
                         </table>

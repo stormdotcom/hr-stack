@@ -1,47 +1,63 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import NavBar from '../../components/NavBar/NavBar'
 import "./styles.css"
 import { useFormik } from 'formik';
-
+import {useSelector, useDispatch} from "react-redux"
+import {submitTicket, myTickets} from "../../api/api"
+import {fetchMyticket, errorfetching, initial} from "../../redux/requests/requestSlice"
+import Swal from "sweetalert2"
+import { useNavigate } from 'react-router-dom';
+import {Alert} from "@mui/material"
 function RaiseIssue() {
+	const user= JSON.parse(localStorage.getItem('hr')).result
+	const { data } = useSelector(state=> state.hr)
+	const { myticket, error }= useSelector(state => state.requests)
+	console.log(user)
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+	useEffect(() => {
+		dispatch(initial())
+		myTickets(user._id).then((res=> dispatch(fetchMyticket(res.data))))
+		.catch(err=> dispatch(errorfetching(err.message)))
+	}, [navigate])
+    const handleView = (data)=>{
+        Swal.fire({
+            title: '<strong> Comment</strong>',
+            html:
+              '</br>'
+              +"\n"+ data+  "\n",
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+          })
+    }
 	const formik = useFormik({
 		initialValues:{
-			employeeName:"",
-			employeeID:"",
-			team:"",
-			date:"",
 			manager:"",
 			priority:"",
 			subject:"",
 			issue:"",
 
 		},
-		onSubmit: (values)=> {
-		  console.log(values)
-	
+		onSubmit: async (values, {resetForm})=> {
+			let  date = new Date()
+			let  {_id, fullname} = user;
+			let form = {...values, _id,date, employeeName:fullname, employeeID:"-", proManager:"-", project:"-", manager:"-"}
+			submitTicket(form).then((res)=> Swal.fire(   'Success!',   'Ticket Created! Support Team will Contact you shortly',   'success' ))
+								.catch((err)=>{ console.log(err.message) 
+									Swal.fire(   'Failed!',   'Cant create ticket!',   'info' )
+								})
+		  console.log(form)
+		  resetForm()
 		},
 		validate: values=>{
 		  let error={}
-		  if(!values.employeeName) {
-			error.employeeName="*Required"
-		  }
-		  if(!values.employeeID) {
-			error.employeeID="*Required"
-		  }
-		  if(!values.team) {
-			error.team="*Required"
-		  }
-		  if(!values.date) {
-			error.date="*Required"
-		  }
+	
 		  if(!values.priority) {
 			error.priority="*Required"
 		  }
-		  if(!values.manager) {
-			error.manager="*Required"
-		  }
 		  if(!values.subject) {
-			error.subject="*Date Required"
+			error.subject="*Subject Required"
 		  }
 		  if(!values.issue) {
 			error.issue="*Issue in detail Required"
@@ -56,8 +72,11 @@ function RaiseIssue() {
             <div className='assetRequest'>
 
         <div className="container my-5 tableView py-4 raiseIssueTable">
+		{error && <Alert severity='warning'> {error} </Alert>}
             <h6 className='text-center font-semibold'>Ticket List</h6>
-                        <table className="table-auto border-collapse  w-100 text-center ">
+			
+			{myticket ?  
+			<table className="table-auto border-collapse  w-100 text-center ">
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
@@ -79,36 +98,38 @@ function RaiseIssue() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white border border-gray-400">
-                                <tr className="whitespace-nowrap">
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                    EC-ISSUE-1001
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-900">
-                                        AntiVirus Installation
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                   Resolved
-                                    </td>
-                                    <td className="px-6 py-4 text-sm">
-                                    30-12-2021
-                                    </td>
-                                    <td className="px-6 py-4 text-sm">
-                                    <button className='button-1' >View  </button>
-                                    </td>
-                                </tr>
-                        
-    
-                        
+								{myticket.map((ele, i)=>{
+									return(
+										<tr className="whitespace-nowrap">
+										<td className="px-6 py-4 text-sm text-gray-500">
+										{ele._id.substr(ele._id.length - 4).toUpperCase()}
+										</td>
+										<td className="px-6 py-4">
+											<div className="text-sm text-gray-900">
+											{ele.subject}
+											</div>
+										</td>
+										<td className="px-6 py-4 text-sm text-gray-500">
+									   {ele.resolved ? "Resolved": "Pending"}
+									   {ele.ondelay && "Resolving Started"}
+										</td>
+										<td className="px-6 py-4 text-sm">
+										30-12-2021
+										</td>
+										<td className="px-6 py-4 text-sm">
+											{!ele.comments ? "-" : <button className='button-1' onClick={()=>{handleView(ele.comments)}} >View  </button>}
+										
+										</td>
+									</tr>
+									)
+								})}  
                             </tbody>
-                        </table>
+                        </table>: "No previous active list"}
+
                     </div>
                     <div className="container mx-auto mainForm">
 			<div className="flex justify-center px-6 my-12">
-			
 				<div className="w-full  flex">
-					
 					<div className="w-full p-1 rounded-lg lg:rounded-l-none">
 						<form onSubmit={formik.handleSubmit} className="px-2 pt-1 pb-4 mb-2">
 							<div className="mb-4 md:flex md:justify-between">
@@ -121,11 +142,10 @@ function RaiseIssue() {
 										id="employeeName"
 										type="text"
 										name="employeeName"
-										onChange={formik.handleChange}
-										value={formik.values.employeeName}
-										onBlur={formik.handleBlur}
+										value={user.fullname}
+										
 									/>
-									{formik.touched.employeeName && formik.errors.employeeName ? <small className='error'> {formik.errors.employeeName} </small> : null}
+									{ formik.errors.employeeName ? <small className='error'> {formik.errors.employeeName} </small> : null}
 								</div>
                                 <div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
@@ -136,28 +156,12 @@ function RaiseIssue() {
 										id="employeeID"
 										type="text"
 										name="employeeID"
-										onChange={formik.handleChange}
-										value={formik.values.employeeID}
-										onBlur={formik.handleBlur}
+										value={data.empID}
+										
 									/>
-									{formik.touched.employeeID && formik.errors.employeeID ? <small className='error'> {formik.errors.employeeID} </small> : null}
+									{ formik.errors.employeeID ? <small className='error'> {formik.errors.employeeID} </small> : null}
 								</div>
 								
-                                <div className="mb-4 md:mr-2 md:mb-0">
-									<label className="block mb-2 text-sm font-medium text-gray-700" >
-										Team
-									</label>
-									<input
-										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
-										id="team"
-										type="text"
-										name="team"
-										onChange={formik.handleChange}
-										value={formik.values.team}
-										onBlur={formik.handleBlur}
-									/>
-										{formik.touched.team && formik.errors.team ? <small className='error'> {formik.errors.team} </small> : null}
-								</div>
 							
                                 <div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
@@ -171,7 +175,7 @@ function RaiseIssue() {
 									onBlur={formik.handleBlur}>
 										<option defaultValue="" >Select:</option>
 											<option value="Low">Low</option>
-											<option value="Offline">Medium</option>
+											<option value="Medium">Medium</option>
 											</select>
 											{formik.touched.priority && formik.errors.priority ? <small className='error'> {formik.errors.priority} </small> : null}
 								
@@ -183,35 +187,17 @@ function RaiseIssue() {
 							</div>
 
                             <div className="mb-4 md:flex md:justify-between">
-                            <div className="mb-4 md:mr-2 md:mb-0">
-									<label className="block mb-2 text-sm font-medium text-gray-700" >
-                                    Date
-									</label>
-									<input
-										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
-			
-										type="date"
-										name="date"
-										onChange={formik.handleChange}
-										value={formik.values.date}
-										onBlur={formik.handleBlur}
-									/>
-									{formik.touched.date && formik.errors.date ? <small className='error'> {formik.errors.date} </small> : null}
-								</div>
                                 <div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
                                     Reporting Manager
 									</label>
 									<input
 										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
-			
 										type="text"
 										name="manager"
-										onChange={formik.handleChange}
-										value={formik.values.manager}
-										onBlur={formik.handleBlur}
+										value={data?.projectAllocated?.proManager}
 									/>
-									{formik.touched.manager && formik.errors.manager ? <small className='error'> {formik.errors.manager} </small> : null}
+									{ formik.errors.manager ? <small className='error'> {formik.errors.manager} </small> : null}
 								</div>
 								<div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
@@ -237,17 +223,13 @@ function RaiseIssue() {
 										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
 										id="remarks"
 										name="issue"
-                                        rows="3" cols="31"
+                                        rows="4" cols="40"
 										onChange={formik.handleChange}
 										value={formik.values.issue}
 										onBlur={formik.handleBlur}
 									></textarea>
 									{formik.touched.issue && formik.errors.issue ? <small className='error'> {formik.errors.issue} </small> : null}
-								</div>
-                         
-              
-
-							
+								</div>				
 							</div>
 				
 							<div className="mb-2 text-center flex justify-end">

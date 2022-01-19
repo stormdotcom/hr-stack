@@ -4,7 +4,7 @@ import {HiOutlineUserGroup} from "react-icons/hi"
 import {FaUsersSlash, FaRegCalendarTimes} from "react-icons/fa"
 import {MdPendingActions} from "react-icons/md"
 import CanvasJSReact from './canvasjs.react'
-import { fetchStats } from '../../redux/hr/hrSlice'
+
 import "./styles.css"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from 'react-redux'
@@ -69,7 +69,7 @@ function HomeHR() {
             <MdPendingActions className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>{stats?.employeeCount}</h5>
+            <h5 className=' pl-1 font-semibold'>{stats?.onboardPending}</h5>
               <h6 className='pl-1 text-secondary'>On Boarding Pending</h6>
             </div>
           </div>
@@ -79,7 +79,7 @@ function HomeHR() {
             <FaRegCalendarTimes className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>{stats?.timeSheetPending}</h5>
+            <h5 className=' pl-1 font-semibold'>{stats?.notSubmittedToday}</h5>
               <h6 className='pl-1 text-secondary'>Pending Timesheets</h6>
             </div>
             

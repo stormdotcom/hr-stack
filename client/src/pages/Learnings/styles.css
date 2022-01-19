@@ -1,0 +1,25 @@
+.videoCard {
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 243px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column  ;
+    border: 0.01px solid grey;
+    text-overflow: clip;
+    margin-top: 4%;
+    margin-bottom: 7%;
+    background-color: #fdfdfd;
+    transition: all 100ms ease-out;
+}
+.videoCard:hover {
+    cursor: pointer;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.courseName {
+    font-weight: 600;
+    padding: 2px 3px;
+    text-overflow: clip !important;
+}
+/* border border-gray-400 */

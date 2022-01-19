@@ -13,7 +13,7 @@ import { createSlice } from "@reduxjs/toolkit";
         },
         fetchData:(state, {payload})=>{
             state.isloading=false;
-            state.data =payload[0]
+            state.data =payload[0].filter(ele=> ele.timeSheet.tilte !== "On Leave")
             state.isloading=false
         },
         editPending:(state, {payload})=>{
