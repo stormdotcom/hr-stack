@@ -18,6 +18,11 @@ export const activeTickets = ()=> API.get('/activeTickets')
 export const approveLearning = (form)=> API.post('/hr/approveLearning', form)
 export const declineLearning = (form)=> API.post('/hr/declineLearning', form)
 export const getLeaveRequest=()=> API.get('/hr/getAllLeaveRequest')
-
-// todo
+export const getAllEmployees=()=> API.get('/hr/getAllEmployees')
 export const getLearningRequest = ()=> API.get('/hr/getLearningRequest')
+export const fetchCompanyInfo = ()=> API.get('/hr/fetchCompanyInfo')
+export const saveProfile = (data)=> API.patch('/hr/saveProfile',data)
+export const getSkillsRequest = ()=> API.get('/hr/getSkillsRequest')
+export const skillreject = (form)=> API.post('/hr/skillreject', form)
+export const skillApprove = (form)=> API.post('/hr/skillApprove', form)
+export const createAnnouncement = (form) => API.post('/hr/createAnnouncement', form)

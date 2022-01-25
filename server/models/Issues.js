@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 const issueSchema = mongoose.Schema({
     employeeName:{type: String, required:true},
     employeeID: {type: String, required:true},
-    manager: {type: String, required:true},
+    manager: {type: String, required:false},
     project: {type: String, required:false},
     priority: {type: String, required:true},
     subject:{type: String, required:true},

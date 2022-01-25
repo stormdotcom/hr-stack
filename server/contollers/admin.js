@@ -6,6 +6,47 @@ import jwt from "jsonwebtoken"
 import Employees from "../models/Employees.js"
 import Assets from "../models/Assets.js"
 import Issues from "../models/Issues.js"
+import Company from "../models/Company.js";
+
+export const createCompany = async (req, res)=>{
+    try {
+        let projects = ["Development & Production", "Services", "Operations", "Cloud"];
+        let locations = ["Banglore", "Trivandrum", "Delhi", "Hydrabad"]
+        let designations = ["Software Engineer", "DevOps Engineer", "Web Developer", "UI-UX Designer", "Cloud Engineer", "Cyber Sec Engineer"]
+        const result = await Company.create({projects, locations, designations,} )
+        if(!result) return res.status(400).json({message:"not created"})
+        res.status(200).json(result)
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json(error.message)
+    }
+}
+
+export const addProject = async (req, res)=>{
+    const {data} = req.body
+    try {
+        const result = await Company.updateMany({$push:{projects:data}})
+        if(!result) return res.status(400).json({message:"not created"})
+        res.status(200).json(result)
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json(error.message)
+    }
+}
+
+export const addLocation = async (req, res)=>{
+    const {data} = req.body
+    try {
+        const result = await Company.updateMany({$push:{locations:data}})
+        if(!result) return res.status(400).json({message:"not created"})
+        res.status(200).json(result)
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json(error.message)
+    }
+}
 
 export const delayIssue = async (req, res)=>{
 

@@ -15,16 +15,19 @@ import ViewPaySlip from "./pages/Management/ViewPaySlip/ViewPaySlip"
 import LearningsReq from "./pages/Management/ManageReq/LearningsReq"
 import ProtectedRoute from "./routes/ProtectedRoutes/ProtectedRoute"
 import AddEmployee from "./pages/AddEmployee/AddEmployee"
-import RaisedIssue from "./pages/Management/ManageReq/RaisedIssue"
-
+import ViewEmployees from "./pages/ViewEmployees/ViewEmployees"
+import Profile from "./pages/Profile/Profile"
+import EditProfile from "./pages/EditProfile/EditProfile"
+import SkillsReq from "./pages/Management/ManageReq/SkillsReq"
 // APIs
 import { fetchEmployeeData, fetchStats as fetchAllStats } from './api/api';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import {Navigate} from "react-router-dom"
 import { logout} from "./redux/login/loginSlice"
 import { initial, fetchProfile, errorfetching, fetchStats, final} from "./redux/hr/hrSlice"
-import { useSelector, useDispatch} from "react-redux"
+import {  useDispatch} from "react-redux"
 import jwtDecode from "jwt-decode"
+
 
 
 function App() {
@@ -76,7 +79,10 @@ function App() {
        <Route exact path="/management/all-requests/vehicle" element={<VehicleReq />} />
        <Route exact path="/management/all-requests/assets" element={<AssetsReq />} />
        <Route exact path="/management/all-requests/learnings" element={<LearningsReq />} />
-       <Route exact path="/management/all-requests/tickets" element={<RaisedIssue />} />
+       <Route exact path="/management/all-requests/skills" element={<SkillsReq />} />  
+       <Route exact path="/view-employees" element={<ViewEmployees />} />
+       <Route exact path="/view-employees/:id" element={<Profile />} />
+       <Route exact path="/edit-employees/:id" element={<EditProfile />} />
        <Route exact path="/timesheet" element={<Timesheet />} />
        <Route exact path="/add-employee" element={<AddEmployee />} />
       </Route>

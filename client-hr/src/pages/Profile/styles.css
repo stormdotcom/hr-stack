@@ -1,3 +1,8 @@
+.containermain {
+border: 1px solid #919191;
+box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px;
+padding: 20px 10px ;
+}
 .profileMain{
     width: 98%;
     display: flex;
@@ -8,7 +13,7 @@
 .iconSec p {
     margin-bottom: 0;
 }
-.card {
+.card{
     width: 50%;
     padding: 5px;
     margin: 4px 2px;
@@ -33,10 +38,6 @@
     justify-content: space-evenly;
     padding: 2px 4px;
     cursor: pointer;
-}
-.editButton {
-    float: right;
-    display: flex;
 }
 @media only screen and (max-width: 1100px) {
     .profileMain {

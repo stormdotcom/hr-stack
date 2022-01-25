@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import {ObjectId} from "mongodb"
-import bcrypt from "bcrypt"
+import bcrypt, { compareSync } from "bcrypt"
 import User from "../models/User.js"
 import Employees from "../models/Employees.js"
 import jwt from "jsonwebtoken";
@@ -8,6 +8,97 @@ import Events from '../models/Events.js';
 import { dateToEpoch2 } from "../helpers/datehelper.js";
 import LeaveManage from '../models/LeaveMange.js';
 import Learnings from '../models/Learnings.js';
+import Company from '../models/Company.js';
+import Skllls from '../models/SkillsReq.js';
+
+export const createAnnouncement = async (req, res)=>{
+  try {
+    const result = await Events.create(req.body)
+    if(!result) return res.status(400).json({message:"not created"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const skillApprove = async(req, res)=>{
+  console.log(req.body)
+  try {
+    const result =await Skllls.findOneAndUpdate({_id:ObjectId(id)}, {$set:{approved:true, submittedStatus:true, score:data}})
+    if(!result) return res.status(400).json({message:"not updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const skillreject = async(req, res)=>{
+  const {id, data} = req.body
+  try {
+    const result =await Skllls.findOneAndUpdate({_id:ObjectId(id)}, {$set:{comments:data, submittedStatus:true}})
+    if(!result) return res.status(400).json({message:"not updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getSkillsRequest = async (req, res)=>{
+
+  try {
+    const result = await Skllls.find({submittedStatus:{$eq:false}})
+    if(!result.length) return res.status(200).json([])
+    res.status(200).json(result)
+  } catch (error) { 
+    console.log(error.message)
+    res.status(200).json({message: "something went wrong"})
+  }
+}
+
+export const saveProfile = async (req, res)=>{
+  const {userID, formData} = req.body
+  try {
+    const result = await Employees.findOneAndUpdate({userID}, {$set:formData})
+    if(!result) return res.status(400).json({message:"Profile not Updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"something went wrong"})
+  }
+}
+export const addDesignations = async (req, res)=>{
+  const {data} = req.body
+  try {
+      const result = await Company.updateMany({$push:{designations:data}})
+      if(!result) return res.status(400).json({message:"not created"})
+      res.status(200).json(result)
+
+  } catch (error) {
+      console.log(error.message)
+      res.status(500).json(error.message)
+  }
+}
+
+export const fetchCompanyInfo = async (req, res)=>{
+  try {
+    const result = await Company.aggregate([{ $project : {designations:1,projects:1,locations:1, _id:0 } }])
+    if(!result) return res.status(400).json({message:"No Company Data found"})
+    res.status(200).json(result[0])
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json(error.message)
+  }
+}
+export const getAllEmployees = async (req, res)=>{
+  try {
+    const result = await Employees.find()
+    if(!result) return res.status(400).json({message:"No Employee Data found"})
+    res.status(200).json(result)
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+}
 
 export const declineLearning = async (req, res)=>{
   const  {id} = req.body 
@@ -36,8 +127,8 @@ export const approveLearning = async (req, res)=>{
 export const getAllLeaveRequest = async(req, res)=>{
   try {
 
-    const result = await LeaveManage.find({}, {submittedStatus: false})
-      if(!result) return res.status(400).json({message:"No Data "})
+    const result = await LeaveManage.find({submittedStatus: {$eq:false}})
+      if(!result.length) return res.status(200).json([])
       res.status(200).json(result)
     
   } catch (error) { 
@@ -61,9 +152,10 @@ export const getLearningRequest = async(req, res)=>{
 
 export const createEvent = async (req, res)=> {
 
-  const {start, end, title,time, description, type, selectedFlle} = req.body
+  const {type,isAnnouncements,} = req.body
   try {
-      const result = await Events.create({start, end, title, description,time, type, selectedFlle})
+      const result = await Events.create(req.body)
+      console.log(result)
       if(type=="event") {
         let result =await Employees.updateMany({}, {$push: {timeSheet:{start, end, title, description}}})
       }

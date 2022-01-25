@@ -1,7 +1,8 @@
 import  express from 'express';
 const router = express.Router();
-import { signin, createHR, logout, fetchAllEmployeData, getPendingTimeSheet, timeSheetApprove, createEvent, getAllLeaveRequest,
-  getLearningRequest, fetchStats, approveLearning, declineLearning} from "../contollers/hr.js";
+import { signin, createHR, logout, fetchAllEmployeData, getPendingTimeSheet, timeSheetApprove, createEvent, getSkillsRequest,
+  getAllLeaveRequest, fetchCompanyInfo,skillApprove,skillreject, createAnnouncement,
+  getLearningRequest, fetchStats, approveLearning, declineLearning, getAllEmployees, addDesignations, saveProfile} from "../contollers/hr.js";
 import { createUser, fetchEmployeData } from "../contollers/employee.js"
 /* GET home page. */
 router.get('/hr', function(req, res, next) {
@@ -23,6 +24,14 @@ router.get('/getAllLeaveRequest', getAllLeaveRequest);
 router.get('/getLearningRequest', getLearningRequest);
 router.post('/approveLearning', approveLearning);
 router.post('/declineLearning', declineLearning);
+router.get('/getAllEmployees', getAllEmployees);
+router.get('/fetchCompanyInfo', fetchCompanyInfo);
+router.patch('/saveProfile', saveProfile);
+router.post('/addDesignations', addDesignations);
+router.get('/getSkillsRequest', getSkillsRequest);
+router.post('/skillreject', skillreject);
+router.post('/skillApprove', skillApprove);
+router.post('/createAnnouncement', createAnnouncement);
 
 export default router;
 

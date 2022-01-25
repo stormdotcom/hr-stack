@@ -39,7 +39,7 @@ function Learnings() {
 			courseType:"",
 			duration:"",
 			resourceURL:"",
-			approver:"",
+			approver:"Manager",
 			comments:"",
 
 		},
@@ -231,7 +231,7 @@ function Learnings() {
 											</select>
 											{formik.touched.courseType && formik.errors.courseType ? <small className='error'> {formik.errors.courseType} </small> : null}
 								</div>
-                                <div className="mb-4 md:mr-2 md:mb-0">
+                                {/* <div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
 										Approver
 									</label>
@@ -243,7 +243,7 @@ function Learnings() {
 										onChange={formik.handleChange}
 										value={formik.values.approver}
 									/>
-								</div>
+								</div> */}
 								<div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
                                     Duration

@@ -35,7 +35,7 @@ function NavBar() {
         <Nav.Link href="#link"><Notifications /></Nav.Link>
         <NavDropdown title={data.fullname} id="basic-nav-dropdown">
         <NavDropdown.Item >  <DateToday/> </NavDropdown.Item>
-          <NavDropdown.Item onClick={()=> {navigate("/profile")}} > <Person />  Profile </NavDropdown.Item>
+          <NavDropdown.Item  >   </NavDropdown.Item>
           <NavDropdown.Item onClick={handleLogout}> <Logout />  Logout </NavDropdown.Item>
         </NavDropdown>
       </Nav>

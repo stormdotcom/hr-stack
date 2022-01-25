@@ -6,17 +6,21 @@ import {MdBusinessCenter} from "react-icons/md"
 import {VscProject} from "react-icons/vsc"
 import {FaRegCalendarTimes} from 'react-icons/fa'
 import {AiFillStar} from "react-icons/ai"
-import { useSelector, useDispatch} from "react-redux"
-import { Alert, CircularProgress } from '@mui/material';
-import{getEvents} from "../../api/employee"
+import { useSelector, } from "react-redux"
+import {  CircularProgress } from '@mui/material';
+import{getEvents, getAnnouncements} from "../../api/employee"
 
 function Home() {
-  const {data, isloading, error} = useSelector(state => state.employee)
+  const {data, isloading,} = useSelector(state => state.employee)
   const [event, setEvent] = useState({})
+  const [announcements, setAnnouncements] = useState({})
   const navigate = useNavigate()
   useEffect(() => {
     getEvents().then(res => {
       setEvent(res.data)
+    })
+    getAnnouncements().then(res => {
+      setAnnouncements(res.data)
     })
   }, [navigate])
 
@@ -25,7 +29,6 @@ function Home() {
       <>
       <div className="home">
         {isloading && !data ? <div className='flex justify-center align-center'> <CircularProgress color="info" style={{padding: "50px"}} /></div> : <>
-        {error && <div className='flex justify-center align-center'> <Alert severity="error">{error}!</Alert> </div>}
           <div className="cardTop">
           <div className='flex justify-center cardItem'>
             <div className="homeTopIcon"> 
@@ -101,29 +104,27 @@ function Home() {
           </div>
 
           <div className='homeCompanyEvents'>
-            <div className='homeEvent'>
-                <h6 className='mt-4 text text-center font-bold '>Events </h6>
-                <img height="150px" style={{width: "100%"}} src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'  alt="eventsWallpaper"/>
-                <div className='px-5 py-2'>
-                  <h6 className='font-semibold my-2'>{event.title} </h6>
-                  <p className='text-sm'> {event.description}</p>
-                </div>
-            </div>
-            <div className='homeEvent'>
+            {event && 
+                        <div className='homeEvent'>
+                        <h6 className='mt-4 text text-center font-bold '>Events </h6>
+                        <img height="150px" style={{width: "100%"}} alt="eventsWallpaper" src={event?.selectedFile}/>
+                        <div className='px-5 py-2'>
+                          <h6 className='font-semibold my-2'>{event?.title} </h6>
+                          <p className='text-sm'> {event?.description}</p>
+                        </div>
+                    </div>
+            }
+
+            {announcements && <div className='homeEvent'>
             <h6 className='mt-4 text text-center font-bold '>Announcements </h6>
-                <img height="150px" style={{width: "100%"}} src='https://image.shutterstock.com/image-vector/creative-design-coronavirus-vaccine-banner-260nw-1894336930.jpg'  alt="eventsWallpaper"/>
+                <img height="150px" style={{width: "100%"}} src={announcements?.selectedFile}  alt="announcementsWallpaper"/>
                 <div className='px-5 py-2'>
-                  <h6 className='font-semibold my-2'>Vaccination Drive </h6>
-                  <p className='text-sm'> Contrary to popular belief, Lorem Ipsum is not simply random text. 
-                    It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
-                     Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the 
-                     more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of 
-                     the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 
-                     1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, 
-                     written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.</p>
+                  <h6 className='font-semibold my-2'>{announcements?.title} </h6>
+                  <p className='text-sm'> {announcements?.description}</p>
                 </div>
 
-          </div>
+          </div>}
+        
 
 
           </div>

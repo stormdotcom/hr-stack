@@ -9,16 +9,16 @@ import {
 } from "react-pro-sidebar";
 
 //import icons from react icons
-import { FaUserGraduate, FaHandPointer } from "react-icons/fa";
+import {  FaHandPointer } from "react-icons/fa";
 import { FiHome, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import {AiTwotoneEdit} from "react-icons/ai";
-import {  RiCustomerService2Fill } from "react-icons/ri";
 import {  GiSkills } from "react-icons/gi";
-import { BsFillCalendarWeekFill } from "react-icons/bs";
-import { MdOutlineSpeed } from "react-icons/md";
+import { BsFillCalendarWeekFill,BsViewList } from "react-icons/bs";
+import { MdOutlneSpeed } from "react-icons/md";
 import Stack from "../NavBar/Stack-logo.svg"
 import "react-pro-sidebar/dist/css/styles.css";
 import "./styles.css";
+
 import { useNavigate } from 'react-router-dom'
 
 
@@ -66,7 +66,7 @@ const SideBar = () => {
              <MenuItem  className="sideBarItem"  onClick={()=> {navigate("/")}} icon={<FiHome />}>  <p>Home</p> </MenuItem> 
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/management")}} icon={<FaHandPointer />}>  <p>Managements </p> </MenuItem>
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/timesheet")}} icon={<BsFillCalendarWeekFill />}> <p> Time Sheet </p></MenuItem>
-              <MenuItem className="sideBarItem" onClick={()=> {navigate("/tickets")}} icon={<RiCustomerService2Fill />}> <p> Tickets </p></MenuItem>
+              <MenuItem className="sideBarItem" onClick={()=> {navigate("/view-employees")}} icon={<BsViewList />}> <p>  Employees </p></MenuItem>
             
             </Menu>
           </SidebarContent>

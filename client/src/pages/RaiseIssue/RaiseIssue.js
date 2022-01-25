@@ -197,8 +197,7 @@ function RaiseIssue() {
 										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
 										type="text"
 										name="manager"
-										readOnly
-										value={data?.projectAllocated?.proManager}
+										defaultValue={data?.projectAllocated?.proManager}
 									/>
 									{ formik.errors.manager ? <small className='error'> {formik.errors.manager} </small> : null}
 								</div>

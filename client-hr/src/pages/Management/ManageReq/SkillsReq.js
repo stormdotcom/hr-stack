@@ -5,37 +5,32 @@ import moment from 'moment'
 import {AiFillCaretRight} from "react-icons/ai"
 import "./styles.css"
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
-import {leaveApprove, leaveDecline} from "../../../api/api"
+import {  useSelector } from 'react-redux'
+import {skillApprove, skillreject} from "../../../api/api"
 import Swal from "sweetalert2"
-import { CircularProgress } from '@mui/material'
-function LeaveReq() {
+function SkillReq() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const { reqData} = useSelector(state => state.requests)
-    let isloading=false
-    if(!reqData.length) isloading=true
+    const { skills} = useSelector(state => state.requests)
 
-    const handleApprove = (id, userID, fromDate, toDate, leaveType)=>{
-        let formData = {id, userID, fromDate, toDate,leaveType,}
-        Swal.fire({
-            title: 'Are you sure want approve this Request?',
-            showDenyButton: true,
-            confirmButtonText: 'Approve',
-            denyButtonText: `Close`,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-                leaveApprove(formData).then(()=>{
-                    Swal.fire('Approval Success!', '', 'success')
-                }).catch((err)=>{
-                    console.log(err.message)
-                    Swal.fire('Failed to approve!', '', 'info')
-                })
-
-            } 
-          })
+    const handleApprove = (id)=>{
+        const { value: text } =  Swal.fire({
+            title: 'Approve with a Score?',
+            input: 'range',
+            inputLabel: ' Give a  Score',
+            showCancelButton: true,
+            inputValidator: async (value) => {
+              if (!value) {
+                return 'You need to enter score !'
+              }
+              console.log(text)
+              let formData={id:id, data:Number(value)} 
+              skillApprove(formData)
+              .then(res=> Swal.fire('Approved and Updated', '', 'success'))
+              .catch(err=> Swal.fire('Fail Updating!', '', 'info'))
+            }
+          }) 
     }
-    const handleDecline =async (userID)=>{
+    const handleDecline =async (id)=>{
         let formData={}
         const { value: text } =  Swal.fire({
             input: 'textarea',
@@ -47,26 +42,23 @@ function LeaveReq() {
               if (!value) {
                 return 'You need to write Commment !'
               }
-              console.log(text)
-              formData={userID:userID, data:value} 
-              leaveDecline(formData)
-              .then(res=> Swal.fire('Declined and updated!', '', 'success'))
-              .catch(err=> Swal.fire('Fail Updating!', '', 'info'))
+              formData={id:id, data:text} 
+              skillreject(formData)
+              .then(res=> Swal.fire('Skill rejected and updated!', '', 'success'))
+              .catch(err=> Swal.fire('Skill rejection Failed!', '', 'info'))
             }
           })     
     }
-    const handleView = (data, name, id)=>{
+    const handleView = (data, name, id, type)=>{
         Swal.fire({
-            title: '<strong>Leave Reason</strong>',
+            title: '<strong>'+  type +'</strong>',
             html:
-              ' <b>'+ name+ '</b> | ' +
-              ' <b>'+ id + '\n'+ '</b>' +   
-              '</br>'
-              +"\n"+ data+  "\n",
-            showCloseButton: true,
-            showCancelButton: true,
-            focusConfirm: false,
-          })
+            ' <b>'+ name+ '</b> | ' +
+            ' <b>'+ id + '\n </b>' +
+            '</br>',
+            imageUrl: data,
+            imageHeight: 300,
+        })
     }
 
     return (
@@ -83,14 +75,14 @@ function LeaveReq() {
         <div className="container my-5 tableView py-4 overflow-x-auto">
             <div className='button-groups'> 
             <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests')}} > All Requests</div>
-                <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/leave')}}> Leave Requests</div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/leave')}}> Leave Requests</div>
                 <div className='button-5 font-semibold text-sm my-1' onClick={()=>{navigate('/management/all-requests/vehicle')}}> Vehicle Requests</div>
                 <div className='button-5 font-semibold text-sm my-1' onClick={()=>{navigate('/management/all-requests/learnings')}}> Learnings </div>
-                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/skills')}}> Skills Updation </div>
+                <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/skills')}}> Skills Updation </div>
              </div>
-             <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Leave Requests </h6>
+             <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Skills Updation </h6>
                        
-                       {reqData.length ? 
+                       {skills.length ? 
                        <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>
@@ -104,10 +96,10 @@ function LeaveReq() {
                                         Project
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
-                                        Team
+                                        Skill Rating
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
-                                        Leave Type
+                                        Skill Type
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
                                         Requested Date
@@ -116,7 +108,7 @@ function LeaveReq() {
                                         Approved Status
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
-                                        Comments
+                                       Attachments
                                     </th>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
                                         Actions
@@ -124,7 +116,7 @@ function LeaveReq() {
                                 </tr>
                             </thead>
                                                         <tbody className="bg-white ">
-                                                        {reqData.map((ele, i)=>{
+                                                        {skills.map((ele, i)=>{
                                                             return (
                                                                 <tr className="whitespace-nowrap" key={i}>
                                                                 <td className="px-6 py-4 text-sm text-gray-500">
@@ -136,28 +128,28 @@ function LeaveReq() {
                                                                     </div>
                                                                 </td>
                                                                 <td className="px-6 py-4">
-                                                                    <div className="text-sm text-gray-500">{ele.projectName}</div>
+                                                                    <div className="text-sm text-gray-500">{ele.project}</div>
                                                                 </td>
                                                                 <td className="px-6 py-4 text-sm text-gray-500">
-                                                               {ele.team}
+                                                               {ele.selfRating}
                                                                 </td>
                                                                 <td className="text-sm px-6 py-4">
-                                                                {ele.leaveType}
+                                                                {ele.type} Skill
                                                                 </td>
                                                                 <td className="text-sm px-6 py-4">
-                                                                {moment(ele.requestedDate).utc().format('DD-MM-YYYY')}   
+                                                                {moment(ele.date).utc().format('DD-MM-YYYY')}   
                                                             
                                                                 </td>
                                                                 <td className="text-sm px-6 py-4">
-                                                                {ele.approvedStatus ? "Approved" : "Pending"}
+                                                                {ele.approved ? "Approved" : "Approval Pending"}
                                                                 </td>
                                                                 <td className="text-sm px-6 py-4">
                                                                 <div className='button-sm-1 text-sm my-1' 
-                                                                onClick={()=>handleView(ele.reason, ele.fullname, ele.empID)}>View</div>
+                                                                onClick={()=>handleView(ele.selectedFile, ele.fullname, ele.empID, "Skill Updation")}>View</div>
                                                                 </td>
                                                                 <td className="text-sm px-6 py-4 flex-col ">
                                                                 <div className='button-sm-1 text-sm my-1'
-                                                                onClick={()=>handleApprove(ele._id, ele.userID, ele.fromDate, ele.toDate, ele.leaveType)}
+                                                                onClick={()=>handleApprove(ele._id, ele.userID)}
                                                                 >Approve</div>
                                                                 <div className='button-sm-2 text-sm my-1'
                                                                 onClick={()=>handleDecline(ele._id)}>Deline</div>
@@ -175,4 +167,4 @@ function LeaveReq() {
     )
 }
 
-export default LeaveReq
+export default SkillReq

@@ -9,6 +9,70 @@ import Events from "../models/Events.js";
 import Issues from "../models/Issues.js"
 import LeaveManage from "../models/LeaveMange.js";
 import Learnings from "../models/Learnings.js"
+import Skllls from "../models/SkillsReq.js";
+
+export const getAnnouncements = async (req, res)=> {
+  try {
+    let events = await Events.find({isAnnouncements:{$eq:true}})
+    
+    if(!events) return res.status(404).json({message:"No Events found"})
+
+    res.status(200).json(events[0])
+
+  } catch (error) {
+    res.status(404).json(error.message)
+  }
+}
+
+export const getMyskills = async (req, res)=>{
+  const { id } =  req.query
+  try {
+    const result = await Skllls.find({id, approved:{$eq:true}})
+    if(!result.length) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message: "Something went wrong"})
+  }
+}
+
+export const submitSkills = async(req, res)=>{
+  try {
+    const result =await Skllls.create(req.body)
+    if(!result) return res.status(400).status({message:"Not submited"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).status({message:"Something went wrong"})
+  }
+}
+
+export const submitAddress = async (req, res)=>{
+  const {address, userID} = req.body
+  try {
+    const result =await Employees.findOneAndUpdate({userID}, {$set:{address2: address}})
+    if(!result) return res.status(400).json({message:"Not created"})
+    let result2= await Employees.findOne({userID})
+    res.status(200).json(result2)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const submitPersonalInfo = async (req, res)=>{
+  const {data, userID} = req.body
+  const {fatherName, motherName, BloodGroup, contactPerson, place, phoneNumber}= data
+  try {
+    const result =await Employees.findOneAndUpdate({userID}, {$set:{personalDetails: {fatherName, motherName, BloodGroup}
+                                    , emergencyContact:{contactPerson, place, phoneNumber}}})
+    if(!result) return res.status(400).json({message:"Not created"})
+    let result2= await Employees.findOne({userID})
+    res.status(200).json(result2)
+  } catch (error) {
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
 
 export const getMyLearnings = async (req, res)=>{
   const {id} = req.query
@@ -37,7 +101,6 @@ export const checkLeaveStatus = async(req, res)=>{
   const {id} = req.query
   try {
     const result =await LeaveManage.aggregate([ {$sort: {fromDate: -1}}, {$limit: 2},{$match: {userID: id}}])
-    console.log(result)
     if(!result.length) return res.status(200).json(null)
     res.status(200).json(result)
   } catch (error) {
@@ -87,7 +150,8 @@ export const submitTicket = async(req, res)=>{
     res.status(200).json({status:true})
   } catch (error) {
     console.log(error.message)
-    res.status(400).json({message:"Something went wrong"})
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
     
   }
 }
@@ -196,7 +260,7 @@ export const getHoliday = async (req, res)=> {
 
 export const getEvents = async (req, res)=> {
   try {
-    let events = await Events.find()
+    let events = await Events.find({isAnnouncements:{$eq:false}})
     
     if(!events) return res.status(404).json({message:"No Events found"})
 
@@ -261,7 +325,6 @@ export const  setTimeOut= async(req, res)=>{
       const employeeData = await Employees.findOneAndUpdate({userID:ObjectId(id), 
       'timeSheet.day':date},{$set:{'timeSheet.$.title': "Submitted", 'timeSheet.$.end':new Date() }}  )
       // const employeeData = await Employees.findOne({userID:ObjectId(id)} )
-        console.log(employeeData)
       let timeSheetArray = employeeData.timeSheet
       let currentDay = timeSheetArray.find(ele=> ele.day===date )
       let hours = Math.abs(currentDay.start - currentDay.end) / 36e5;
@@ -316,7 +379,7 @@ export const  fetchEmployeData= async(req, res)=>{
       const {id } = req.query;
       try {
           const employeeData = await Employees.findOne({userID:id})
-          
+          if(!employeeData) return  res.status(400).json({message:"no data"})
           res.status(200).json(employeeData)
 
       } catch (error) {

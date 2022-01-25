@@ -8,7 +8,7 @@ const leaveSchema = mongoose.Schema({
      requestedDate:{type:Date, default:true,required:true},
      fromDate:{type:Date},
      toDate:{type:Date},
-     manager:{type: String, required:true},
+     manager:{type: String, required:false},
      reason:{type: String, required:true},
      approvedStatus:{type:Boolean, default:false,required:true},
      submittedStatus:{type:Boolean, default:false,required:true},

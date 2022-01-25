@@ -39,7 +39,8 @@
     "styled-components": "^5.3.3",
     "sweetalert2": "^11.3.4",
     "web-vitals": "^2.1.2",
-    "weekday": "^3.0.1"
+    "weekday": "^3.0.1",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -167,7 +167,7 @@ function Leave() {
 			<div className="flex justify-center px-6 my-12">
 			
 				<div className="w-full  flex">
-					
+					{ (data.leaveBalance.casual && data.leaveBalance.sick) ?
 					<div className="w-full p-1 rounded-lg lg:rounded-l-none">
 						<form onSubmit={formik.handleSubmit} className="px-2 pt-1 pb-4 mb-2">
 						
@@ -270,6 +270,7 @@ function Leave() {
 						
 						</form>
 					</div>
+					: <div className='flex justify-center'> <p>No leave Balance Contact HR</p> </div> }
                     
 				</div>
 			</div>

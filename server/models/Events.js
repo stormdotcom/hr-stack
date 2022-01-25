@@ -4,9 +4,10 @@ const eventSchema = mongoose.Schema({
     end: {type: Date, required:true},
     title:{type: String, required:true},
     description:{type: String, required:true},
-    type:{type: String, required:true},
+    type:{type: String, required:false},
     time:{type:String},
-    selectedFlle:{type:String} 
+    selectedFile:{type:String},
+    isAnnouncements:{type:Boolean, required:true, default:false}
 })
 const Events = mongoose.model('Event', eventSchema)
 export default Events;

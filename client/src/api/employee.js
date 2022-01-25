@@ -21,6 +21,12 @@ export const myTickets = (id)=> API.get('/myTickets?userID='+id)
 export const setPriority = (form)=>API.post('/setPriority', form)
 export const submitLearningRequest = (form) => API.post('/submitLearningRequest', form)
 export const getMyLearnings = (id)=> API.get('/getMyLearnings?id='+id)
+export const submitAddress = (form)=> API.patch('/submitAddress', form)
+export const submitPersonalInfo =(form)=> API.patch('/submitPersonalInfo', form)
+export const submitSkills = (form)=> API.post('/submitSkills', form)
+export const getMyskills = (id) => API.get('/getMyskills?id='+id)
+export const getAnnouncements = ()=> API.get('/getAnnouncements')
+
 // todo
 export const getHoliday = ()=> API.get('/getHoliday')
 export const checkLeaveStatus = (id)=> API.get('/checkLeaveStatus?id='+id)

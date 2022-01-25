@@ -54,6 +54,7 @@ function AddEmployee() {
       repassword:""
     },
     onSubmit: (values, {  resetForm } )=> { 
+      console.log(values)
       handleSubmit(values)
       resetForm()
 

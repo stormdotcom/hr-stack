@@ -1,12 +1,10 @@
 
 ###
-POST http://localhost:4000/admin/createUser
+get http://localhost:4000/hr/fetchCompanyInfo
 content-type: application/json
 
 {
-    "email": "admin@hrstack.com",
-    "password": "password",
-    "fullname":"Super Man"
+    "data": "UAE - DUBAI"
 }
 ###
 GET http://localhost:4000/hr/getAllLeaveRequest

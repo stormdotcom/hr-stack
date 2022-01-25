@@ -80,7 +80,7 @@ function Timesheet() {
       timeOutStats(user?.result._id).then(res=> setTimeOutBtn(res.data.status))
       .catch(err=> dispatch(errorfetching(err.message)))
 
-  }, [navigate,timeOutBtn, timeInBtn, user])
+  }, [navigate,timeOutBtn, timeInBtn])
     return (
         <div>
             <div className='timeSheet'>

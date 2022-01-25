@@ -73,14 +73,13 @@ function LearningsReq() {
             html:'<a href='+url+' target="_blank" >Click here</a>',
           })
     }
-    console.log(learnings)
     return (
         <>
         <div className='viewPay'>
 
         <nav className="rounded-md w-full">
   <ol className="list-reset flex">
-    <li> <Link to="/selfservice">Management </Link></li>
+    <li> <Link to="/management">Management </Link></li>
     <li><span className="text-gray-500 mx-2">/</span></li>
     <li className="text-gray-500">Manage Requests</li>
   </ol>
@@ -91,6 +90,7 @@ function LearningsReq() {
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/leave')}}> Leave Requests</div>
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/vehicle')}}> Vehicle Requests</div>
                 <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/learnings')}}> Learnings </div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/skills')}}> Skills Updation </div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Learning Requests </h6>
              {learnings.length ?
