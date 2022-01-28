@@ -100,7 +100,7 @@ function RaiseIssue() {
                             <tbody className="bg-white border border-gray-400">
 								{myticket.map((ele, i)=>{
 									return(
-										<tr className="whitespace-nowrap">
+										<tr key={i} className="whitespace-nowrap">
 										<td className="px-6 py-4 text-sm text-gray-500">
 										{ele._id.substr(ele._id.length - 4).toUpperCase()}
 										</td>

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import {useSelector, useDispatch} from "react-redux"
 import { logout} from "../../redux/login/loginSlice"
 import {final} from "../../redux/employee/employeeSlice"
-
+import Avatar from '@mui/material/Avatar';
 function NavBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -31,7 +31,8 @@ function NavBar() {
     <Navbar.Toggle aria-controls="basic-navbar-nav" className='ml-auto'   />
     <Navbar.Collapse id="basic-navbar-nav" className='ml-auto'>
       <Nav className="ml-auto flex items-end">
-        <Nav.Link href="#link"><Notifications /></Nav.Link>
+      <Nav.Link href="#link"><Notifications /> </Nav.Link>
+        <Nav.Link> {data?.selectedFile && <Avatar sx={{ width: 24, height: 24 }} src={data?.selectedFile} alt="profile-face" />  } </Nav.Link>
         <NavDropdown title={data.fullname} id="basic-nav-dropdown">
         <NavDropdown.Item >  <DateToday/> </NavDropdown.Item>
           <NavDropdown.Item onClick={()=> {navigate("/profile")}} > <Person />  Profile </NavDropdown.Item>

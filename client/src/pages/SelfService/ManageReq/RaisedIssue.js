@@ -11,6 +11,8 @@ import "./styles.css"
 function RaisedIssue() {
     const {tickets} = useSelector(state => state.request)
    const navigate = useNavigate()
+   let isLoading = false
+   if(tickets.length) isLoading=true
    const handlePriority =async (id)=>{
     const { value: Priority } = await Swal.fire({
         title: 'Set Ticket Priority',
@@ -67,6 +69,7 @@ function RaisedIssue() {
                 <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/selfservice/all-requests/tickets')}}> View Tickets</div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Raised Issues </h6>
+             {isLoading ? 
                         <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>
@@ -131,6 +134,7 @@ function RaisedIssue() {
                         
                             </tbody>
                         </table>
+                        : <div className='flex justify-center'> <p> No data </p> </div> }
                     </div>
         </div>
         <NavBar />

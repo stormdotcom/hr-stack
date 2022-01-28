@@ -5,16 +5,16 @@ import moment from 'moment'
 import {AiFillCaretRight} from "react-icons/ai"
 import "./styles.css"
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 import {leaveApprove, leaveDecline} from "../../../api/employee"
 import Swal from "sweetalert2"
-import { CircularProgress } from '@mui/material'
+
 function LeaveReq() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+
     const { reqData} = useSelector(state => state.request)
     let isloading=false
-    if(!reqData.length) isloading=true
+    if(reqData.length) isloading=true
 
     const handleApprove = (id, userID, fromDate, toDate, leaveType)=>{
         let formData = {id, userID, fromDate, toDate,leaveType,}
@@ -89,6 +89,7 @@ function LeaveReq() {
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/selfservice/all-requests/tickets')}}> View Tickets</div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Leave Requests </h6>
+             {isloading ? 
                         <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>
@@ -121,7 +122,6 @@ function LeaveReq() {
                                     </th>
                                 </tr>
                             </thead>
-                            {isloading ? <tbody><tr> <CircularProgress /> </tr> </tbody> : 
                                                         <tbody className="bg-white ">
                                                         {reqData.map((ele, i)=>{
                                                             return (
@@ -165,9 +165,10 @@ function LeaveReq() {
                                                             );
                                                         })}
                                                     </tbody>
-                            }
+                            
 
                         </table>
+                        : <div className='flex justify-center'> <p> No Data </p></div> }
                     </div>
         </div>
         <NavBar />

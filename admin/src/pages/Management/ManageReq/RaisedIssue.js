@@ -104,7 +104,8 @@ function RaisedIssue() {
                 <div className='button-5 font-semibold text-sm my-1 mx-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/tickets')}}> Raised Tickets</div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Raised Issue </h6>
-             {loader ? "No Data" : <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
+             {loader ? "No Data" : 
+             <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>
                                 <th className="px-4 py-2 text-xs text-gray-500 ">

@@ -10,6 +10,80 @@ import Issues from "../models/Issues.js"
 import LeaveManage from "../models/LeaveMange.js";
 import Learnings from "../models/Learnings.js"
 import Skllls from "../models/SkillsReq.js";
+import AssetReq from "../models/AssetReq.js";
+import Assets from "../models/Assets.js";
+import CabReq from "../models/CabReq.js";
+
+export const myCabs = async (req, res)=>{
+  const {id}= req.query
+  try {
+    const result = await CabReq.find({userID:id})
+    if(!result) return res.status(200).json([])
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const checkCabStatus = async (req, res)=>{
+  const {id} = req.query
+  try {
+    const result = await CabReq.findOne({userID:id})
+    if(!result) return  res.status(200).json({status:false})
+    if(result.approved) return  res.status(200).json({status:true})
+    if(!result.approved && !result.submittedStatus) return  res.status(200).json({status:false, message:"Uh Already requested, please be patient for request to fullfill"})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+  }
+}
+
+export const submitCabRequest = async (req, res)=>{
+  try {
+    const result = await CabReq.create({...req.body})
+    if(!result) return res.status(400).json({message:"not created"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(200).json({message:"Something went wrong"})
+  }
+}
+
+export const getMyassets = async (req, res)=>{
+  const {id} = req.query
+  try {
+    const result = await Assets.find({alloactedTo:ObjectId(id)})
+    if(!result.length) return res.status(200).json([])
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+  }
+}
+
+export const submitAssetReq = async (req, res)=>{
+  const {userID} = req.body
+  try {
+    const result = await AssetReq.create(req.body)
+    if(!result) return res.status(400).json({message:"no created"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+  }
+}
+export const submitProfilePhoto = async(req, res)=>{
+  const {userID, formdata} = req.body
+  const {selectedFile,filePublicID,  asset_id } = formdata
+  try {
+    const result =await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$set:{selectedFile, filePublicID,  asset_id}})
+    if(!result) return res.status(400).json({message:"not created"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
 
 export const getAnnouncements = async (req, res)=> {
   try {

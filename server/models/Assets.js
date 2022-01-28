@@ -8,7 +8,8 @@ const assetSchema = mongoose.Schema({
     healthStatus:{type: Boolean, required:true, default:true},
     availableStatus:{type: Boolean, required:true, default:true},
     description:{type:String },
-    alloactedTo:{type: Object}
+    alloactedTo:{type: Object},
+    alloactedDate:{type: Date}
    
 })
 const Assets = mongoose.model('Asset', assetSchema)

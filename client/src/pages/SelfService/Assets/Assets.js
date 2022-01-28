@@ -1,30 +1,47 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik';
 import "./styles.css"
-
+import { useSelector } from 'react-redux';	
+import Swal from "sweetalert2"
+import {submitAssetReq, getMyassets} from "../../../api/employee"
+import moment from "moment"
 function Assets() {
+	const navigate = useNavigate()
+	const { data } = useSelector(state=> state.employee)
+	const [myassets, setMyassets] = useState([])
+	const handleSubmit= async (values)=>{
+		let form ={userID:data.userID, ...values,}
+		await submitAssetReq(form).then(()=>{
+			Swal.fire({
+				title: 'Success!',
+				text: 'Asset Request Submitted',
+				icon: 'success',
+				confirmButtonText: 'OK'
+			  })
+		}).catch((err)=>{
+			Swal.fire({
+				title: 'Failed!',
+				text: 'Submission Failed',
+				icon: 'info',
+				confirmButtonText: 'OK'	  
+		})
+	})
+}
 	const formik = useFormik({
 		initialValues:{
-			pickupPoint:"",
-			dropPoint:"",
-			time:"",
-			projectName:"",
-			date:"",
-			jobLocation:"",
-			employeeName:"",
+			projectName:data?.projectAllocated?.Project,
+			jobLocation:data?.jobLocation,
+			employeeName:data?.fullname,
 			asset:"",
 			assetType:"",
-			employeeID:"",
-			contactNumber:""
-
-
-
+			employeeID:data?.empID,
+			comments:""
 		},
-		onSubmit: (values)=> {
-			
-		  console.log(values)
+		onSubmit: (values, {resetForm})=> {
+		  handleSubmit(values)
+		  resetForm()
 	
 		},
 		validate: values=>{
@@ -38,9 +55,6 @@ function Assets() {
 		  if(!values.asset) {
 			error.asset="*Required"
 		  }
-		  if(!values.date) {
-			error.date="*Required"
-		  }
 		  if(!values.asset) {
 			error.asset="*Required"
 		  }
@@ -51,11 +65,14 @@ function Assets() {
 			error.jobLocation="*Required"
 		  }
 
-
-		  
 		  return error
 		}
 	})
+	useEffect(()=>{
+		getMyassets(data.userID).then((res)=> setMyassets(res.data))
+		.catch((err)=> Swal.fire({title: 'Failed!',text: err.message,	icon: 'info',confirmButtonText: 'OK'}))
+		return () => { setMyassets([])};
+	}, [navigate])
     return (
         <>
         <div className='viewPay'>
@@ -70,6 +87,7 @@ function Assets() {
 
         <div className="container my-5 tableView py-4">
             <h6 className='text-center font-semibold'>Assets Holding</h6>
+			{myassets.length ? 
                         <table className="table-auto border-collapse  w-100 text-center">
                             <thead className="bg-gray-50">
                                 <tr>
@@ -91,30 +109,33 @@ function Assets() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white border border-gray-400">
-                                <tr className="whitespace-nowrap">
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                    EC-Lap-001
+								{myassets.map((ele, i)=>{
+									return (
+										<tr className="whitespace-nowrap">
+                                    <td className="text-left px-6 py-4 text-sm  text-gray-500">
+                                    {ele.assetName}
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm text-gray-900">
-                                        EC1231
+                                        {ele?.assetCode}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500">    Laptop</div>
+                                        <div className="text-sm text-gray-500"> {ele?.assetModel}</div>
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-500">
-                                    Lenova Think Pad T430s
+									{ele?.assetType}
                                     </td>
                                     <td className="px-6 py-4 text-sm">
-                                    30-12-2021
+									{moment(ele.alloactedDate).utcOffset("+05:30").format('DD-MM-YYYY')} 
+                               
                                     </td>
                                 </tr>
-                        
-    
-                        
+									)
+								})}
+
                             </tbody>
-                        </table>
+                        </table> :  <div className='flex justify-center my-1'> <p> No assets holding </p> </div>}
                     </div>
                     <div className="container mx-auto mainForm">
 			<div className="flex justify-center px-6 my-12">
@@ -151,6 +172,7 @@ function Assets() {
 										onChange={formik.handleChange}
 										value={formik.values.employeeID}
 										onBlur={formik.handleBlur}
+										
 									/>
 									{formik.touched.employeeID && formik.errors.employeeID ? <small className='error'> {formik.errors.employeeID} </small> : null}
 								</div>
@@ -180,8 +202,8 @@ function Assets() {
 									value={formik.values.assetType}
 									onBlur={formik.handleBlur}>
 										<option defaultValue="" >Select:</option>
-											<option value="Low">Computers</option>
-											<option value="Offline">Others</option>
+											<option value="Computers">Computers</option>
+											<option value="Others">Others</option>
 											</select>
 											{formik.touched.assetType && formik.errors.assetType ? <small className='error'> {formik.errors.assetType} </small> : null}
 								</div>
@@ -191,18 +213,18 @@ function Assets() {
                             <div className="mb-4 md:flex md:justify-between">
 								<div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
-										Date
+										Project
 									</label>
 									<input
 										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
 										
-										type="date"
-										name="date"
+										type="text"
+										name="projectName"
 										onChange={formik.handleChange}
-										value={formik.values.date}
+										value={formik.values.projectName}
 										onBlur={formik.handleBlur}
 									/>
-									{formik.touched.date && formik.errors.date ? <small className='error'> {formik.errors.date} </small> : null}
+									{formik.touched.projectName && formik.errors.projectName ? <small className='error'> {formik.errors.projectName} </small> : null}
 								</div>
                                 <div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
@@ -221,12 +243,14 @@ function Assets() {
 								</div>
                                 <div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
-										Remarks
+										Comments
 									</label>
 									<textarea
 										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
 										id="remarks"
-										name="remarks"
+										name="comments"
+										onChange={formik.handleChange}
+										value={formik.values.comments}
                                         rows="3" cols="71"
 									
 									></textarea>

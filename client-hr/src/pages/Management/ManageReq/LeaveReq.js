@@ -5,16 +5,16 @@ import moment from 'moment'
 import {AiFillCaretRight} from "react-icons/ai"
 import "./styles.css"
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 import {leaveApprove, leaveDecline} from "../../../api/api"
 import Swal from "sweetalert2"
-import { CircularProgress } from '@mui/material'
+
 function LeaveReq() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+
     const { reqData} = useSelector(state => state.requests)
-    let isloading=false
-    if(!reqData.length) isloading=true
+
+
 
     const handleApprove = (id, userID, fromDate, toDate, leaveType)=>{
         let formData = {id, userID, fromDate, toDate,leaveType,}

@@ -10,6 +10,44 @@ import LeaveManage from '../models/LeaveMange.js';
 import Learnings from '../models/Learnings.js';
 import Company from '../models/Company.js';
 import Skllls from '../models/SkillsReq.js';
+import CabReq from '../models/CabReq.js';
+
+export const cabDecline = async (req, res)=>{
+
+  const {id, data} = req.body
+  try {
+    const result = await CabReq.findOneAndUpdate({_id:ObjectId(id)}, {$set:{submittedStatus:true, approved:false, comments:data}})
+    if(!result) return res.status(400).json({message:"Not updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+  }
+}
+
+export const cabApprove = async (req, res)=>{
+  const {id} = req.query
+  try {
+    const result = await CabReq.findOneAndUpdate({_id:ObjectId(id)}, {$set:{submittedStatus:true, approved:true}})
+    if(!result) return res.status(400).json({message:"Not updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+  }
+}
+
+export const getCabRequest = async (req, res)=>{
+
+  try {
+    const result =await CabReq.find({submittedStatus: {$eq:false}, approved:{$eq: false}})
+    if(!result) return res.status(200).json([])
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
 
 export const createAnnouncement = async (req, res)=>{
   try {

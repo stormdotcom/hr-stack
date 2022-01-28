@@ -6,7 +6,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw} from 'draft-js';
 import draftToHtml from "draftjs-to-html"
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import HTML from 'html-parse-stringify'
+// import HTML from 'html-parse-stringify'
 function Transfer() {
   const [editorState,setEditorState]=useState(EditorState.createEmpty());
   const [textValue, setTextValue] = useState("")
@@ -71,7 +71,7 @@ function Transfer() {
 
             <div className='separationStatus'>
             <h5 className='mt-4 mb-2 text-center pt-4 font-semibold'>Transfer Status</h5>
-            <div class="flex flex-col">
+            <div className="flex flex-col">
   <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
       <div className="overflow-hidden">

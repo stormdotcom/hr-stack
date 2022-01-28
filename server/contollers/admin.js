@@ -7,6 +7,107 @@ import Employees from "../models/Employees.js"
 import Assets from "../models/Assets.js"
 import Issues from "../models/Issues.js"
 import Company from "../models/Company.js";
+import AssetReq from "../models/AssetReq.js";
+
+export const declineAssetReq = async (req, res)=>{
+    const {id, data} = req.body
+    console.log(req.body)
+    try {
+        const result = await AssetReq.findOneAndUpdate({_id:ObjectId(id)}, {$set:{approved:false, submitted:true}})
+        if(!result) return res.status(400).json({message:"not created"})
+        res.status(200).json({status:true})
+    } catch (error) {
+        console.log(error.message)
+        res.status(200).json({message:"Something went wrong"})
+    }
+}
+
+export const returnAsset = async (req, res)=>{
+    const {id} = req.query
+    try {
+        const result = await Assets.findOneAndUpdate({_id:ObjectId(id)}, {$set: {availableStatus: true, alloactedTo: null, alloactedDate:null}})
+        if(!result) return res.status(400).json({message:"no updated"})
+        res.status(400).json({status:true})
+    } catch (error) {
+        console.log(error.message)
+        res.status(400).json({message:"seomthing went wrong"})
+    }
+}
+
+export const getAllAssetsHolding = async (req, res)=>{
+
+    try {
+        const result = await Assets.aggregate( [ {$match: { availableStatus:{$eq:false}}},
+            {
+              $lookup:
+                {
+                  from: "employees",
+                  localField: "alloactedTo",
+                  foreignField: "userID",
+                  as: "allocated"
+                }
+           }
+           ,
+           {$unwind:"$allocated"},
+           {   
+            $project:{
+                _id : 1,
+                assetName : 1,
+                assetModel:1,
+                assetCategory:1,
+                assetCode:1,
+                "allocated.fullname":1,
+                "allocated.empID":1
+            } 
+        }
+         ] )
+        if(!result.length) return res.status(200).json([])
+       
+        res.status(200).json(result)
+    } catch (error) {
+        console.log(error.message)
+        res.status(200).json({message:"something wend wrong"})
+    }
+}
+
+export const setAsset = async (req, res)=>{
+    const {reqId, assetId, userID} = req.body
+    console.log(req.body)
+    try {
+        const result = await Assets.findOneAndUpdate({_id:ObjectId(assetId)}, {$set:{availableStatus:false, alloactedTo:ObjectId(userID), alloactedDate: new Date}})
+        const result2 = await AssetReq.findOneAndUpdate({_id:ObjectId(reqId)}, {$set:{submitted:true, approved:true, submittedDate:new Date, assetID:assetId}})
+        if(!result && !result2) return res.status(400).json({message:"No changes done"})
+        console.log(result)
+        console.log(result2)
+        res.status(200).json({message:"changes Saved and updated done"})
+    } catch (error) {
+        console.log(error.message)
+        res.status(400).json({message:"Something went worng"})
+    }
+}
+
+export const getAllAssets = async (req, res)=>{
+
+    try {
+        const result = await Assets.find({availableStatus:{$eq:true}})
+        if(!result.length) return res.status(200).json([])
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(500).json({message: "Something went wrong"})
+    }
+}
+
+export const getAssetRequest = async (req, res)=>{
+
+    try {
+      const result = await AssetReq.find({approve:{$eq:false}, submitted:{$eq:false}})
+      if(!result.length) return res.status(200).json([])
+      res.status(200).json(result)  
+    } catch (error) {
+      console.log(error.message)
+      res.status(500).json({message:"Something went wrong"})
+    }
+  }
 
 export const createCompany = async (req, res)=>{
     try {
@@ -84,10 +185,10 @@ export const  fetchStats= async(req, res)=>{
         const employeeCount = await Employees.count()
         const totalAssets =  await Assets.count()
         // const pendingTickets = await Tickets.count()
-        const pendingTickets =  await Issues.find({}, {resolved:{ne:true}}).count()
-        const result2 =  await Issues.find( {priority:'High'})
+        const pendingTickets =  await Issues.find({resolved:{$ne:true}}).count()
+        const result2 =  await Issues.find( {priority:'High', resolved:{$ne:true}})
         const onDelayTickets =  await Issues.find({}, {onDelay:{ne:true}}).count()
-        const result3 = await Assets.find({}, {availableStatus: {ne:false}})
+        const result3 = await Assets.find({availableStatus: {$eq:true}})
         let availbleAssets = result3.length
         let highPriorityTickets = result2.length
         res.status(200).json({employeeCount, totalAssets, pendingTickets, highPriorityTickets, onDelayTickets, availbleAssets})

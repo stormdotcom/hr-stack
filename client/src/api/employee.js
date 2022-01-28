@@ -26,9 +26,22 @@ export const submitPersonalInfo =(form)=> API.patch('/submitPersonalInfo', form)
 export const submitSkills = (form)=> API.post('/submitSkills', form)
 export const getMyskills = (id) => API.get('/getMyskills?id='+id)
 export const getAnnouncements = ()=> API.get('/getAnnouncements')
+export const getLearningRequest = ()=>API.get('/hr/getLearningRequest')
+export const submitProfilePhoto =(form)=>API.patch('/submitProfilePhoto', form)
+export const submitAssetReq =(form)=>API.post('/submitAssetReq', form)
+export const getMyassets = (id) => API.get('/getMyassets?id='+id)
+export const getAssetRequest = ()=>API.get('/getAssetRequest')
+export const getCabRequest = ()=>API.get('/hr/getCabRequest')
+export const checkLeaveStatus = (id)=> API.get('/checkLeaveStatus?id='+id)
+export const submitCabRequest = (form)=> API.post('/submitCabRequest', form)
+export const checkCabStatus = (id)=> API.get('/checkCabStatus?id='+id)
+export const myCabs = (id)=> API.get('/myCabs?id='+id)
+
+
 
 // todo
 export const getHoliday = ()=> API.get('/getHoliday')
-export const checkLeaveStatus = (id)=> API.get('/checkLeaveStatus?id='+id)
+export const setAssetReqPriority = (form)=>API.post('/setAssetReqPriority', form)
+
 
 

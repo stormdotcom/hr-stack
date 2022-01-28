@@ -1,22 +1,71 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
 import "./styles.css"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {useFormik} from "formik"
+import {useSelector} from "react-redux"
+import Swal from "sweetalert2"
+import {submitCabRequest, checkCabStatus, myCabs} from "../../../api/employee"
 function Cab() {
+	const navigate = useNavigate()
+	const {data} = useSelector(state=> state.employee)
+	const [checkStatus, setCheckStatus] = useState({status:false, message:null})
+	const [cab, setCab] =useState([])
+	const submitHandle = async (values)=>{
+		// let form= {...data, ...values}
+		if(!checkStatus?.status && checkStatus.message) return Swal.fire(checkStatus.message)
+		if(checkStatus?.status) {
+				Swal.fire({
+					text: 'Already assigned a cab route, Do you want request another one?',
+					showDenyButton: true,
+					showCancelButton: true,
+					confirmButtonText: 'Request',
+					denyButtonText: `Don't Request`,
+				}).then(async(result) => {
+					await submitCabRequest(values)
+					if (result.isConfirmed) {
+					Swal.fire('Requested!', '', 'success')
+					} else if (result.isDenied) {
+					Swal.fire('Request not saved', '', 'info')
+					}
+				})
+		}
+		else {
+		await submitCabRequest(values)
+		.then(res=> {
+			Swal.fire({
+				title: 'Success!',
+				text: 'Vehicle Request Submitted',
+				icon: 'success',
+				confirmButtonText: 'OK'
+			  })
+		})
+		.catch(err=> {	
+			Swal.fire({
+			title: 'Submission Failed!',
+			text: err.message,
+			icon: 'info',
+			confirmButtonText: 'OK'
+		  })})
+		}
+	
+	}
+
 	const formik = useFormik({
 		initialValues:{
-			employeeName:"",
+			employeeName:data?.fullname,
 			pickupPoint:"",
 			dropPoint:"",
 			time:"",
-			projectName:"",
-			contactNumber:""
-
+			projectName:data?.projectAllocated?.Project,
+			contactNumber:data?.contactInformation.PrimaryPhone,
+			remarks:"",
+			empID:data?.empID,
+			userID:data?.userID
 		},
-		onSubmit: values=> {
-			
-		  console.log(values)
+		onSubmit: (values, {resetForm})=> {
+		submitHandle(values)
+		  resetForm()
 	
 		},
 		validate: values=>{
@@ -39,12 +88,25 @@ function Cab() {
 		  if(!values.contactNumber) {
 			error.contactNumber="*Required"
 		  }
-
-
 		  
 		  return error
 		}
 	})
+	const handleView = (data, type)=>{
+		Swal.fire({
+			title: '<strong>'+  type +'</strong>',
+			html:+" "+ data+  "\n",
+			showCloseButton: true,
+			showCancelButton: true,
+			focusConfirm: false,
+		})
+	}
+	useEffect(()=>{
+		checkCabStatus(data.userID).then((res)=> setCheckStatus({status:res.data.status, message:res.data.message}))
+		.catch(err=> console.log(err.message))
+		myCabs(data.userID).then((res)=> setCab(res.data))
+		.catch(err=> console.log(err.message))
+	}, [navigate])
     return (
         <>
         <div className='viewPay'>
@@ -168,6 +230,8 @@ function Cab() {
 										type="time"
 										name="remarks"
                                         rows="3" cols="61"
+										onChange={formik.handleChange}
+										value={formik.values.remarks}
 									></textarea>
 								</div>
 
@@ -175,12 +239,13 @@ function Cab() {
 							</div>
 				
 							<div className="mb-2 text-center flex justify-end">
-								<button
+									<button
 									className="button-1"
 									type="submit"
 								>
-									Submit
+									Request
 								</button>
+							
 							</div>
 						
 						</form>
@@ -191,7 +256,7 @@ function Cab() {
             
 		</div>
         <div className="container my-5 tableView py-4">
-                        <table className="table-auto border-collapse  w-100 text-center">
+			{cab.length  ?                         <table className="table-auto border-collapse  w-100 text-center">
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
@@ -212,30 +277,41 @@ function Cab() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white border border-gray-400">
-                                <tr className="whitespace-nowrap">
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                    ₹ 45000.00
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-900">
-                                        ₹1020.00
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-500">    ₹2020.00</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
-                                    %10
-                                    </td>
-                                    <td className="px-6 py-4">
-                                    ₹500020.00
-                                    </td>
-                                </tr>
-                        
-    
-                        
-                            </tbody>
-                        </table>
+								{cab.map((ele, i)=>{
+									return (
+										<tr key={i} className="whitespace-nowrap">
+										<td className="px-6 py-4 text-sm text-gray-500">
+										{ele.employeeName}
+										<br/>
+										{" \n Phone: "+ele?.contactNumber }
+										</td>
+										<td className="px-6 py-4">
+											<div className="text-sm text-gray-900">
+											{ele.pickupPoint}
+											</div>
+										</td>
+										<td className="px-6 py-4">
+											<div className="text-sm text-gray-500"> 
+											{ele.dropPoint}</div>
+										</td>
+										<td className="px-6 py-4 text-sm text-gray-500">
+										{ele.time}
+										</td>
+										<td className="px-6 py-4 text-sm  text-gray-900">
+										{ele.submittedStatus && ele.approved && "Approved"}
+										{ele.submittedStatus && !ele.approved && "Rejected"}
+										{!ele.submittedStatus && !ele.approved && "Pending"}
+										{ele.submittedStatus && !ele.approved ? 
+										<div className='button-sm-1 text-sm' onClick={()=>handleView(ele.comments, "Cab Rejected Reason")}> View Comment</div>
+										:""}
+										</td>
+									</tr>
+									)
+								})}
+
+                          </tbody>
+                        </table> :""}
+
                     </div>
         
             </div>

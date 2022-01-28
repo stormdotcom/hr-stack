@@ -4,8 +4,8 @@ import { useNavigate} from 'react-router-dom'
 import {AiFillCaretRight} from "react-icons/ai"
 import { Link } from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux"
-import {getLeaveRequest, getLearningRequest, getSkillsRequest} from "../../../api/api"
-import {  fetchRequest, fetchLearning, fetchSkills } from '../../../redux/requests/requestSlice'
+import {getLeaveRequest, getLearningRequest, getSkillsRequest, getCabRequest} from "../../../api/api"
+import {  fetchRequest, fetchLearning, fetchSkills, fetchCabRequest } from '../../../redux/requests/requestSlice'
 import Swal from "sweetalert2"
 import "./styles.css"
 function ManageReq() {
@@ -19,11 +19,15 @@ function ManageReq() {
         .catch(err=> console.log(err.message))
         getSkillsRequest().then(res=> dispatch(fetchSkills(res.data)))
         .catch(err=> console.log(err.message))
+        getCabRequest()
+        .then((res) => dispatch(fetchCabRequest(res.data)))
+        .catch((err) => console.log(err.message));
 
     }, [navigate])
-    const {reqData, learnings, skills} = useSelector(state=> state.requests)
+    const {reqData, learnings, skills, cab} = useSelector(state=> state.requests)
     let isloading=false
-    if(!reqData.length && !learnings.length && !skills) isloading=true
+    console.log(cab)
+    if(!reqData.length && !learnings.length && !skills.length && !cab.length) isloading=true
     const handleView1 = (data, name, id, type)=>{
         Swal.fire({
             title: '<strong>'+  type +'</strong>',
@@ -170,6 +174,47 @@ function ManageReq() {
                                     </tr>
                                     );
                                 })}
+                                      {cab.map((ele, i)=>{
+                  return (
+                    <tr className="whitespace-nowrap" key={i}>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {ele.employeeName}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-gray-900">
+                          {ele.empID}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-gray-500">
+                          {" "}
+                          {ele.projectName}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        Cab Request
+                      </td>
+                      <td className="text-sm px-6 py-4">
+                        {ele.approved ? "Resolved" : "Pending"}
+                      </td>
+                      <td className="text-sm px-6 py-4">
+                        <div
+                          className="button-sm-1"
+                          onClick={() =>
+                            handleView(
+                              ele.remarks,
+                              ele.employeeName,
+                              ele.employeeID,
+                              "Cab Request"
+                            )
+                          }
+                        >
+                          View{" "}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
                         
                             </tbody>
                         </table>}

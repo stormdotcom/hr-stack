@@ -4,25 +4,25 @@ import { useNavigate} from 'react-router-dom'
 import {AiFillCaretRight} from "react-icons/ai"
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { initial, fetchassetReq, fetchIssues } from '../../../redux/requests/requestSlice'
+import { initial, fetchAssetReq, fetchIssues } from '../../../redux/requests/requestSlice'
 import Swal from "sweetalert2"
-import {getLeaveRequest, activeTickets} from "../../../api/api"
+import {getAssetRequest, activeTickets} from "../../../api/api"
 import "./styles.css"
 function ManageReq() {
-    const {issues,assetReq} =  useSelector(state => state.requests)
+    const {issues, assets} =  useSelector(state => state.requests)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     useEffect(() => {
         
         dispatch(initial())
-        getLeaveRequest().then(res=> dispatch(fetchassetReq(res.data)))
+        getAssetRequest().then(res=> dispatch(fetchAssetReq(res.data)))
         .catch(err=> console.log(err.message))
 
         activeTickets().then(res=> dispatch(fetchIssues(res.data)))
         .catch(err=> console.log(err.message))
     }, [navigate])
     let isloading=false
-    if(!issues.length && !assetReq.length) isloading=true
+    if(!issues.length && !assets.length) isloading=true
     const handleView = (data, name, id, type)=>{
         Swal.fire({
             title: '<strong>'+  type +'</strong>',
@@ -70,7 +70,8 @@ function ManageReq() {
                 <div className='button-5 font-semibold text-sm my-1 mx-1'  onClick={()=>{navigate('/management/all-requests/tickets')}}> Raised Tickets</div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' />  </h6>
-                        <table className="table-auto border-collapse  w-100 text-center rounded-lg border border-gray-400">
+             {isloading ? <div className='flex justify-center'> <p>No Data</p></div>
+                       : <table className="table-auto border-collapse  w-100 text-center rounded-lg border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">
@@ -121,31 +122,50 @@ function ManageReq() {
                                     </tr>
                                     );
                                 })}
-                                 {assetReq.map((ele, i)=>{
-                                    return(
-                                        <tr className="whitespace-nowrap" key={i}>
-                                        <td className="px-6 py-4 text-sm text-gray-500">
-                                       {ele.employeeName}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-900">
-                                            {ele.employeeID}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-500">    {ele.project}</div>
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">
-                                          Asset Requests
-                                        </td>
-                                        <td className="text-sm px-6 py-4">
-                                        {ele.resolved ? "Resolved" : "Pending"}
-                                        </td>
-                                    </tr>
-                                    );
-                                })}
+                                   {assets.map((ele, i)=>{
+                  return (
+                    <tr className="whitespace-nowrap" key={i}>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {ele.employeeName}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-gray-900">
+                          {ele.employeeID}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-gray-500">
+                          {" "}
+                          {ele.projectName}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        Assets Request
+                      </td>
+                      <td className="text-sm px-6 py-4">
+                        {ele.resolved ? "Resolved" : "Pending"}
+                      </td>
+                      <td className="text-sm px-6 py-4">
+                        <div
+                          className="button-sm-1"
+                          onClick={() =>
+                            handleView(
+                              ele.comments,
+                              ele.employeeName,
+                              ele.employeeID,
+                              "Asset Request"
+                            )
+                          }
+                        >
+                          View{" "}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
                             </tbody> }
                         </table>
+                        }
                     </div>
         </div>
         <NavBar />

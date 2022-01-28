@@ -9,13 +9,10 @@ import {
 } from "react-pro-sidebar";
 
 //import icons from react icons
-import { FaUserGraduate, FaHandPointer } from "react-icons/fa";
+import { FaUsers, FaHandPointer } from "react-icons/fa";
 import { FiHome, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
-import {AiTwotoneEdit} from "react-icons/ai";
-import {  RiCustomerService2Fill } from "react-icons/ri";
-import {  GiSkills } from "react-icons/gi";
-import { BsFillCalendarWeekFill } from "react-icons/bs";
-import { MdOutlineSpeed } from "react-icons/md";
+
+import { MdAddToQueue } from "react-icons/md";
 import Stack from "../NavBar/Stack-logo.svg"
 import "react-pro-sidebar/dist/css/styles.css";
 import "./styles.css";
@@ -65,6 +62,9 @@ const SideBar = () => {
             
              <MenuItem  className="sideBarItem"  onClick={()=> {navigate("/")}} icon={<FiHome />}>  <p>Home</p> </MenuItem> 
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/management")}} icon={<FaHandPointer />}>  <p>Managements </p> </MenuItem>
+              <MenuItem className="sideBarItem" onClick={()=> {navigate("/manage-assets")}} icon={<MdAddToQueue />}>  <p>Assets  </p> </MenuItem>
+              <MenuItem className="sideBarItem" onClick={()=> {navigate("/manage-users")}} icon={<FaUsers />}>  <p>Users </p> </MenuItem>
+              
             </Menu>
           </SidebarContent>
         </ProSidebar>

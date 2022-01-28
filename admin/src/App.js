@@ -1,5 +1,5 @@
 // Components
-import {useEffect, useState} from "react"
+import {useEffect} from "react"
 import HomeAdmin from "./pages/HomeAdmin/HomeAdmin"
 import SignIn from "./pages/SignIn/SignIn"
 import ErrorPage from "./pages/Error/Error"
@@ -11,12 +11,13 @@ import RaiseIssue from "./pages/RaiseIssue/RaiseIssue"
 import ProtectedRoute from "./routes/ProtectedRoutes/ProtectedRoute"
 import RaisedIssue from "./pages/Management/ManageReq/RaisedIssue"
 import AddAssets from "./pages/Management/AddAssets/AddAssets"
+import AssetManagement from "./pages/Management/AddAssets/AssetManagement"
 // APIs
 import {  fetchStats as fetchAllStats } from './api/api';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import {Navigate} from "react-router-dom"
 import {  logout} from "./redux/login/loginSlice"
-import { initial,  errorfetching, fetchStats, final} from "./redux/admin/adminSlice"
+import { initial,  errorfetching, fetchStats} from "./redux/admin/adminSlice"
 import {  useDispatch} from "react-redux"
 import jwtDecode from "jwt-decode"
 
@@ -62,6 +63,7 @@ function App() {
        <Route exact path="/management/assets" element={<AddAssets />} />
        <Route exact path="/management/all-requests" element={<ManageReq />} />
        <Route exact path="/management/all-requests/assets" element={<AssetsReq />} />
+       <Route exact path="/manage-assets" element={<AssetManagement />} />   
        <Route exact path="/management/all-requests/tickets" element={<RaisedIssue />} />
        <Route exact path="/tickets" element={<RaiseIssue />} />
       </Route>

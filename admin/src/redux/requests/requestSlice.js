@@ -6,25 +6,27 @@ import { createSlice } from "@reduxjs/toolkit";
         isloading:false,
         error:"",
         issues:[],
-        assetReq:[]
+        assets:[],
+        allAssets:[]
     },
     reducers:{
         initial:(state)=>{
             state.isloading=true
         },
         fetchIssues:(state, {payload})=>{
-            console.log(payload)
             state.error="";
             state.issues = payload
             state.isloading=false
         },
-        fetchassetReq:(state, {payload})=>{
-            console.log(payload)
+        fetchAssetReq:(state, {payload})=>{
             state.isloading=false;
-            state.assetReq=payload;
+            state.assets=payload;
+        },
+        fetchAllAssets:(state, {payload})=>{
+            state.isloading=false;
+            state.allAssets=payload;
         },
         errorfetching:(state, {payload})=>{
-            console.log(payload)
             state.isloading=false;
             state.error=payload;
         },
@@ -38,6 +40,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const {reducer , actions} = requestSlice
 
-export const {fetchIssues, fetchassetReq, initial, errorfetching, final } = actions
+export const {fetchIssues, fetchAssetReq,fetchAllAssets, initial, errorfetching, final } = actions
 
 export default reducer;

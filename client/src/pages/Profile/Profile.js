@@ -2,19 +2,54 @@ import React,  {useState} from 'react';
 import Navbar from "../../components/NavBar/NavBar";
 import "./styles.css"
 import { useFormik } from 'formik';
-import {Person} from '@mui/icons-material';
-import {BsFillTelephoneFill, BsFillCloudUploadFill} from "react-icons/bs"
+import {Person } from '@mui/icons-material';
+import {BsFillTelephoneFill} from "react-icons/bs"
 import {MdLocationPin, MdEmail} from "react-icons/md"
 import {AiFillEdit, AiOutlineClose} from "react-icons/ai"
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from "sweetalert2"
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import {fetchProfile} from "../../redux/employee/employeeSlice"
 import {submitAddress, submitPersonalInfo} from "../../api/employee"
+import {Cloudinary} from "@cloudinary/url-gen";
+import Avatar from '@mui/material/Avatar';
+// Import required actions.
+import {thumbnail} from "@cloudinary/url-gen/actions/resize";
+import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
+import {sepia} from "@cloudinary/url-gen/actions/effect";
+import PopUp from "./PopUp"
+import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
+import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
+
 function Profile() {
+ 
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: 'stormiscoming'
+    }
+  }); 
+
+  const myImage = cld.image('EmployeeProfilEPic');
+  myImage
+  .resize(thumbnail().width(150).height(150).gravity(focusOn(FocusOn.face())))  // Crop the image.
+  .roundCorners(byRadius(50))    // Round the corners.
+  .effect(sepia())  // Apply a sepia effect.
+  .format('jpeg');   // Deliver as PNG. */
   const {data} = useSelector(state=> state.employee)
   const  [toggle1, setToggle1] = useState(true)
   const [toggle2, setToggle2] = useState(true)
   const [address, setAddress] = useState({})
+  const [success, setSuccess] = useState(null)
+
+
+	const [open, setOpen] = useState(false);
+  const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+		  return;
+		}
+		setOpen(false);
+	  };
   const dispatch = useDispatch()
   const handleChange =(e)=> setAddress({ ...address, [e.target.name]: e.target.value });
   const handleSubmit1 = (e)=>{
@@ -65,48 +100,6 @@ function Profile() {
   }
 
 
-//   const formik1 = useFormik({
-// 		initialValues:{
-// 			houseNo:"",
-// 			houseName:"",
-// 			zipCode:"",
-// 			country:"",
-// 			state:"",
-// 			city:"",
-// 			street:""
-
-// 		},
-//     onSubmit: (values, {resetForm})=> {
-//       handleSubmit1(values)
-//       resetForm()
-
-// },
-// validate: values=>{
-// let error={}  
-// if(!values.houseNo) {
-//       error.houseNo="*Required"
-// }
-// if(!values.houseName) {
-//       error.houseName="*Required"
-// }
-// if(!values.zipCode) {
-//       error.zipCode="*Required"
-// }
-// if(!values.country) {
-//       error.country="*Required"
-// }
-// if(!values.state) {
-//       error.state="*Required"
-// }
-// if(!values.city) {
-//       error.city="*Required"
-// }
-// if(!values.street) {
-//       error.street="*Required"
-// }
-// return error
-// }
-//   })
 
   const formik2 = useFormik({
 		initialValues:{
@@ -159,20 +152,21 @@ return error
         {/* Profile picture and basic detiails */}
       <div className=' w-16 md:w-32 lg:w-48 card md:mt-4'>
         <div className='flex justify-center py-1'> 
-        <Person  style={{ fontSize:'75px', color: "grey"}}/> 
+        
+        {data?.selectedFile ? <Avatar sx={{ width: 150, height: 150 }}  src={data?.selectedFile} alt="profile-face" /> 
+       : <Person  style={{ fontSize:'75px', color: "grey"}}/> }
+
         </div>
         <div className='flex flex-col justify-center align-center mx-auto profileView'>
-      <div className='flex mx-auto items-center py-1'>
-      <label htmlFor="file-upload" className="custom-file-upload">
-    <BsFillCloudUploadFill /> <small>Upload Photo</small> 
-            </label>
-      <input id="file-upload" type="file" />
+      <div className='flex mx-auto items-center py-1 justify-evenly'>
+      <PopUp  />
       </div>
+   
       <h5 className='font-bold mt-2'>{data?.fullname} </h5>
       <p className='font-semibold'> {data?.empID} </p>
       <p className='font-semibold text-red-500'>{data?.Designation?.name}</p>
       <div className='font-semibold flex items-center iconSec my-1'> <MdLocationPin color="red" size="22px"/> <p className="ml-2"> {data?.jobLocation} </p></div>
-        <div className='font-semibold flex items-center iconSec my-1'> <BsFillTelephoneFill color="grey"size="20px" /> <p className="ml-2"> {data?.phone} </p></div>
+        <div className='font-semibold flex items-center iconSec my-1'> <BsFillTelephoneFill color="grey"size="20px" /> <p className="ml-2"> {data?.contactInformation?.PrimaryPhone} </p></div>
         <div className='font-semibold flex items-center iconSec my-1'> <MdEmail color="#2072bb" size="20px" /> <p style={{color:"#7dd3fc"}} className="ml-2"> {data?.organisationEmail} </p></div>
         </div>
         </div>
@@ -616,6 +610,11 @@ return error
              </form>
       </div>
     </div>
+    <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+												<Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+												{success}
+												</Alert>
+											</Snackbar>
   </div>  
   <Navbar />
   </>);

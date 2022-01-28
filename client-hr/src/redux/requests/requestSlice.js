@@ -8,9 +8,8 @@ import { createSlice } from "@reduxjs/toolkit";
         reqData:[],
         data:{},
         learnings:[],
-        cab:[],
         skills:[],
-        Vehicle:[]
+        cab:[]
     },
     reducers:{
         initial:(state)=>{
@@ -42,11 +41,6 @@ import { createSlice } from "@reduxjs/toolkit";
             state.skills = payload
             state.isloading=false
         },
-        fetchVehicle:(state, {payload})=>{
-            state.isloading=false;
-            state.vehicle = payload
-            state.isloading=false
-        },
         errorfetching:(state, {payload})=>{
             state.isloading=false;
             state.error=payload;
@@ -59,7 +53,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const {reducer , actions} = requestSlice
 
-export const {fetchData, fetchLearning, initial, errorfetching, fetchCabRequest, fetchSkills, fetchVehicle,
+export const {fetchData, fetchLearning, initial, errorfetching, fetchCabRequest, fetchSkills,
     fetchRequest, final } = actions
 
 export default reducer;

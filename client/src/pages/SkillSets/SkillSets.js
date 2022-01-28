@@ -8,8 +8,6 @@ import Swal from "sweetalert2"
 import {submitSkills, getMyskills} from "../../api/employee"
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import Axios from "axios"
 import * as yup from "yup";
 import {useNavigate} from "react-router-dom"
@@ -39,9 +37,11 @@ function SkillSets() {
 
         const objectUrl = URL.createObjectURL(img)
         setPreview(objectUrl)
-        return () => URL.revokeObjectURL(objectUrl)
+        return () => {
+			setMyskills(null)
+			URL.revokeObjectURL(objectUrl)}
 
-    }, [img, navigate])
+    }, [img, navigate, data.userID])
 	const handleImage =(e)=>{
 		let file = e.target.files
 		if (!file || file.length === 0) {
@@ -159,9 +159,9 @@ return (
                                 </tr>
                             </thead>
                             <tbody className="bg-white border border-gray-400">
-								{mySkills.map((ele)=>{
+								{mySkills.map((ele, i)=>{
 									return (
-										<tr className="whitespace-nowrap">
+										<tr key={i} className="whitespace-nowrap">
 										<td className="px-6 py-4 text-sm text-gray-500">
 										{ele.category}
 										</td>   

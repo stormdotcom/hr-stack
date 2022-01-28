@@ -8,7 +8,7 @@ import moment from "moment"
 import  weekday from 'weekday';
 import "./styles.css"
 import { useFormik } from 'formik';
-import { initial, errorfetching, fetchLeaveStatus, gotData, final} from "../../redux/employee/employeeSlice"
+import { initial, errorfetching, fetchLeaveStatus, gotData} from "../../redux/employee/employeeSlice"
 import { useNavigate } from 'react-router-dom';
 function Leave() {
 	const user = JSON.parse(localStorage.getItem('employee')).result

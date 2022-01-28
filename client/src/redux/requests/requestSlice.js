@@ -7,7 +7,10 @@ import { createSlice } from "@reduxjs/toolkit";
         error:"",
         tickets:[],
         reqData:[],
-        myticket:[]
+        myticket:[],
+        learnings:[],
+        assets:[],
+        cab:[]
     },
     reducers:{
         initial:(state)=>{
@@ -26,9 +29,23 @@ import { createSlice } from "@reduxjs/toolkit";
             state.isloading=false;
             state.tickets = payload;
         },
+        fetchAssets:(state, {payload})=>{
+            state.isloading=false;
+            state.assets = payload;
+        },
         fetchMyticket:(state, {payload})=>{
             state.isloading=false;
             state.myticket = payload;
+            state.error=null;
+        },
+        fetchLearnings:(state, {payload})=>{
+            state.isloading=false;
+            state.learnings = payload;
+            state.error=null;
+        },
+        fetchCab:(state, {payload})=>{
+            state.isloading=false;
+            state.cab = payload;
             state.error=null;
         },
         errorfetching:(state, {payload})=>{
@@ -40,6 +57,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const {reducer , actions} = requestSlice
 
-export const {request, fetchAll, initial, errorfetching, fetchRequest, fetchTickets, fetchMyticket } = actions
+export const {request, fetchAll, initial, errorfetching, 
+    fetchRequest, fetchTickets, fetchMyticket, fetchLearnings, fetchAssets, fetchCab } = actions
 
 export default reducer;

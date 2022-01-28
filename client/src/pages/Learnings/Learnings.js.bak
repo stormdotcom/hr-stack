@@ -294,10 +294,10 @@ function Learnings() {
 		</div>
             </div>
 			: <div className='flex justify-center mt-3 mb-5 '>
-				{learn.map((ele)=>{
+				{learn.map((ele, i)=>{
 					return (
-						<div className='videoCard'>
-							<YouTube videoId={ele.videoID} onError={5}  title={ele.courseName}  opts={opts} onReady={onReady} />
+						<div key={i} className='videoCard'>
+							<YouTube videoId={ele.videoID}   title={ele.courseName}  opts={opts} onReady={onReady} />
 						<h5 className='courseName'>{ele.courseName}</h5>
 						</div>
 					)

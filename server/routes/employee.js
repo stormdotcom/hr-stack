@@ -1,8 +1,10 @@
 import  express from 'express';
 import { signin, createUser, logout, fetchEmployeData, timeInStats, timeOutStats, getEvents, getHoliday, leaveDecline, submitPersonalInfo,
-       submitAddress, submitSkills, getMyskills, getAnnouncements,
+       submitAddress, submitSkills, getMyskills, getAnnouncements, submitProfilePhoto, submitAssetReq, getMyassets, submitCabRequest,
+       checkCabStatus, myCabs,
         leaveApprove, submitTicket, allActiveTicket, myTickets, setPriority, checkLeaveStatus, submitLearningRequest, getMyLearnings,
         submitLeave, getTimeSheet, setTimeIn, setTimeOut, getLeaveRequest} from "../contollers/employee.js"
+import {getAssetRequest} from "../contollers/admin.js"
 const router = express.Router();
 
 /* GET home page. */
@@ -37,4 +39,12 @@ router.post('/submitLearningRequest', submitLearningRequest)
 router.get('/getEvents', getEvents)
 router.get('/getMyskills', getMyskills)
 router.get('/getAnnouncements', getAnnouncements)
+router.patch('/submitProfilePhoto', submitProfilePhoto)
+router.post("/submitAssetReq", submitAssetReq)
+router.get('/getMyassets', getMyassets)
+router.get('/getAssetRequest', getAssetRequest)
+router.post("/submitCabRequest", submitCabRequest)
+router.get('/checkCabStatus', checkCabStatus)
+router.get('/myCabs', myCabs)
+
 export default router;

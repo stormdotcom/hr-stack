@@ -7,15 +7,13 @@ import { FcHighPriority } from "react-icons/fc"
 
 import "./styles.css"
 import { useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { CircularProgress, Alert } from '@mui/material'
 
 function HomeHR() {
-  const dispatch = useDispatch()
     const navigate= useNavigate()
     const {stats, isloading, error} = useSelector(state => state.admin)
 
-  console.log(stats)
     return (
         <div>
             <div className='separation'>

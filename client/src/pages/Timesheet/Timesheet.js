@@ -47,7 +47,8 @@ function Timesheet() {
         text: 'Time sheet updated!',
         confirmButtonText: 'ok'
       })
-      setTimeInBtn(true)}).catch(err=> {
+      setTimeInBtn(true)})
+      .catch(err=> {
       setError(err.message)
       dispatch(errorfetching(err.message))
     })
@@ -55,13 +56,14 @@ function Timesheet() {
   const handleTimeOut = (e)=>{
     e.preventDefault()
 
-    timeOut({id:user.result._id}).then((res)=> {
+    timeOut({id:user.result._id}).then(()=> {
       Swal.fire({
         icon: 'success',
         title: 'Success',
         text: 'Time sheet Submitted!',
       })
-      setTimeOutBtn(true)}).catch(err=> {
+      setTimeOutBtn(true)})
+      .catch(err=> {
       setError(err.message)
       dispatch(errorfetching(err.message)) 
     })
@@ -91,8 +93,9 @@ function Timesheet() {
               <button className='disbaled-button-01 grid justify-items-start' disabled>Time In </button>: 
               <button className='button-1 grid justify-items-start' onClick={handleTimeIn} >Time In  </button>}  
               
-              {!timeOutBtn ? <button className='disbaled-button-01 grid justify-items-end'  disabled>Time Out </button>  :
-              <button className='button-1 grid justify-items-end' onClick={handleTimeOut} >Time Out </button> }
+              {timeOutBtn ? 
+              <button className='button-1 grid justify-items-end' onClick={handleTimeOut} >Time Out </button> 
+            : <button className='disbaled-button-01 grid justify-items-end'  disabled>Time Out </button>  }
           </div>
 
               <Calendar
