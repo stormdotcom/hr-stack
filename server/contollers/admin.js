@@ -8,6 +8,77 @@ import Assets from "../models/Assets.js"
 import Issues from "../models/Issues.js"
 import Company from "../models/Company.js";
 import AssetReq from "../models/AssetReq.js";
+import User from "../models/User.js";
+
+export const deleteUser = async (req, res)=>{
+    const {id} = req.query
+    try {
+    const result = await User.deleteOne({_id:ObjectId(id)})
+    const result2 = await Employees.deleteOne({userID:ObjectId(id)})
+    if(!result && !result2) return res.status(400).json({message:"not updated"})
+    res.status(200).json({status:true})
+    } catch (error) {
+        console.log(error.message)
+        res.status(200).json({message:"Something went wrong"})
+    }
+}
+
+export const unBlockUser = async (req, res)=>{
+    const {id} = req.query
+    try {
+    const result = await User.deleteOne({_id:ObjectId(id)})
+
+    if(!result) return res.status(400).json({message:"not updated"})
+    res.status(200).json({status:true})
+    } catch (error) {
+        console.log(error.message)
+        res.status(200).json({message:"Something went wrong"})
+    }
+}
+
+export const blockUser = async (req, res)=>{
+    const {id} = req.query
+    try {
+    const result = await User.findOneAndUpdate({_id:ObjectId(id)}, {$set:{AccessStatus:false}})
+    if(!result) return res.status(400).json({message:"not updated"})
+    res.status(200).json({status:true})
+    } catch (error) {
+        console.log(error.message)
+        res.status(200).json({message:"Something went wrong"})
+    }
+}
+
+export const getAllEmployeesList = async (req, res)=>{
+    try {
+      const result = await Employees.aggregate([     {
+        $lookup:
+          {
+            from: "users",
+            localField: "userID",
+            foreignField: "_id",
+            as: "AllEmployees"
+          }
+     }
+     ,
+     {$unwind:"$AllEmployees"},
+     {   
+      $project:{
+          _id : 0,
+          userID:1,
+          fullname : 1,
+          empID:1,
+          projectAllocated:1,
+          dateOfJoin:1,
+          migration:1,
+          "AllEmployees.AccessStatus":1,
+      } 
+  }])
+      if(!result) return res.status(400).json({message:"No Employee Data found"})
+      res.status(200).json(result)
+    } catch (error) {
+      res.status(500).json(error.message)
+    }
+  }
 
 export const declineAssetReq = async (req, res)=>{
     const {id, data} = req.body

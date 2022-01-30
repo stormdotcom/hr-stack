@@ -36,8 +36,10 @@ export const checkLeaveStatus = (id)=> API.get('/checkLeaveStatus?id='+id)
 export const submitCabRequest = (form)=> API.post('/submitCabRequest', form)
 export const checkCabStatus = (id)=> API.get('/checkCabStatus?id='+id)
 export const myCabs = (id)=> API.get('/myCabs?id='+id)
-
-
+export const submitSeperation= (form) => API.post('/submitSeperation', form)
+export const getSeperationInfo = (id)=> API.get('/getSeperationInfo?id='+id)
+export const submitTransfer= (form) => API.post('/submitTransfer', form)
+export const getTransferInfo = (id)=> API.get('/getTransferInfo?id='+id)
 
 // todo
 export const getHoliday = ()=> API.get('/getHoliday')

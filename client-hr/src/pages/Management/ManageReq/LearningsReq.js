@@ -91,6 +91,8 @@ function LearningsReq() {
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/vehicle')}}> Vehicle Requests</div>
                 <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/learnings')}}> Learnings </div>
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/skills')}}> Skills Updation </div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/seperation')}}> Separation Requests </div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/transfer')}}> Transfer Requests </div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Learning Requests </h6>
              {learnings.length ?

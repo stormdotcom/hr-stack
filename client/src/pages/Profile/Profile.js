@@ -54,7 +54,7 @@ function Profile() {
   const handleChange =(e)=> setAddress({ ...address, [e.target.name]: e.target.value });
   const handleSubmit1 = (e)=>{
     e.preventDefault()
-    console.log(address)
+
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,

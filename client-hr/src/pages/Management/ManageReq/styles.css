@@ -7,6 +7,16 @@
     margin-bottom: 1%;
     width: 80%;
 }
+.mailBar {
+  background-color: #fbfdff;
+  transition: all 100ms ease-in-out;
+  cursor: pointer;
+  -webkit-user-select: none;
+   touch-action: manipulation;
+}
+.mailBar:hover,.button-5:focus {
+  background-color: #f8fcff;;
+}
 @media only screen and (max-width: 1000px) {
     .button-groups {
         margin: 1px auto;

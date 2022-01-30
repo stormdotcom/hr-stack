@@ -8,6 +8,8 @@ export const getPendingTimeSheet= ()=> API.get('/hr/getPendingTimeSheet')
 export const timeSheetApprove=(data)=>API.post('/hr/timeSheetApprove', data)
 export const createEvent=(data)=>API.post('/hr/createEvent', data)
 export const blockUser=  (id) => API.get("/admin/blockUser?id="+id)
+export const unBlockUser = (id)=> API.get('admin/unBlockUser?id='+id)
+export const deleteUser = (id)=> API.get('admin/deleteUser?id='+id)
 export const addAsset = (data)=> API.post("/admin/addAsset", data)
 export const getLeaveRequest=  () => API.get("/getLeaveRequest")
 export const activeTickets=  () => API.get("/activeTickets")
@@ -18,5 +20,8 @@ export const declineAssetReq = (form) => API.post('/admin/declineAssetReq', form
 export const getAllAssets = () => API.get('/admin/getAllAssets')
 export const getAllAssetsHolding = ()=>API.get('/admin/getAllAssetsHolding')
 export const setAsset = (form)=>API.post('/admin/setAsset', form)
+export const createAnnouncement = (form)=>API.post('/hr/createAnnouncement', form)
+export const getAllEmployees = ()=> API.get('/admin/getAllEmployees')
+
 // todo
 export const returnAsset=  (id) => API.get("/admin/returnAsset?id="+id)

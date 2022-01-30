@@ -26,7 +26,7 @@ function AssetManagement() {
           dispatch(fetchAllAssets([]))
       };   
         
-      }, [navigate]);
+      }, [navigate, dispatch]);
 
   return <>
         <div className='separation '>

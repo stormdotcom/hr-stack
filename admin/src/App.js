@@ -12,6 +12,8 @@ import ProtectedRoute from "./routes/ProtectedRoutes/ProtectedRoute"
 import RaisedIssue from "./pages/Management/ManageReq/RaisedIssue"
 import AddAssets from "./pages/Management/AddAssets/AddAssets"
 import AssetManagement from "./pages/Management/AddAssets/AssetManagement"
+import Announcements  from "./pages/Management/Announcements/Announcements"
+import ManageUsers from "./pages/ManageUsers/ManageUsers"
 // APIs
 import {  fetchStats as fetchAllStats } from './api/api';
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -32,7 +34,7 @@ function App() {
     if (user?.token) {
         const decodedToken = jwtDecode(user.token)
         if (decodedToken.exp * 1000 < new Date().getTime()) {
-          dispatch(logout("Session Time Out"))
+          dispatch(logout("Session Timed Out"))
           navigate("/signin")
         }
         dispatch(initial())
@@ -44,7 +46,7 @@ function App() {
 
       }
     
-}, [navigate])
+}, [navigate, dispatch, user])
 
   return (
     <>
@@ -61,11 +63,13 @@ function App() {
        <Route exact path="/assets" element={<AddAssets />} />
        <Route exact path="/add-assets" element={<AddAssets />} />
        <Route exact path="/management/assets" element={<AddAssets />} />
+       <Route exact path="/management/announcements" element={<Announcements />} />
        <Route exact path="/management/all-requests" element={<ManageReq />} />
        <Route exact path="/management/all-requests/assets" element={<AssetsReq />} />
        <Route exact path="/manage-assets" element={<AssetManagement />} />   
        <Route exact path="/management/all-requests/tickets" element={<RaisedIssue />} />
        <Route exact path="/tickets" element={<RaiseIssue />} />
+       <Route exact path="/manage-users" element={<ManageUsers />} />
       </Route>
     </Routes>
     </>

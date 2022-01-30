@@ -63,7 +63,7 @@ const SideBar = () => {
              <MenuItem  className="sideBarItem"  onClick={()=> {navigate("/")}} icon={<FiHome />}>  <p>Home</p> </MenuItem> 
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/management")}} icon={<FaHandPointer />}>  <p>Managements </p> </MenuItem>
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/manage-assets")}} icon={<MdAddToQueue />}>  <p>Assets  </p> </MenuItem>
-              <MenuItem className="sideBarItem" onClick={()=> {navigate("/manage-users")}} icon={<FaUsers />}>  <p>Users </p> </MenuItem>
+              <MenuItem className="sideBarItem" onClick={()=> {navigate("/manage-users")}} icon={<FaUsers />}>  <p>Employees </p> </MenuItem>
               
             </Menu>
           </SidebarContent>

@@ -6,11 +6,10 @@ import { Alert, CircularProgress } from "@mui/material";
 import { useFormik } from "formik";
 import { addAsset } from "../../../api/api";
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom';
+
 function AddAssets() {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const navigate = useNavigate()
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
@@ -87,10 +86,6 @@ function AddAssets() {
             Add New Asset
           </h5>
           {error && <div className="flex justify-center "><Alert  severity="error">{error}!</Alert></div>}
-          <div className='flex justify-end mb-5'> 
-			<div className='button-sm-1 mx-1 text-sm p-2'  onClick={()=>{navigate("management/all-requests/assets/view-assets")}}> View Assets</div> 
-			{/* <div className='button-sm-1 mx-1 text-sm p-2'onClick={()=>setToggle(prev=> !prev)}> My Course List</div>  */}
-			</div>
           <div className="">
             <form onSubmit={formik.handleSubmit}>
               <div className="flex justify-between align-middle rounded px-11 pt-6 mb-2">

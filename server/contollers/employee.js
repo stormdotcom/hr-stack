@@ -13,6 +13,53 @@ import Skllls from "../models/SkillsReq.js";
 import AssetReq from "../models/AssetReq.js";
 import Assets from "../models/Assets.js";
 import CabReq from "../models/CabReq.js";
+import MigrationReq from "../models/MigrationReq.js";
+
+
+export const getTransferInfo = async (req, res)=>{
+  const {id} = req.query
+  try {
+    const result = await MigrationReq.findOne({userID:id, leaving:{$eq:false}})
+    if(!result) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const submitTransfer = async (req, res)=>{
+  try {
+    const result = await MigrationReq.create(req.body)
+    if(!result) return res.status(400).json({message:"request not created"})
+    res.status(200).json({staus:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+export const getSeperationInfo = async (req, res)=>{
+  const {id} = req.query
+  try {
+    const result = await MigrationReq.findOne({userID:id, leaving:{$eq:true}})
+    if(!result) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const submitSeperation = async (req, res)=>{
+  try {
+    const result = await MigrationReq.create(req.body)
+    if(!result) return res.status(400).json({message:"request not created"})
+    res.status(200).json({staus:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
 
 export const myCabs = async (req, res)=>{
   const {id}= req.query
@@ -234,6 +281,9 @@ export const leaveApprove = async(req, res) =>{
   const {id, userID, fromDate, toDate, leaveType} = req.body
 
   const date = dateToEpoch2(new Date(fromDate))
+  const dateNow  = new Date();
+  const month = dateNow.getMonth()+1;  
+  const year = dateNow.getYear();
 if(leaveType==="Casual") {
   await LeaveManage.findOneAndUpdate({_id:ObjectId(id)}, {$set:{approvedStatus:true, submittedStatus:true}}).then(async(result)=>{
      await Employees.findOneAndUpdate({userID:ObjectId(userID)},{$inc:{'leaveBalance.casual': -1}},
@@ -242,6 +292,8 @@ if(leaveType==="Casual") {
     {$push:{timeSheet:{
       start:fromDate, 
       day:date,
+      year:year,
+      month:month,
       title:"On Leave", 
       end:toDate,  
       hours:0
@@ -304,8 +356,11 @@ export const submitLeave = async (req, res)=>{
     let {Project, proManager} = projectAllocated
 
     let requestedDate= new Date()
+    const dateNow  = new Date();
+    const month = dateNow.getMonth()+1;  
+    const year = dateNow.getYear();
 
-    let data={leaveType, requestedDate, userID, employeeName, empID, fullname, fromDate, toDate, manager, reason, projectName:Project, reason, manager: proManager}
+    let data={leaveType, month, year, requestedDate, userID, employeeName, empID, fullname, fromDate, toDate, manager, reason, projectName:Project, reason, manager: proManager}
 
   try {
     const result = await LeaveManage.create(data)
@@ -357,7 +412,7 @@ export const timeOutStats = async(req, res)=>{
     let timesheetArray= user[0].timeSheet
     //if(!timesheetArray.length) return res.status(200).json({status:false}) ///no timesheet inserted
     const isExists = timesheetArray.find(element=> element.day===date)
-    if(!isExists) return res.status(404).json({message:false})  // no current day existed
+    if(!isExists) return res.status(200).json({status:false})  // no current day existed
     if(isExists.title==="Pending") return res.status(200).json({status:true})
     if(isExists.title==="Submitted" || isExists.title==="Approved") return res.status(200).json({status:false}) 
     
@@ -402,8 +457,11 @@ export const  setTimeOut= async(req, res)=>{
       let timeSheetArray = employeeData.timeSheet
       let currentDay = timeSheetArray.find(ele=> ele.day===date )
       let hours = Math.abs(currentDay.start - currentDay.end) / 36e5;
+      let dateNow  = new Date();
+      let month = dateNow.getMonth()+1;  
+      let year = dateNow.getYear();
       let updated= await Employees.findOneAndUpdate({userID:ObjectId(id), 'timeSheet.$.day':date},
-                      {$set:{'timeSheet.$.hours': hours}})
+                      {$set:{'timeSheet.$.hours': hours, month, year}})
       if(updated) return res.status(200).json({status:false}) 
 
       res.status(404).json({messsage:"no timesheet data found"})

@@ -67,7 +67,7 @@ function AssetsReq() {
             dispatch(fetchAssetReq([]))
             setCurrentUser({userID:null, userName:null, reqId:null})
         };
-    }, [navigate])
+    }, [navigate, dispatch])
     const handleView = (data, name, id, type)=>{
         Swal.fire({
             title: '<strong>'+  type +'</strong>',
@@ -119,7 +119,7 @@ function AssetsReq() {
             <div className='button-groups button-groups1'> 
             <div className='button-5 font-semibold text-sm my-1 mx-1'  onClick={()=>{navigate('/management/all-requests')}} > All Requests</div>
                 <div className='button-5 font-semibold text-sm my-1 mx-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/assets')}}> Assets Requests</div>
-                <div className='button-5 font-semibold text-sm my-1 mx-1'  onClick={()=>{navigate('/management/all-requests/tickets')}}> View Tickets</div>
+                <div className='button-5 font-semibold text-sm my-1 mx-1'  onClick={()=>{navigate('/management/all-requests/tickets')}}> Raised Issue</div>
              </div>
              <div>
 

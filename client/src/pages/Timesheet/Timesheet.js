@@ -15,7 +15,7 @@ import { Alert } from '@mui/material'
 import "./styles.css"
 import "./react-big-calendar.css"
 
-const allView = ["month", "work_week"]
+const allView = ["month", "day"]
 const locales = {
     'en-IN': enIN,
   }
@@ -82,7 +82,7 @@ function Timesheet() {
       timeOutStats(user?.result._id).then(res=> setTimeOutBtn(res.data.status))
       .catch(err=> dispatch(errorfetching(err.message)))
 
-  }, [navigate,timeOutBtn, timeInBtn])
+  }, [navigate,timeOutBtn, timeInBtn, dispatch])
     return (
         <div>
             <div className='timeSheet'>

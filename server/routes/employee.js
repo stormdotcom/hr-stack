@@ -1,7 +1,7 @@
 import  express from 'express';
 import { signin, createUser, logout, fetchEmployeData, timeInStats, timeOutStats, getEvents, getHoliday, leaveDecline, submitPersonalInfo,
        submitAddress, submitSkills, getMyskills, getAnnouncements, submitProfilePhoto, submitAssetReq, getMyassets, submitCabRequest,
-       checkCabStatus, myCabs,
+       checkCabStatus, myCabs, submitSeperation, getSeperationInfo, submitTransfer,  getTransferInfo,
         leaveApprove, submitTicket, allActiveTicket, myTickets, setPriority, checkLeaveStatus, submitLearningRequest, getMyLearnings,
         submitLeave, getTimeSheet, setTimeIn, setTimeOut, getLeaveRequest} from "../contollers/employee.js"
 import {getAssetRequest} from "../contollers/admin.js"
@@ -46,5 +46,8 @@ router.get('/getAssetRequest', getAssetRequest)
 router.post("/submitCabRequest", submitCabRequest)
 router.get('/checkCabStatus', checkCabStatus)
 router.get('/myCabs', myCabs)
-
+router.post("/submitSeperation", submitSeperation)
+router.get('/getSeperationInfo', getSeperationInfo)
+router.post("/submitTransfer", submitTransfer)
+router.get('/getTransferInfo', getTransferInfo)
 export default router;

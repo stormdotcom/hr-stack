@@ -1,6 +1,6 @@
 import  express from 'express';
 import { adminSignin, addAsset, fetchStats, resolveIssue, delayIssue,  getAllAssets, setAsset, getAllAssetsHolding,
-    returnAsset, declineAssetReq,
+    returnAsset, declineAssetReq, getAllEmployeesList,blockUser, unBlockUser, deleteUser,
     addProject,addLocation, createCompany, getAssetRequest} from "../contollers/admin.js"
 const router = express.Router();
 
@@ -20,5 +20,9 @@ router.post('/setAsset', setAsset)
 router.get('/getAllAssetsHolding', getAllAssetsHolding)
 router.get('/returnAsset', returnAsset)
 router.post('/declineAssetReq', declineAssetReq)
+router.get('/getAllEmployees', getAllEmployeesList)
+router.get('/blockUser', blockUser)
+router.get('/unBlockUser', unBlockUser)
+router.get('/deleteUser', deleteUser)
 
 export default router;

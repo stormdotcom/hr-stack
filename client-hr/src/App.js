@@ -19,6 +19,8 @@ import ViewEmployees from "./pages/ViewEmployees/ViewEmployees"
 import Profile from "./pages/Profile/Profile"
 import EditProfile from "./pages/EditProfile/EditProfile"
 import SkillsReq from "./pages/Management/ManageReq/SkillsReq"
+import Seperation from "./pages/Management/ManageReq/Seperation"
+import Transfer from "./pages/Management/ManageReq/Transfer"
 // APIs
 import { fetchEmployeeData, fetchStats as fetchAllStats } from './api/api';
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -57,7 +59,7 @@ function App() {
       dispatch(logout("Please Login again"))
       navigate("/signin")
     }
-}, [ navigate])
+}, [ navigate, dispatch, user])
 
   return (
     <>
@@ -80,6 +82,8 @@ function App() {
        <Route exact path="/management/all-requests/assets" element={<AssetsReq />} />
        <Route exact path="/management/all-requests/learnings" element={<LearningsReq />} />
        <Route exact path="/management/all-requests/skills" element={<SkillsReq />} />  
+       <Route exact path="/management/all-requests/seperation" element={<Seperation />} />  
+       <Route exact path="/management/all-requests/transfer" element={<Transfer />} />  
        <Route exact path="/view-employees" element={<ViewEmployees />} />
        <Route exact path="/view-employees/:id" element={<Profile />} />
        <Route exact path="/edit-employees/:id" element={<EditProfile />} />

@@ -60,7 +60,7 @@ function LeaveReq() {
             title: '<strong>Leave Reason</strong>',
             html:
               ' <b>'+ name+ '</b> | ' +
-              ' <b>'+ id + '\n'+ '</b>' +   
+              ' <b>'+ id + '</b>' +   
               '</br>'
               +"\n"+ data+  "\n",
             showCloseButton: true,
@@ -87,6 +87,8 @@ function LeaveReq() {
                 <div className='button-5 font-semibold text-sm my-1' onClick={()=>{navigate('/management/all-requests/vehicle')}}> Vehicle Requests</div>
                 <div className='button-5 font-semibold text-sm my-1' onClick={()=>{navigate('/management/all-requests/learnings')}}> Learnings </div>
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/skills')}}> Skills Updation </div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/seperation')}}> Separation Requests </div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/transfer')}}> Transfer Requests </div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Leave Requests </h6>
                        

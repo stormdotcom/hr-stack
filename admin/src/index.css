@@ -93,3 +93,27 @@ touch-action: manipulation;
 .button-4:focus {
 background-color: #e9e7e7;
 }
+
+.button-sm-4 {
+  background-color: #ce3737;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  outline: none;
+  padding: 2px 5px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-sm-4:hover,
+.button-sm-4:focus {
+  background-color: #bd3131;
+}
