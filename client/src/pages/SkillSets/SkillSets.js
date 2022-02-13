@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import {useSelector} from "react-redux"
 import Swal from "sweetalert2"
 import {submitSkills, getMyskills} from "../../api/employee"
+import {CircularProgress} from "@mui/material"
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Axios from "axios"
@@ -15,6 +16,7 @@ function SkillSets() {
 	const navigate = useNavigate()
 	const {data} = useSelector(state=> state.employee)
 	const [img, setimg] = useState(null)
+	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(null)
 	const [success, setSuccess] = useState(null)
 	const [preview, setPreview] = useState()
@@ -61,6 +63,7 @@ function SkillSets() {
 	  }
 
 	const handleSubmit = async (values)=>{
+		setLoading(true)
 		try {
 			const formData = new FormData();
 			formData.append("api_key",'249459347837371');
@@ -75,6 +78,8 @@ function SkillSets() {
 			let { Project:project} = projectAllocated
 			let form = { selectedFile:secure_url,project,fullname, userID, empID, ...values}
 			submitSkills(form).then((res)=> {
+				setLoading(false)
+				setimg(null)
 				Swal.fire({
 					title: 'Success!',
 					text: 'Skill updation Submitted',
@@ -331,13 +336,17 @@ return (
 							
 							</div>
 				
-							<div className="mb-2 text-center flex justify-end">
-								<button
-									className="button-1"
-									type="submit"
-								>
-									Submit
-								</button>
+							<div className="mb-2 text-center flex justify-end ">
+								<div className='flex space-x-4'> 
+								{loading &&	<CircularProgress />}
+									<button
+										className="button-1"
+										type="submit"
+									>
+										Submit
+									</button>
+								</div>
+
 							</div>
 						
 						</form>

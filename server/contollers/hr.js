@@ -11,6 +11,203 @@ import Learnings from '../models/Learnings.js';
 import Company from '../models/Company.js';
 import Skllls from '../models/SkillsReq.js';
 import CabReq from '../models/CabReq.js';
+import MigrationReq from '../models/MigrationReq.js';
+
+
+export const addDesigination = async (req, res)=>{
+  const {text} = req.body 
+  let id = '61eb06cf6b7539f49aa3fc2f'
+  try {
+    const result = await Company.findOneAndUpdate({_id:ObjectId(id)}, {$push:{designations:text}})
+    if(!result) return res.status(400).json({message: "Not created"})
+    res.status(200).json({status: true})
+  } catch (error) { 
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const submitPayment = async (req, res)=>{
+  const {id, amountPayable, allowance, deductions, month, date} = req.body
+  try {
+    const result = await Employees.findOne({_id:ObjectId(id)})
+    if(result){
+      const isMonthExists = result.payments.filter(ele => ele.month ===month)
+      if(!isMonthExists.length) {
+        const result2 = await Employees.findOneAndUpdate({_id:ObjectId(id)}, 
+        {$push:
+          {payments:
+            {amountPayable, allowance, deductions, month, date}}})
+            if(!result2) return res.status(400).json({message:"Not Updated"})
+            res.status(200).json({message:"Created"})
+      }
+      if(isMonthExists.length) return res.status(400).json({message:"Salary for this month all ready Payed"})
+    } 
+    if(!result) return res.status(400).json({message:"No Employee Found"})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getCurrentMonthTmeSheet =async (req, res)=>{
+  const {userID, month} = req.body
+  console.log(req.body)
+  try {
+    const result = await Employees.findOne({_id:ObjectId(userID)})
+    if(!result) return res.status(200).json([])
+    const { timeSheet} = result;
+    const noLeave = timeSheet.filter(ele => ele.title!=="On Leave" )
+    res.status(200).json(noLeave)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getMonth = async (req, res)=>{
+    let id= "61eb06cf6b7539f49aa3fc2f"
+  try {
+    const result = await Company.findOne({_id:ObjectId(id)})
+    if(!result) return res.status(200).json([])
+    res.status(200).json(result.months)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getFullData = async (req, res)=>{
+  const {id } = req.query
+  try {
+    const result = await Employees.findOne({_id:ObjectId(id)})
+    if(!result) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getAllEmployeesName = async (req, res)=>{
+  try {
+    const result = await Employees.find({timeSheet : {$exists:true}, $where:'this.timeSheet.length>0'}, {fullname:1, Designation:1})
+    if(!result.length) return res.status(200).json([])
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const unsetPerformer = async (req, res)=>{
+    const {userID} = req.body
+  try {
+    const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$set:{performer:false}})
+    if(!result) return res.status(400).json(null)
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const submitAward = async (req, res)=>{
+
+  const {userID,awardType, Description, score} = req.body;
+  try {
+    if(awardType==='Excellence') {
+      const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$push:{awards:{score,  Description}}})
+      if(!result) return res.status(400).json(null)
+      res.status(200).json({status:true})
+    }
+    if(awardType==='Performance') {
+      const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$set:{performer:true}}, {$push:{accomplishments:{ Description}}})
+      if(!result) return res.status(400).json(null)
+      res.status(200).json({status:true})
+    }
+    if(awardType==='Contribution') {
+      const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$push:{contributions:{  Description}}})
+      if(!result) return res.status(400).json(null)
+      res.status(200).json({status:true})
+    }
+    else return res.status(400).json(null)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getAllManagers = async (req, res)=>{
+
+  try {
+    const result = await Employees.find({'Designation.isManager': {$eq:true}})
+    if(!result.length) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getAllEmployeesBySkills = async (req, res)=>{
+
+  try {
+    const result = await Employees.find({onBoard:{$eq:true}, skillSets:{$exists:true,  $ne: []}},
+      { userID: 1, selectedFile: 1, skillSets: 1,Designation:1,empID:1,fullname:1 } )
+      if(!result ) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const approveSeperation = async (req, res)=>{
+  const {reqID, leavingDate,} = req.body
+  try {
+    
+     const result = await MigrationReq.findByIdAndUpdate({_id:ObjectId(reqID)}, {$set: {submittedStatus:true, approvedStatus:true, leavingDate,} })
+     const {userID} = result
+     const result2 = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$set:{migration: {status:true, dateOfLeaving:leavingDate}}})
+     if(!result && !result2) return res.status(400).json({message:"Not updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+  }
+}
+export const declineSeperation = async (req, res)=>{
+  const {reqID, comments,} = req.body
+  try {
+    const result = await MigrationReq.findByIdAndUpdate({_id:ObjectId(reqID)}, {$set: {submittedStatus:true, approvedStatus:false, comments,} })
+   if(!result) return res.status(400).json({message:"Not updated"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({message:"Something went wrong"})
+  }
+}
+
+export const getTransferRequest = async (req, res)=>{
+  try {
+    const result = await MigrationReq.find({leaving:{$eq:false}, submittedStatus:{$eq:false}})
+    if(!result) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    
+  }
+}
+
+export const getSperationRequest = async (req, res)=>{
+  try {
+    const result = await MigrationReq.find({leaving:{$eq:true}, submittedStatus:{$eq:false}})
+    if(!result) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    
+  }
+}
 
 export const cabDecline = async (req, res)=>{
 
@@ -61,12 +258,19 @@ export const createAnnouncement = async (req, res)=>{
 }
 
 export const skillApprove = async(req, res)=>{
-  console.log(req.body)
+  const {id, data} = req.body
   try {
     const result =await Skllls.findOneAndUpdate({_id:ObjectId(id)}, {$set:{approved:true, submittedStatus:true, score:data}})
-    if(!result) return res.status(400).json({message:"not updated"})
+    const {userID, technology, category, selfRating, type} = result
+    const result2 = await Employees.findOneAndUpdate({userID}, {$push:{
+      skillSets:{
+        technology, category, selfRating, score:data, type,
+      } 
+    }})
+    if(!result && !result2) return res.status(400).json({message:"not updated"})
     res.status(200).json({status:true})
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({message:"Something went wrong"})
   }
 }
@@ -187,15 +391,17 @@ export const getLearningRequest = async(req, res)=>{
   }
 }
 
-
 export const createEvent = async (req, res)=> {
-
-  const {type,isAnnouncements,} = req.body
+  console.log(req.body)
+  const {start, end, title, description, type} = req.body
   try {
       const result = await Events.create(req.body)
       console.log(result)
       if(type=="event") {
-        let result =await Employees.updateMany({}, {$push: {timeSheet:{start, end, title, description}}})
+        let result2 =await Employees.updateMany({}, {$push: {timeSheet:{start, end, title, description, event:true,}}})
+        console.log(result)
+        if(result2) return res.status(200).json({status:true})
+        res.status(404).json({message:"Not Created"})
       }
       if(result) return res.status(200).json({status:true})
       res.status(404).json({message:"Not Created"})
@@ -204,6 +410,7 @@ export const createEvent = async (req, res)=> {
     console.log(error.message)
   }
 }
+
 export const timeSheetApprove = async (req, res)=>{
   const {empID, day} = req.body;
 try {

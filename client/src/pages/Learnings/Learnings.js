@@ -81,7 +81,7 @@ function Learnings() {
     return (
         <> 
         <div className='viewPay'>
-		<div className='flex justify-start mb-5'> 
+		<div className='flex justify-start mb-5 aboveButton'> 
 			<div className='button-sm-1 mx-1 text-sm p-2'  onClick={()=>setToggle(prev=> !prev)}> Request Course</div> 
 			<div className='button-sm-1 mx-1 text-sm p-2'onClick={()=>setToggle(prev=> !prev)}> My Course List</div> 
 			</div>

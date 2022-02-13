@@ -8,20 +8,25 @@ import {FaRegCalendarTimes} from 'react-icons/fa'
 import {AiFillStar} from "react-icons/ai"
 import { useSelector, } from "react-redux"
 import {  CircularProgress } from '@mui/material';
-import{getEvents, getAnnouncements} from "../../api/employee"
+import Avatar from '@mui/material/Avatar';
+import{getEvents, getAnnouncements, getPerformer} from "../../api/employee"
 
 function Home() {
   const {data, isloading,} = useSelector(state => state.employee)
   const [event, setEvent] = useState({})
   const [announcements, setAnnouncements] = useState({})
+  const [performer, setPerformer] = useState(null)
   const navigate = useNavigate()
   useEffect(() => {
     getEvents().then(res => {
       setEvent(res.data)
-    })
+    }).catch(err=> alert("Events " + err.message))
     getAnnouncements().then(res => {
       setAnnouncements(res.data)
-    })
+    }).catch(err=> alert("Events " + err.message))
+    getPerformer().then(res => {
+      setPerformer(res.data)
+    }).catch(err=> alert("Events " + err.message))
   }, [navigate])
 
 
@@ -62,46 +67,34 @@ function Home() {
             
           </div>
           </div>
+        {performer &&           <div className="cardStarEmployees">
 
-          <div className="cardStarEmployees">
+<h5 className='mt-2 mx-auto font-bold text-center'> Perfomer of Month</h5>
+  <div className='p-1 flex sm:mx-auto md:mx-auto sm:mx-auto'> <AiFillStar className="text-gold" /> <AiFillStar className="text-gold" />  <AiFillStar className="text-gold" />  <AiFillStar  className="text-gold"/>  <AiFillStar  className="text-gold"/> </div>
 
-            <h5 className='mt-2 mx-auto font-bold text-center'>Stars of this Quater</h5>
-              <div className='p-1  flex sm:mx-auto md:mx-auto'> <AiFillStar className="text-gold" /> <AiFillStar className="text-gold" />  <AiFillStar className="text-gold" />  <AiFillStar  className="text-gold"/>  <AiFillStar  className="text-gold"/> </div>
-           
-            <div className='flex justify-around my-2 mx-auto starCard'>
-                <div className='p-1 mx-4'>
-                  <img alt="employee" height="100px" width="150px" src="https://fj-employer-blog.s3.amazonaws.com/employer-blog/wp-content/uploads/2015/11/5-Ways-to-Analyze-Employee-Performance-1024x508.jpg" />
-                  <div className='text-center mt-2 mb-3'>
-                    <h6 className='font-semibold'>
-                      Employee 1
-                    </h6>
-                    <p className='text-sm'> Team | Project</p>
-                  </div>
-                </div>
-                
-                <div className='p-1 mx-4'>
-                  <img alt="employee" height="100px" width="150px" src="https://fj-employer-blog.s3.amazonaws.com/employer-blog/wp-content/uploads/2015/11/5-Ways-to-Analyze-Employee-Performance-1024x508.jpg" />
-                  <div className='text-center mt-2 mb-3'>
-                    <h6 className='font-semibold'>
-                      Employee 2
-                    </h6>
-                    <p className='text-sm'> Team | Project</p>
-                  </div>
-                </div>
+<div className='flex justify-around my-2 mx-auto starCard'>
+  {performer.map((ele, i)=>{
+    return (
+      <div key={i} className='p-1 mx-4'>
+        <div className='flex justify-center items-center'> 
+        <Avatar  sx={{ width: 56, height: 56 }} alt={ele.fullanme} src={ele?.selectedFile} /> </div>
+      <div className='text-center mt-2 mb-3'>
+        <h6 className='font-semibold'>
+          {ele.fullname}
+        </h6>
+        <p className='text-sm'> {ele.Designation.name}</p>
+        <small className='text-sm'> {ele.projectAllocated.name} </small>
+      </div>
+    </div>
 
-                <div className='p-1 mx-4'>
-                  <img alt="employee" height="100px" width="150px" src="https://fj-employer-blog.s3.amazonaws.com/employer-blog/wp-content/uploads/2015/11/5-Ways-to-Analyze-Employee-Performance-1024x508.jpg" />
-                  <div className='text-center mt-2 mb-3'>
-                    <h6 className='font-semibold'>
-                      Employee 3
-                    </h6>
-                    <p className='text-sm'> Team | Project</p>
-                  </div>
-                </div>
-                
-            </div>
+    )
+  })}
 
-          </div>
+    
+</div>
+
+</div>}
+
 
           <div className='homeCompanyEvents'>
             {event && 

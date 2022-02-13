@@ -8,3 +8,10 @@
     padding-top:20% ;
     padding-left: 10%;
 }
+
+@media only screen and (max-width: 600px) {
+    .selfServicesCard {
+      padding-top: 7%;
+      padding-left: 50px;
+    }
+  }

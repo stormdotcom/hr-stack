@@ -3,14 +3,14 @@ import Navbar from "../../components/NavBar/NavBar";
 import "./styles.css"
 import { useFormik } from 'formik';
 import {Person} from '@mui/icons-material';
-import {BsFillTelephoneFill, BsFillCloudUploadFill} from "react-icons/bs"
+import {BsFillTelephoneFill} from "react-icons/bs"
 import {MdLocationPin, MdEmail} from "react-icons/md"
 import {AiFillEdit,} from "react-icons/ai"
 import {fetchEmployeeData,  saveProfile} from "../../api/api"
 import { useParams, useNavigate, Link} from "react-router-dom"
 import {Alert} from "@mui/material"
 import Swal from "sweetalert2"
-import {useDispatch}  from "react-redux"
+import Avatar from '@mui/material/Avatar';
 function Profile() {
   const {id} = useParams()
   const navigate = useNavigate()
@@ -147,12 +147,9 @@ return error
         {/* Profile picture and basic detiails */}
       <div className=' w-16 md:w-32 lg:w-48 card md:mt-4'>
         <div className='flex flex-col mx-auto items-center py-1'> 
-        <Person  style={{ fontSize:'75px', color: "grey"}}/> 
-        <div className='flex '>
-          <label htmlFor="file-upload" className="custom-file-upload">
-           <BsFillCloudUploadFill /> <small>Upload Photo</small> 
-            </label>
-          </div>
+        {data?.selectedFile ? <Avatar sx={{ width: 150, height: 150 }}  src={data?.selectedFile} alt="profile-face" />  
+        :
+          <Person  style={{ fontSize:'75px', color: "grey"}}/> }
         </div>
         <div className='flex flex-col justify-center align-center mx-auto profileView'>
          

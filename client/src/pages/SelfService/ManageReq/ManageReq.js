@@ -48,7 +48,7 @@ function ManageReq() {
         .then((res) => dispatch(fetchCab(res.data)))
         .catch((err) => console.log(err.message));
     }
-  }, [navigate]);
+  }, [navigate, dispatch, data?.Designation?.isManager]);
   const { reqData, tickets, learnings, assets, cab } = useSelector((state) => state.request);
   let isloading = false;
   if (!reqData.length && !tickets.length && !learnings.length && !assets.length &&  !cab.length) isloading = true;

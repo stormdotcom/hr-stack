@@ -1,6 +1,6 @@
 import  express from 'express';
-import { adminSignin, addAsset, fetchStats, resolveIssue, delayIssue,  getAllAssets, setAsset, getAllAssetsHolding,
-    returnAsset, declineAssetReq, getAllEmployeesList,blockUser, unBlockUser, deleteUser,
+import { adminSignin, addAsset, fetchStats, resolveIssue, delayIssue,  getAllAssets, setAsset, getAllAssetsHolding, addHolidays,
+    returnAsset, declineAssetReq, getAllEmployeesList,blockUser, unBlockUser, deleteUser, addMonths,
     addProject,addLocation, createCompany, getAssetRequest} from "../contollers/admin.js"
 const router = express.Router();
 
@@ -24,5 +24,7 @@ router.get('/getAllEmployees', getAllEmployeesList)
 router.get('/blockUser', blockUser)
 router.get('/unBlockUser', unBlockUser)
 router.get('/deleteUser', deleteUser)
-
+router.post('/add-month', addMonths)
+router.post('/addHolidays', addHolidays)
+addHolidays
 export default router;

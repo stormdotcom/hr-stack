@@ -19,6 +19,7 @@ function Seperation() {
   const [textValue, setTextValue] = useState("")
   const [status, setStatus] = useState(null)
   const [reactCode, setReactCode] = useState("")
+
   const handleSumit = (draftData)=>{
     Swal.fire({
       title: 'Do you want to Submit Seperation Request?',
@@ -28,7 +29,7 @@ function Seperation() {
       denyButtonText: `Don't save`,
     }).then((result) => {
       if (result.isConfirmed) {
-        let form = {fullname:data.fullname, empID:data.empID,type:"Seperation", leaving:true, data:draftData, userID:data.userID}
+        let form = {fullname:data.fullname, empID:data.empID,type:"Seperation", mail:textValue, leaving:true, data:draftData, userID:data.userID}
         submitSeperation(form).then((res)=>{
           setEditorState(EditorState.createEmpty())
           Swal.fire('Request Saved!', '', 'success')
@@ -86,7 +87,15 @@ function Seperation() {
       setTextValue((convertToRaw(editorState.getCurrentContent())).blocks[0]?.text)
       setReactCode(draftToHtml(convertToRaw(editorState.getCurrentContent())))
    }
-
+   const handleView = (data)=>{
+    Swal.fire({
+      title: '<strong>Separation Rejected Reason </strong>',
+      html:+" "+ data+  "\n",
+      showCloseButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+    })
+  }
 
    useEffect(()=>{
         getSeperationInfo(data.userID).then(res=> setStatus(res.data))
@@ -166,7 +175,7 @@ function Seperation() {
               {(!status.submittedStatus && !status.approvedStatus) && "Pending" }
               </td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              {(status.submittedStatus && !status.approvedStatus) ? <div className='button-sm-1' >View </div> : "-"}
+              {(status.submittedStatus && !status.approvedStatus) ? <div className='button-sm-1'onClick={()=>handleView(status.comments)} >View </div> : ""}
               </td>
             </tr>
           </tbody>

@@ -11,21 +11,19 @@ Designation:{
         name:String,
         isManager:{type:Boolean, default:false}
      },
-contributions:{type:Array},
-accomplishments:{type:Array},
 organisationEmail:{type: String, required:true},
 onBoard:{type: Boolean, required:true, default:false},
 email:{type: String, required:true},
 
 dateOfJoin:{type: Date,required: true},
-
+dateOfBirth:{type: Date,required: false},
 projectAllocated:{
         Status: {type:Boolean, default:false},
         Project: {type:String},
         proManager:{type:String}
         },
 
-skillSets:[{technology:{type:String, }}],
+skillSets:[{}],
 
 leaveBalance: {casual:{type:Number, required:true, default:3},sick:{type:Number, required:true, default:12}},
 
@@ -92,7 +90,6 @@ phoneNumber:String,
 place:String,
 },
 migration:{status:{type:Boolean, default:false},
-    requestedDate:{type:Date},
     dateOfLeaving:{type:Date},
 },
 activeTickets:[{}],
@@ -100,8 +97,19 @@ activeTickets:[{}],
 myAssets:[{
 }],
 
-performanceRating:{type:Object, default:{}},
-
+awards:{type:Array},
+contributions:{type:Array},
+accomplishments:{type:Array},
+perfomer:{type:Boolean, default:false, required: true},
+payments:[{
+        amountPayable: {type:Number},
+        allowance: {type:Number},
+        daysWorked: {type:Number},
+        deductions: {type:Number},
+        month:{type:Number},
+        date: {type:Date},
+        salary:{type:Boolean, default:true, required: true}
+}],
 timeSheet:[{
         start: {type:Date},
         end: {type:Date},
@@ -109,7 +117,8 @@ timeSheet:[{
         year:{type:Number},
         day: {type:Number},
         hours: {type:Number},
-        title:{type:String}
+        title:{type:String},
+        event:{type:Boolean, default:false, required: true}
 }]
 })
 const Employees = mongoose.model('Employees', employeeSchema)

@@ -18,7 +18,7 @@ function RaiseIssue() {
 		dispatch(initial())
 		myTickets(data.userID).then((res=> dispatch(fetchMyticket(res.data))))
 		.catch(err=> dispatch(errorfetching(err.message)))
-	}, [navigate])
+	}, [navigate, data.userID, dispatch])
     const handleView = (data)=>{
         Swal.fire({
             title: '<strong> Comment</strong>',
@@ -36,7 +36,6 @@ function RaiseIssue() {
 			priority:"",
 			subject:"",
 			issue:"",
-
 		},
 		onSubmit: async (values, {resetForm})=> {
 			let  date = new Date()
@@ -47,7 +46,6 @@ function RaiseIssue() {
 								.catch((err)=>{ console.log(err.message) 
 									Swal.fire(   'Failed!',   'Cant create ticket!',   'info' )
 								})
-		  console.log(form)
 		  resetForm()
 		},
 		validate: values=>{
@@ -71,7 +69,7 @@ function RaiseIssue() {
         <div className='viewPay'>
             <div className='assetRequest'>
 
-        <div className="container my-5 tableView py-4 raiseIssueTable">
+		 <div className="container my-5 tableView py-4 raiseIssueTable">
 		{error && <Alert severity='warning'> {error} </Alert>}
             <h6 className='text-center font-semibold'>Ticket List</h6>
 			
@@ -126,7 +124,7 @@ function RaiseIssue() {
                             </tbody>
                         </table>: "No previous active list"}
 
-                    </div>
+                    </div> 
                     <div className="container mx-auto mainForm">
 			<div className="flex justify-center px-6 my-12">
 				<div className="w-full  flex">

@@ -66,6 +66,7 @@ function Profile() {
         let form = {address, userID:data.userID}
         submitAddress(form).then((res)=>{
           dispatch(fetchProfile(res.data))
+          setSuccess("Success Updated")
           Swal.fire('Saved!', '', 'success')
         }).catch(err => Swal.fire('Error Changing data', '', 'info'))
        
@@ -76,7 +77,6 @@ function Profile() {
   }
 
   const handleSubmit2 = (values)=>{
-    console.log(values)
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -88,6 +88,7 @@ function Profile() {
         let form = {data:values, userID:data.userID}
         submitPersonalInfo(form).then((res)=>{
           setToggle2(true)
+          setSuccess("Success Updated")
           dispatch(fetchProfile(res.data))
           Swal.fire('Saved!', '', 'success')
         }).catch(err => Swal.fire('Error Changing data', '', 'info'))
@@ -159,7 +160,7 @@ return error
         </div>
         <div className='flex flex-col justify-center align-center mx-auto profileView'>
       <div className='flex mx-auto items-center py-1 justify-evenly'>
-      <PopUp  />
+      {data?.selectedFile ? <PopUp popName={" Change Photo"} publicID={data?.filePublicID} status={true} /> : <PopUp  popName={"Upload new Photo"} status={false}  publicID={""} /> }
       </div>
    
       <h5 className='font-bold mt-2'>{data?.fullname} </h5>
@@ -181,7 +182,7 @@ return error
             <p className='font-thin text-sm text-left'>  House No</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  121 </p> 
+            <p className='font-semibold text-sm'>  {data?.address?.houseNo}</p> 
             </div>
              </div>
 
@@ -190,7 +191,7 @@ return error
             <p className='font-thin text-sm text-left'>  House Name</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  example home </p> 
+            <p className='font-semibold text-sm'>  {data?.address?.houseName}</p> 
             </div>
              </div>
 
@@ -199,7 +200,7 @@ return error
             <p className='font-thin text-sm text-left'>  Street</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  ABC Street </p> 
+            <p className='font-semibold text-sm'>  {data?.address?.street} </p> 
             </div>
              </div>
 
@@ -208,7 +209,15 @@ return error
             <p className='font-thin text-sm text-left'>  City</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  Triavandrum </p> 
+            <p className='font-semibold text-sm'>  {data?.address?.city} </p> 
+            </div>
+             </div>
+             <div className='flex justify-start ms-3'>     
+             <div className='flex mx-3 w-2/5 '>
+            <p className='font-thin text-sm text-left'>  State</p> 
+            </div>
+            <div className='flex  mx-3 w-2/5'>
+            <p className='font-semibold text-sm'>  {data?.address?.state} </p> 
             </div>
              </div>
 
@@ -217,7 +226,7 @@ return error
             <p className='font-thin text-sm text-left'>  Zip</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  671212 </p> 
+            <p className='font-semibold text-sm'>  {data?.address?.zipCode} </p> 
             </div>
              </div>
              {/* Contact Details */}
@@ -227,7 +236,7 @@ return error
             <p className='font-thin text-sm text-left'>  Primary Contact No</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  23232323 </p> 
+            <p className='font-semibold text-sm'>  {data?.contactInformation?.PrimaryPhone} </p> 
             </div>
              </div>
 
@@ -236,7 +245,7 @@ return error
             <p className='font-thin text-sm text-left'>  Secondary Contact No</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  23232323 </p> 
+            <p className='font-semibold text-sm'>  {data?.contactInformation?.SecondaryPhone} </p> 
             </div>
              </div>
 
@@ -245,7 +254,7 @@ return error
             <p className='font-thin text-sm text-left'>Perosnal email</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  {data?.email} </p> 
+            <p className='font-semibold text-sm'>{data?.contactInformation?.SecondaryEmail} </p> 
             </div>
              </div>
           
@@ -374,7 +383,7 @@ return error
             <p className='font-thin text-sm text-left'>PAN No.</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  Example address</p> 
+            <p className='font-semibold text-sm'>  {data?.otherStatutoryInfo?.panNo} </p> 
             </div>
              </div>
              <div className='flex justify-start ms-3'>     
@@ -382,16 +391,26 @@ return error
             <p className='font-thin text-sm text-left'>  Aadhar No</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  UAN NO </p> 
+            <p className='font-semibold text-sm'>  {data?.otherStatutoryInfo?.aadhaarNo} </p> 
             </div>
+           
              </div>
+              <div className='flex justify-start ms-3'>
+              <div className='flex  mx-3 w-2/5'>
+                 <p className='font-thin  text-sm text-lef'>  UAN NO </p> 
+                 </div>
+                  <div className='flex  mx-3 w-2/5'>
+                  <p className='font-semibold text-sm'>  {data?.otherStatutoryInfo?.uanNo} </p> 
+                  </div>
+              </div>
 
              <div className='flex justify-start ms-3'>     
              <div className='flex mx-3 w-2/5 '>
             <p className='font-thin text-sm text-left'>  PF No.</p> 
             </div>
+            
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'> 1212 </p> 
+            <p className='font-semibold text-sm'>  {data?.otherStatutoryInfo?.pfNo} </p> 
             </div>
              </div>
 
@@ -400,7 +419,7 @@ return error
             <p className='font-thin text-sm text-left'>  ESCI No</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'> 1212121 </p> 
+            <p className='font-semibold text-sm'> {data?.otherStatutoryInfo?.esiNo} </p> 
             </div>
              </div>
              <div className='flex justify-start ms-3'>     
@@ -408,7 +427,7 @@ return error
             <p className='font-thin text-sm text-left'>  Account No</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  21212112 </p> 
+            <p className='font-semibold text-sm'>   {data?.bankDetails?.accountNumber} </p> 
             </div>
              </div>
              <div className='flex justify-start ms-3'>     
@@ -416,7 +435,7 @@ return error
             <p className='font-thin text-sm text-left'>  Bank</p> 
             </div>
             <div className='flex  mx-3 w-2/5'>
-            <p className='font-semibold text-sm'>  111112222 </p> 
+            <p className='font-semibold text-sm'>   {data?.bankDetails?.bank} </p> 
             </div>
              </div>
 

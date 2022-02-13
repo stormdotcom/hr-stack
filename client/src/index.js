@@ -17,7 +17,6 @@ ReactDOM.render(
     <BrowserRouter>
     <App />
     <Footer />
-    
     </BrowserRouter>
     </Provider>
 

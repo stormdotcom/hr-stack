@@ -70,39 +70,39 @@ function AddEvents() {
       setError(error.message);
     }
   };
-  const formik = useFormik({
-    initialValues: {
-      start: "",
-      end: "",
-      title: "",
-      type: "",
-      time: "",
-      description: "",
-    },
-    onSubmit: (values, {  resetForm }) => {
-      handleSubmit(values, resetForm);
+    const formik = useFormik({
+      initialValues: {
+        start: "",
+        end: "",
+        title: "",
+        type: "",
+        time: "",
+        description: "",
+      },
+      onSubmit: (values, {  resetForm }) => {
+        handleSubmit(values, resetForm);
 
-    },
-    validate: (values) => {
-      let error = {};
-      if (!values.start) {
-        error.start = "*Required";
-      }
-      if (!values.end) {
-        error.end = "*Required";
-      }
-      if (!values.title) {
-        error.title = "*Required";
-      }
-      if (!values.description) {
-        error.description = "*Description Required";
-      }
-      if (!values.type) {
-        error.type = "*Required";
-      }
-      return error;
-    },
-  });
+      },
+      validate: (values) => {
+        let error = {};
+        if (!values.start) {
+          error.start = "*Required";
+        }
+        if (!values.end) {
+          error.end = "*Required";
+        }
+        if (!values.title) {
+          error.title = "*Required";
+        }
+        if (!values.description) {
+          error.description = "*Description Required";
+        }
+        if (!values.type) {
+          error.type = "*Required";
+        }
+        return error;
+      },
+    });
   const inputFile = useRef(null)
   const handleClick = () => {
     inputFile.current.click();

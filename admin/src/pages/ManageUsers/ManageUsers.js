@@ -13,14 +13,15 @@ function ManageUsers() {
     const handleBlock = (id, name)=>{
         Swal.fire({
             title: 'Do you want Block '+ name + ' ?',
-            showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Block',
-            denyButtonText: `Don't Block`,
           }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                blockUser(id).then(()=> Swal.fire('User has been Blocked !', '', 'success'))
+                blockUser(id).then(()=> {
+                    localStorage.removeItem("employee")
+                    getAllEmployees().then((res)=> setUsers(res.data))
+                    .catch((err)=> console.log(err.message))
+                    Swal.fire('User has been Blocked !', '', 'success')})
                 .catch((err)=> Swal.fire(err.message, '', 'info'))
 
             } else if (result.isDenied) {
@@ -32,14 +33,14 @@ function ManageUsers() {
     const handleUnBlock = (id, name)=>{
         Swal.fire({
             title: 'Do you want Unblock '+ name + ' ?',
-            showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Unblock',
-            denyButtonText: `Don't Unblock`,
           }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                unBlockUser(id).then(()=>Swal.fire('User has been Unblocked!', '', 'success'))
+                unBlockUser(id).then(()=>{
+                    getAllEmployees().then((res)=> setUsers(res.data))
+                    .catch((err)=> console.log(err.message))
+                    Swal.fire('User has been Unblocked!', '', 'success')})
                 .catch((err)=> Swal.fire(err.message, '', 'info'))
             } else if (result.isDenied) {
               Swal.fire('Changes are not saved', '', 'info')
@@ -144,7 +145,7 @@ function ManageUsers() {
                                             {ele?.AllEmployees?.AccessStatus ? 
                                                  <div className='button-sm-2'onClick={()=>handleBlock(ele.userID, ele.fullname)}>Block </div>
                                                 :
-                                                <div className='button-sm-2'onClick={()=>handleUnBlock(ele.userID, ele.fullname)}>UnBlock </div>}
+                                                <div className='button-sm-1'onClick={()=>handleUnBlock(ele.userID, ele.fullname)}>UnBlock </div>}
                                         </td>
                                         <td className="text-sm px-6 py-4">
                                         <div className='button-sm-4'onClick={()=>handleDelete(ele.userID, ele.fullname)}>Delete </div>

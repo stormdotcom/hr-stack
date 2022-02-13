@@ -26,11 +26,13 @@ import RaisedIssue from "./pages/SelfService/ManageReq/RaisedIssue"
 import Profile from "./pages/Profile/Profile"
 
 // APIs
-import { fetchEmployeeData } from './api/employee';
+
+import { fetchEmployeeData, getNotification } from './api/employee';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import {Navigate} from "react-router-dom"
 import { logout} from "./redux/login/loginSlice"
 import { initial, fetchProfile, errorfetching, final} from "./redux/employee/employeeSlice"
+import { fetchNotification } from "./redux/notifications/notificationSlice"
 import {  useDispatch} from "react-redux"
 import jwtDecode from "jwt-decode"
 import ManagerRoute from "./routes/ManagerRoute/ManagerRoute"
@@ -40,8 +42,6 @@ function App() {
   let user = JSON.parse(localStorage.getItem('employee'))
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-
   useEffect(() => {
     if (user?.token) {
         const decodedToken = jwtDecode(user.token)
@@ -54,7 +54,14 @@ function App() {
         fetchEmployeeData(user.result._id)
         .then((res)=> dispatch(fetchProfile(res.data)))
         .catch(err=> dispatch(errorfetching(err.message)))
+
+        getNotification(user.result._id)
+        .then((res)=> dispatch(fetchNotification(res.data)))
+        .catch(err=> dispatch(errorfetching(err.message)))
+
+ 
     } 
+
 }, [navigate])
 
   return (

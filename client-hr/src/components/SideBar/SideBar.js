@@ -14,7 +14,7 @@ import { FiHome, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import {AiTwotoneEdit} from "react-icons/ai";
 import {  GiSkills } from "react-icons/gi";
 import { BsFillCalendarWeekFill,BsViewList } from "react-icons/bs";
-import { MdOutlneSpeed } from "react-icons/md";
+import { MdOutlineAttachMoney } from "react-icons/md";
 import Stack from "../NavBar/Stack-logo.svg"
 import "react-pro-sidebar/dist/css/styles.css";
 import "./styles.css";
@@ -67,6 +67,7 @@ const SideBar = () => {
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/management")}} icon={<FaHandPointer />}>  <p>Managements </p> </MenuItem>
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/timesheet")}} icon={<BsFillCalendarWeekFill />}> <p> Time Sheet </p></MenuItem>
               <MenuItem className="sideBarItem" onClick={()=> {navigate("/view-employees")}} icon={<BsViewList />}> <p>  Employees </p></MenuItem>
+              <MenuItem className="sideBarItem" onClick={()=> {navigate("/transactions")}} icon={<MdOutlineAttachMoney />}> <p>  Transactions </p></MenuItem>
             
             </Menu>
           </SidebarContent>
@@ -76,4 +77,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default SideBar

@@ -28,7 +28,6 @@ function LeaveReq() {
                 leaveApprove(formData).then(()=>{
                     Swal.fire('Approval Success!', '', 'success')
                 }).catch((err)=>{
-                    console.log(err.message)
                     Swal.fire('Failed to approve!', '', 'info')
                 })
 
@@ -59,7 +58,7 @@ function LeaveReq() {
             title: '<strong>Leave Reason</strong>',
             html:
               ' <b>'+ name+ '</b> | ' +
-              ' <b>'+ id + '\n'+ '</b>' +   
+              ' <b>'+ id + '</b>' +   
               '</br>'
               +"\n"+ data+  "\n",
             showCloseButton: true,

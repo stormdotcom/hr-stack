@@ -22,6 +22,7 @@ export const getAllAssetsHolding = ()=>API.get('/admin/getAllAssetsHolding')
 export const setAsset = (form)=>API.post('/admin/setAsset', form)
 export const createAnnouncement = (form)=>API.post('/hr/createAnnouncement', form)
 export const getAllEmployees = ()=> API.get('/admin/getAllEmployees')
-
+export const addProjectTo = (form)=>API.post('/admin/addProject', form)
+export const addHolidaysTo = (form)=>API.post('/admin/addHolidays', form)
 // todo
 export const returnAsset=  (id) => API.get("/admin/returnAsset?id="+id)

@@ -10,6 +10,32 @@ import Company from "../models/Company.js";
 import AssetReq from "../models/AssetReq.js";
 import User from "../models/User.js";
 
+export const addHolidays = async (req, res)=>{
+    const {text} = req.body
+    let id = '61eb06cf6b7539f49aa3fc2f'
+    try {
+        const result = await Company.findOneAndUpdate({_id:ObjectId(id)}, {$push:{holidays:text}})
+        if(!result) return res.status(400).json({message: "Not created"})
+        res.status(200).json({status: true})  
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json(error.message)
+    }
+}
+
+export const addMonths = async (req, res)=>{
+    let id = '61eb06cf6b7539f49aa3fc2f'
+    try {
+        const result = await Company.findOneAndUpdate({_id:ObjectId(id)}, {$push:{months:req.body}})
+        if(!result) return res.status(400).json({message:"not created"})
+        res.status(200).json({status:true})
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json(error.message)
+    }
+}
+
 export const deleteUser = async (req, res)=>{
     const {id} = req.query
     try {
@@ -26,10 +52,9 @@ export const deleteUser = async (req, res)=>{
 export const unBlockUser = async (req, res)=>{
     const {id} = req.query
     try {
-    const result = await User.deleteOne({_id:ObjectId(id)})
-
-    if(!result) return res.status(400).json({message:"not updated"})
-    res.status(200).json({status:true})
+        const result = await User.findOneAndUpdate({_id:ObjectId(id)}, {$set:{AccessStatus:true}})
+        if(!result) return res.status(400).json({message:"not updated"})
+        res.status(200).json({status:true})
     } catch (error) {
         console.log(error.message)
         res.status(200).json({message:"Something went wrong"})
@@ -195,9 +220,9 @@ export const createCompany = async (req, res)=>{
 }
 
 export const addProject = async (req, res)=>{
-    const {data} = req.body
+    const {text} = req.body
     try {
-        const result = await Company.updateMany({$push:{projects:data}})
+        const result = await Company.updateMany({$push:{projects:text}})
         if(!result) return res.status(400).json({message:"not created"})
         res.status(200).json(result)
 

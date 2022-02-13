@@ -4,16 +4,52 @@ import {RiComputerFill} from "react-icons/ri"
 import {IoIosPeople} from "react-icons/io"
 import {MdPendingActions, MdImportantDevices, MdMoreTime} from "react-icons/md"
 import { FcHighPriority } from "react-icons/fc"
-
+import Swal from "sweetalert2"
 import "./styles.css"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from 'react-redux'
 import { CircularProgress, Alert } from '@mui/material'
-
+import {addProjectTo, addHolidaysTo} from "../../api/api"
 function HomeHR() {
     const navigate= useNavigate()
     const {stats, isloading, error} = useSelector(state => state.admin)
-
+    const addProject = async()=>{
+      const { value: data } = await Swal.fire({
+        title: 'Add Project',
+        input: 'text',
+        inputLabel: 'Project',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to write Desigination Title'
+          }
+        }
+      })
+      if(data) {
+      let formData= {text:data}
+      addProjectTo(formData).then(()=> Swal.fire('Done'))
+      .catch(()=>Swal.fire('Error adding Desigination') )
+      }
+    }
+    const addHolidays = async()=>{
+      const { value: data } = await Swal.fire({
+        title: 'Add Holidays',
+        input: 'text',
+        inputLabel: 'Holidays',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to write Holidays Title'
+          }
+        }
+      })
+      if(data) {
+      let formData= {text:data}
+      addHolidaysTo(formData).then(()=> Swal.fire('Done'))
+      .catch(()=>Swal.fire('Error adding Holidays') )
+      }
+    }
+    
     return (
         <div>
             <div className='separation'>
@@ -85,8 +121,8 @@ function HomeHR() {
                 </div>
                 <div className='flex justify-around align-center mt-1 mb-5'> 
                 <div className="hrCards"onClick={()=>{navigate("/add-assets")}} >  Add Assets</div>
-                    <div className="hrCards"> Add Designation</div>
-                    <div className="hrCards"> Update Employee Details</div>
+                    <div className="hrCards" onClick={()=>{addProject()}}> Add Project</div>
+                    <div className="hrCards" onClick={()=>{addHolidays()}}>Add Company Holidays </div>
                 </div>
             </div>
             

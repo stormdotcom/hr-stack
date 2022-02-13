@@ -22,11 +22,16 @@ function ManageReq() {
         getCabRequest()
         .then((res) => dispatch(fetchCabRequest(res.data)))
         .catch((err) => console.log(err.message));
-
+        return (()=>{
+          dispatch(fetchLearning([]))
+          dispatch(fetchRequest([]))
+          dispatch(fetchSkills([]))
+          dispatch(fetchCabRequest([]))
+        })
     }, [navigate, dispatch])
     const {reqData, learnings, skills, cab} = useSelector(state=> state.requests)
     let isloading=false
-    console.log(cab)
+    
     if(!reqData.length && !learnings.length && !skills.length && !cab.length) isloading=true
     const handleView1 = (data, name, id, type)=>{
         Swal.fire({
@@ -44,7 +49,7 @@ function ManageReq() {
             title: '<strong>Leave Reason</strong>',
             html:
               ' <b>'+ name+ '</b> | ' +
-              ' <b>'+ id + '\n'+ '</b>' +   
+              ' <b>'+ id + '</b>' +   
               '</br>'
               +"\n"+ data+  "\n",
             showCloseButton: true,

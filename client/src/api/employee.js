@@ -40,7 +40,9 @@ export const submitSeperation= (form) => API.post('/submitSeperation', form)
 export const getSeperationInfo = (id)=> API.get('/getSeperationInfo?id='+id)
 export const submitTransfer= (form) => API.post('/submitTransfer', form)
 export const getTransferInfo = (id)=> API.get('/getTransferInfo?id='+id)
-
+export const getPerformer = ()=> API.get('/getPerformer')
+export const getMonths = ()=> API.get('/getMonths')
+export const getNotification = (id) => API.get('/getNotification?id='+id)
 // todo
 export const getHoliday = ()=> API.get('/getHoliday')
 export const setAssetReqPriority = (form)=>API.post('/setAssetReqPriority', form)

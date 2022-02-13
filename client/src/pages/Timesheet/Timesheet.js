@@ -37,7 +37,6 @@ function Timesheet() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  // const  {data, error} = useSelector(state=> state.timeheet)
   const handleTimeIn = (e)=>{
     e.preventDefault()
     timeIn({id:user.result._id}).then(()=> {
@@ -82,7 +81,7 @@ function Timesheet() {
       timeOutStats(user?.result._id).then(res=> setTimeOutBtn(res.data.status))
       .catch(err=> dispatch(errorfetching(err.message)))
 
-  }, [navigate,timeOutBtn, timeInBtn, dispatch])
+  }, [navigate,timeOutBtn, timeInBtn, dispatch, user?.result._id])
     return (
         <div>
             <div className='timeSheet'>

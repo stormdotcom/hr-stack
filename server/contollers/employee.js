@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import { ObjectId } from 'mongodb';
 import bcrypt from "bcrypt"
 import User from "../models/User.js"
@@ -14,12 +13,42 @@ import AssetReq from "../models/AssetReq.js";
 import Assets from "../models/Assets.js";
 import CabReq from "../models/CabReq.js";
 import MigrationReq from "../models/MigrationReq.js";
+import Notification from "../models/Notifications.js";
 
+export const getNotification = async (req, res)=>{
+  const {id}= req.query
+
+  const result = Notification.findOne({user:ObjectId(id)})
+  if(!result) res.status(400).json({message:"No notifications"})
+  const notification =   result?.notification ? result?.notification.slice : []
+  res.status(200).json(notification)
+
+  try {
+    
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
+
+export const getPerformer = async (req, res)=>{
+  try {
+    const result = await Employees.aggregate([{ $match:{performer:{$eq:true}}}, 
+      { $project:{
+        performer:1, selectedFile: 1, fullname: 1,  Designation: 1, projectAllocated:1
+      } }])
+        if(!result) return res.status(200).json(null)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
 
 export const getTransferInfo = async (req, res)=>{
   const {id} = req.query
   try {
-    const result = await MigrationReq.findOne({userID:id, leaving:{$eq:false}})
+    const result = await MigrationReq.find({userID:id, leaving:{$eq:false}})
     if(!result) return res.status(200).json(null)
     res.status(200).json(result)
   } catch (error) {
@@ -41,9 +70,9 @@ export const submitTransfer = async (req, res)=>{
 export const getSeperationInfo = async (req, res)=>{
   const {id} = req.query
   try {
-    const result = await MigrationReq.findOne({userID:id, leaving:{$eq:true}})
+    const result = await MigrationReq.find({userID:id, leaving:{$eq:true}})
     if(!result) return res.status(200).json(null)
-    res.status(200).json(result)
+    res.status(200).json(result[0])
   } catch (error) {
     console.log(error.message)
     res.status(500).json({message:"Something went wrong"})
@@ -147,8 +176,9 @@ export const getAnnouncements = async (req, res)=> {
 
 export const getMyskills = async (req, res)=>{
   const { id } =  req.query
+
   try {
-    const result = await Skllls.find({id, approved:{$eq:true}})
+    const result = await Skllls.find({userID:ObjectId(id), approved:{$eq:true}})
     if(!result.length) return res.status(200).json(null)
     res.status(200).json(result)
   } catch (error) {
@@ -158,8 +188,10 @@ export const getMyskills = async (req, res)=>{
 }
 
 export const submitSkills = async(req, res)=>{
+  const  {userID} =req.body
   try {
-    const result =await Skllls.create(req.body)
+    const form = {...req.body, userID:ObjectId(userID)}
+    const result =await Skllls.create(form)
     if(!result) return res.status(400).status({message:"Not submited"})
     res.status(200).json({status:true})
   } catch (error) {
@@ -364,7 +396,15 @@ export const submitLeave = async (req, res)=>{
 
   try {
     const result = await LeaveManage.create(data)
-
+    const result2 = await Notification.findOne({user:ObjectId(userID)})
+    // if(!result2) {
+    //   console.log("here")
+    //   await Notification.create({user:ObjectId(userID), notification:[{id:userID, fullname, read:false, message:"Leave Requested from ", type:"Leave"}  ] } )
+    // }
+    // else {
+    //   console.log("here 2")
+    //   await Notification.findOneAndUpdate({user:ObjectId(userID)}, {$push: {notification: {id:userID, fullname, read:false, message:"Leave Requested from ", type:"Leave"}}}) 
+    // }
     if(!result) return res.status(404).json({message:"Can't fullfill this Submission, Try Again"})
 
     res.status(200).json({status:true})
@@ -476,11 +516,16 @@ export const  setTimeIn= async(req, res)=>{
   const {id } = req.body;
   const date = dateToEpoch2(new Date)
   try {
+    let dateNow  = new Date();
+    let month = dateNow.getMonth()+1;  
+    let year = dateNow.getYear();
      let employeeData= await Employees.findOneAndUpdate({userID:id}, 
         {$push:{timeSheet:{
           start:new Date(), 
           day:date, 
           title:"Pending", 
+          year,
+          month,
           end:new Date(),
           hours:1
           }}
@@ -510,7 +555,7 @@ export const getTimeSheet =  (async(req, res)=>{
 export const  fetchEmployeData= async(req, res)=>{
       const {id } = req.query;
       try {
-          const employeeData = await Employees.findOne({userID:id})
+          const employeeData = await Employees.findOne({userID:ObjectId(id)})
           if(!employeeData) return  res.status(400).json({message:"no data"})
           res.status(200).json(employeeData)
 

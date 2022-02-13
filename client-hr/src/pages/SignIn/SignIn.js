@@ -102,10 +102,6 @@ function SignIn() {
             <button type='submit' className="button-1 w-full my-2"> 
               Sign In
             </button>
-            <Link className="inline-block  align-baseline font-light text-sm text-blue hover:text-blue-darker" to="/forget-password"
-            >
-              Forgot Password?
-            </Link>
           </div>
         </div>
         </form>

@@ -22,4 +22,9 @@
     padding: 2px 3px;
     text-overflow: clip !important;
 }
-/* border border-gray-400 */
+@media only screen and (max-width: 600px) {
+    .aboveButton {
+      margin-top: 8%;
+      margin-left: 4%;
+    }
+  }

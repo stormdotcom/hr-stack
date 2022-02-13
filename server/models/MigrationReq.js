@@ -10,6 +10,7 @@ const migrationSchema = mongoose.Schema({
      data:{type: String, required:true},
      approvedStatus:{type:Boolean, default:false,required:true},
      submittedStatus:{type:Boolean, default:false,required:true},
+     text:{type:String},   
      comments:{type:String},   
 })
 const MigrationReq = mongoose.model('MigrationReq', migrationSchema)

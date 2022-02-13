@@ -5,23 +5,24 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import {BsFillCloudUploadFill} from "react-icons/bs"
 import DialogTitle from '@mui/material/DialogTitle';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-import { base64StringtoFile,
+import { 
     extractImageFileExtensionFromBase64,
-    image64toCanvasRef } from "./CropHelper"
+     } from "./CropHelper"
 import Axios from "axios"
 import Swal from "sweetalert2"
 import { useSelector } from 'react-redux';
 import { submitProfilePhoto} from "../../api/employee"
 import {MdAddAPhoto} from "react-icons/md";
-export default function PopUp() {
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
+
+export default function PopUp({popName, status, publicID}) {
+
   const [open, setOpen] = React.useState(false);
   const [img, setimg] = React.useState({  imgSrc: null,imgSrcExt: null})
-  const [crop, setCrop] = React.useState({ aspect: 1/ 1 });
   const [error, setError] = React.useState(null)
-  const imagePreviewCanvas = React.createRef()
-  const [croppedImage, setCroppedImage] = React.useState(null);
+  const [cropData, setCropData] = React.useState(null);
+  const [cropper, setCropper] = React.useState();
  const {data} = useSelector(state=> state.employee)
  const imageMaxSize = 1000000000 // bytes
  const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
@@ -42,17 +43,13 @@ export default function PopUp() {
         return true
     }
 }
-const handleImageloaded = (image)=>{
+const getCropData = () => {
+  if (typeof cropper !== "undefined") {
+    setCropData(cropper.getCroppedCanvas().toDataURL());
+  }
+};
 
-}
-const handleOnCrop = (crop)=>{
-    setCrop(crop)
-}
-const handleOnCropComplete = (crop, pixelCrop)=>{
-  const canvasRef = imagePreviewCanvas.current;
-  const {imgSrc} = img
-  image64toCanvasRef(canvasRef, imgSrc, pixelCrop)
-}
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -70,7 +67,6 @@ const handleOnCropComplete = (crop, pixelCrop)=>{
              const currentFile = files[0]
              const myFileItemReader = new FileReader()
              myFileItemReader.addEventListener("load", ()=>{
-                 // console.log(myFileItemReader.result)
                  const myResult = myFileItemReader.result
             setimg({
                      imgSrc: myResult,
@@ -85,27 +81,44 @@ const handleOnCropComplete = (crop, pixelCrop)=>{
     }
 
     const handleSubmit3 = async (e)=>{
-        e.preventDefault()
-        const {imgSrc}  = img
-        if (imgSrc) {
-            const canvasRef = imagePreviewCanvas.current
-            const {imgSrcExt} =  img
-            const imageData64 = canvasRef.toDataURL('image/' + imgSrcExt)
-            const myFilename = "previewFile." + imgSrcExt
-
-            // file to be uploaded
-            setCroppedImage(base64StringtoFile(imageData64, myFilename))
-            console.log(base64StringtoFile(imageData64, myFilename))
-        }
-    
+        e.preventDefault()   
         try {
           const formData = new FormData();
           formData.append("api_key",'249459347837371');
-          formData.append("file", imgSrc);
+          formData.append("file", cropData);
+          formData.append("public_id", publicID);
+          formData.append("upload_preset", "hrstackMedia");
+          const result = await Axios.post('https://api.cloudinary.com/v1_1/stormiscoming/image/upload/', formData)
+          setOpen(false);
+          const {secure_url, public_id, asset_id } = result.data
+          let formdata = { selectedFile:secure_url, filePublicID:public_id, asset_id}
+          submitProfilePhoto({userID:data.userID, formdata,}).then((res)=> {
+            Swal.fire({
+              title: 'Success!',
+              text: 'Profile Photo updated Successfully',
+              icon: 'success',
+              })
+          }).catch((err)=>{
+            Swal.fire({
+              title: 'Uh oh!',
+              text: 'Profile Photo updation failed',
+              icon: 'info',
+              })
+          })
+        }
+        catch (err){
+          setError("Failed Saving Profile image")
+        }
+      }
+      const handleSubmit4 = async (e)=>{
+        e.preventDefault()
+        try {
+          const formData = new FormData();
+          formData.append("api_key",'249459347837371');
+          formData.append("file", cropData);
           formData.append("public_id", "EmployeeProfilEPic/"+data.fullname);
           formData.append("upload_preset", "hrstackMedia");
           const result = await Axios.post('https://api.cloudinary.com/v1_1/stormiscoming/image/upload/', formData)
-          console.log(result)
           setOpen(false);
           const {secure_url, public_id, asset_id } = result.data
           let formdata = { selectedFile:secure_url, filePublicID:public_id, asset_id}
@@ -131,16 +144,33 @@ const handleOnCropComplete = (crop, pixelCrop)=>{
   return (
     <div>
       <Button onClick={handleClickOpen}>
-      <MdAddAPhoto />  <small>Change Photo</small> 
+      <MdAddAPhoto /> &nbsp; <small>{popName}</small> 
       </Button>
       <Dialog maxWidth={20}  open={open} onClose={handleClose}>
         <DialogTitle >{"Crop and Upload Image"}</DialogTitle>
         <hr className='w-90' /> 
 
         <DialogContent>
-        <ReactCrop onComplete={handleOnCropComplete} src={img.imgSrc} onImageLoaded={handleImageloaded} crop={crop} onChange={handleOnCrop} /> 
+        <Cropper
+          style={{ height: 400, width: "100%" }}
+          zoomTo={0.5}
+          initialAspectRatio={1/1}
+          preview=".img-preview"
+          src={img.imgSrc}
+          viewMode={1/1}
+          minCropBoxHeight={10}
+          minCropBoxWidth={10}
+          background={false}
+          responsive={true}
+          autoCropArea={1}
+          checkOrientation={false} 
+          onInitialized={(instance) => {
+            setCropper(instance);
+          }}
+          guides={true}
+        />
         <div className='flex justify-center border'>
-        <canvas  ref={imagePreviewCanvas}> </canvas>
+      {cropData && <img style={{ width: "100%" }} src={cropData} alt="cropped" />}  
         </div>
       <div className='flex flex-col mx-auto items-center py-1 justify-evenly'>
       <label htmlFor="file-upload" className="custom-file-upload">
@@ -157,7 +187,11 @@ const handleOnCropComplete = (crop, pixelCrop)=>{
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleSubmit3}>Save</Button>
+          {cropData ? <> 
+           {status ? <Button onClick={handleSubmit3}>Save & Upload</Button> : <Button onClick={handleSubmit4}>Save</Button>}    </> 
+           :
+           <Button onClick={getCropData}>Crop</Button>}
+    
         </DialogActions>
       </Dialog>
     </div>

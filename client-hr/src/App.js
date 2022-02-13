@@ -16,11 +16,15 @@ import LearningsReq from "./pages/Management/ManageReq/LearningsReq"
 import ProtectedRoute from "./routes/ProtectedRoutes/ProtectedRoute"
 import AddEmployee from "./pages/AddEmployee/AddEmployee"
 import ViewEmployees from "./pages/ViewEmployees/ViewEmployees"
+import ViewBySkills from "./pages/ViewEmployees/ViewBySkills"
+import ViewManagers from "./pages/ViewEmployees/ViewManagers"
+import ViewPerfomer from "./pages/ViewEmployees/ViewPerfomer"
 import Profile from "./pages/Profile/Profile"
 import EditProfile from "./pages/EditProfile/EditProfile"
 import SkillsReq from "./pages/Management/ManageReq/SkillsReq"
 import Seperation from "./pages/Management/ManageReq/Seperation"
 import Transfer from "./pages/Management/ManageReq/Transfer"
+import Transcations from "./pages/Transcations/Transcations"
 // APIs
 import { fetchEmployeeData, fetchStats as fetchAllStats } from './api/api';
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -85,8 +89,12 @@ function App() {
        <Route exact path="/management/all-requests/seperation" element={<Seperation />} />  
        <Route exact path="/management/all-requests/transfer" element={<Transfer />} />  
        <Route exact path="/view-employees" element={<ViewEmployees />} />
+       <Route exact path="/view-employees/view-skills" element={<ViewBySkills />} />
+       <Route exact path="/view-employees/managers" element={<ViewManagers />} />
+       <Route exact path="/view-employees/performer" element={<ViewPerfomer />} />
        <Route exact path="/view-employees/:id" element={<Profile />} />
        <Route exact path="/edit-employees/:id" element={<EditProfile />} />
+       <Route exact path="/transactions" element={<Transcations />} />
        <Route exact path="/timesheet" element={<Timesheet />} />
        <Route exact path="/add-employee" element={<AddEmployee />} />
       </Route>

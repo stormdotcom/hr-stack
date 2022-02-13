@@ -4,18 +4,18 @@ import {HiOutlineUserGroup} from "react-icons/hi"
 import {FaUsersSlash, FaRegCalendarTimes} from "react-icons/fa"
 import {MdPendingActions} from "react-icons/md"
 import CanvasJSReact from './canvasjs.react'
-
 import "./styles.css"
+import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from 'react-redux'
+import {addDesiginationTo} from "../../api/api"
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 function HomeHR() {
     const navigate= useNavigate()
     const { stats} = useSelector(state => state.hr)
     const options = {
         animationEnabled: true,
-        theme: "white",
-        
+        theme: "white", 
  
         axisY: {
         lineColor: "#2072bb",
@@ -32,13 +32,29 @@ function HomeHR() {
             indexLabel: "{y}",		
             indexLabelFontColor: "#2072bb",
             dataPoints: [
-                {"label":"Total Attendance","y":98},
-                {"label":"Project Status","y":100},
+                {"label":"Total Attendance","y":45},
                 {"label":"On Leave","y":100},
                 {"label":"Over All Performance","y":90},
-                {"label":"Others","y":90},  
             ]
         }]
+    }
+    const addDesigination = async()=>{
+      const { value: data } = await Swal.fire({
+        title: 'Add Desigination',
+        input: 'text',
+        inputLabel: 'Desigination',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to write Desigination Title'
+          }
+        }
+      })
+      if(data) {
+      let formData= {text:data}
+      addDesiginationTo(formData).then(()=> Swal.fire('Done'))
+      .catch(()=>Swal.fire('Error adding Desigination') )
+      }
     }
     return (
         <div>
@@ -90,8 +106,8 @@ function HomeHR() {
                 </div>
                 <div className='flex justify-around align-center mt-1 mb-5'> 
                 <div className="hrCards"onClick={()=>{navigate("/add-employee")}} >  Add Employee</div>
-                    <div className="hrCards"> Add Designation</div>
-                    <div className="hrCards"> Update Employee Details</div>
+                    <div className="hrCards" onClick={()=>{addDesigination()}}> Add Designation</div>
+                    <div className="hrCards" onClick={()=>{navigate("/view-employees")}}> Update Employee Details</div>
                 </div>
             </div>
             

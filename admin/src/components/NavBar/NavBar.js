@@ -6,8 +6,8 @@ import DateToday from '../DateToday/DateToday';
 import {Logout , Notifications} from '@mui/icons-material';
 import SideBar from "../SideBar/SideBar"
 import { useNavigate } from 'react-router-dom'
-import {useSelector, useDispatch} from "react-redux"
-import { logout, final} from "../../redux/login/loginSlice"
+import { useDispatch} from "react-redux"
+import { logout} from "../../redux/login/loginSlice"
 
 
 function NavBar() {

@@ -1,15 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
-import { useNavigate} from 'react-router-dom'
 import moment from 'moment'
 import {AiFillCaretRight} from "react-icons/ai"
 import "./styles.css"
 import { Link } from 'react-router-dom';
 import {  useSelector } from 'react-redux'
 import {skillApprove, skillreject} from "../../../api/api"
+import { getSkillsRequest} from "../../../api/api"
+import {  fetchSkills } from '../../../redux/requests/requestSlice'
+import {useNavigate} from "react-router-dom"
+import {useDispatch} from "react-redux"
 import Swal from "sweetalert2"
 function SkillReq() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const { skills} = useSelector(state => state.requests)
 
     const handleApprove = (id)=>{
@@ -25,7 +29,10 @@ function SkillReq() {
               console.log(text)
               let formData={id:id, data:Number(value)} 
               skillApprove(formData)
-              .then(res=> Swal.fire('Approved and Updated', '', 'success'))
+              .then(res=> {
+                getSkillsRequest().then(res=> dispatch(fetchSkills(res.data)))
+                .catch(err=> console.log(err.message))
+                  Swal.fire('Approved and Updated', '', 'success')})
               .catch(err=> Swal.fire('Fail Updating!', '', 'info'))
             }
           }) 
@@ -44,7 +51,10 @@ function SkillReq() {
               }
               formData={id:id, data:text} 
               skillreject(formData)
-              .then(res=> Swal.fire('Skill rejected and updated!', '', 'success'))
+              .then(res=> {
+                getSkillsRequest().then(res=> dispatch(fetchSkills(res.data)))
+                .catch(err=> console.log(err.message))
+                  Swal.fire('Skill rejected and updated!', '', 'success')})
               .catch(err=> Swal.fire('Skill rejection Failed!', '', 'info'))
             }
           })     
@@ -60,7 +70,10 @@ function SkillReq() {
             imageHeight: 300,
         })
     }
-
+    useEffect(()=>{
+        getSkillsRequest().then(res=> dispatch(fetchSkills(res.data)))
+        .catch(err=> console.log(err.message))
+    }, [navigate, dispatch])
     return (
         <>
         <div className='viewPay'>

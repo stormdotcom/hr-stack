@@ -7,8 +7,9 @@ import employeeRouter from './routes/employee.js';
 import hrRouter from './routes/hr.js';
 import adminRouter from "./routes/admin.js"
 import mongoose from "mongoose"
-
-
+import http from "http";
+import { createServer } from "http";
+import { Server } from "socket.io";
 const app = express();
 const CONNECTION_URL = "mongodb://localhost:27017/hr-management";
 const port = 4000;
@@ -18,7 +19,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 
 app.use('/', employeeRouter);
 app.use('/hr', hrRouter);
@@ -40,6 +40,28 @@ app.use(function(err, req, res, next) {
   res.json({ message: err.message});
 });
 mongoose.connect(CONNECTION_URL)
-.then(()=>{ console.log("DB Connected"); app.listen(port, ()=> console.log("server running on port " + port)) })
+.then(()=>{ console.log("DB Connected"); 
+})
 .catch((err)=> console.log("Error connecting DB \n" + err.message))
+const server = http.createServer(app);
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, { 
+  cors:{
+    origin:['http://localhost:3000']
+  }
+
+});
+const socketHandler = (io, socket)=>{
+  return [io, sock]
+}
+
+// const onConnection = (socket) => {
+//   console.log("new connection ", socket.id);
+
+
+// }
+// io.on("connection", onConnection);
+httpServer.listen(port, ()=> console.log("server running on port " + port));
+
 

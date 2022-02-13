@@ -1,9 +1,12 @@
 import  express from 'express';
 const router = express.Router();
-import { signin, createHR, logout, fetchAllEmployeData, getPendingTimeSheet, timeSheetApprove, createEvent, getSkillsRequest,
-  getAllLeaveRequest, fetchCompanyInfo,skillApprove,skillreject, createAnnouncement, getCabRequest, cabApprove, cabDecline,
+import { signin, createHR, logout, fetchAllEmployeData, getPendingTimeSheet, timeSheetApprove, createEvent, getSkillsRequest, getFullData,
+  getCurrentMonthTmeSheet, submitPayment,
+  getAllLeaveRequest, fetchCompanyInfo,skillApprove,skillreject, createAnnouncement, getCabRequest, cabApprove, cabDecline, unsetPerformer, getMonth,
+  addDesigination,
+  getSperationRequest, getTransferRequest,approveSeperation,declineSeperation, getAllEmployeesBySkills, getAllManagers, submitAward, getAllEmployeesName,
   getLearningRequest, fetchStats, approveLearning, declineLearning, getAllEmployees, addDesignations, saveProfile} from "../contollers/hr.js";
-import { createUser, fetchEmployeData } from "../contollers/employee.js"
+import { createUser, fetchEmployeData, getPerformer } from "../contollers/employee.js"
 /* GET home page. */
 router.get('/hr', function(req, res, next) {
   res.send("hr");
@@ -35,5 +38,23 @@ router.post('/createAnnouncement', createAnnouncement);
 router.get('/getCabRequest', getCabRequest);
 router.get('/cabApprove', cabApprove);
 router.post('/cabDecline', cabDecline)
+router.get('/getSperationRequest', getSperationRequest);
+router.get('/getTransferRequest', getTransferRequest);
+router.patch('/approveSeperation', approveSeperation);
+router.patch('/declineSeperation', declineSeperation);
+router.patch('/approveTransfer', approveSeperation);
+router.patch('/declineTransfer', declineSeperation);
+router.get('/getAllEmployeesBySkills', getAllEmployeesBySkills);
+router.get('/getAllManagers', getAllManagers);
+router.post('/submitAward', submitAward);
+router.post('/unsetPerformer', unsetPerformer);
+router.get('/getPerformer', getPerformer);
+router.get('/getAllEmployeesName', getAllEmployeesName);
+router.get('/getFullData', getFullData);
+router.get('/getMonth', getMonth)
+router.post('/getCurrentMonthTmeSheet', getCurrentMonthTmeSheet);
+router.post('/submitPayment', submitPayment);
+router.post('/addDesigination', addDesigination);
+
 export default router;
 

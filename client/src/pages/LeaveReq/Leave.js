@@ -100,7 +100,7 @@ function Leave() {
                     <div className='leaveInfoCard'> <h5 className='font-bold'>Sick Leave Balance</h5> <h4  className='font-bold'>{data?.leaveBalance?.sick} </h4>  </div>
 
                 </div>
-				{leaveReq ? <div className='className="container my-5 tableView py-4 "'>
+				{leaveReq ? <div className="container my-5 tableView py-4 overflow-x-auto">
 				<h6 className='text-center font-semibold'>Leave Status</h6>
                         <table className="table-auto border-collapse  w-100 text-center">
                             <thead className="bg-gray-50">

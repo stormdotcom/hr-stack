@@ -3,6 +3,7 @@ const companySchema = mongoose.Schema({
     locations: {type: Array},
     designations: {type: Array},
     projects:{type: Array},
+    months:{type: Array},
     events: {type: Array, required:false},
     holidays:{type: Array},
    

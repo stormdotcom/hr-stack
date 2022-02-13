@@ -3,7 +3,7 @@ import "./styles.css"
 import {FaUserAlt} from "react-icons/fa";
 import {RiLockPasswordFill} from "react-icons/ri"
 import Stack from "../../components/NavBar/Stack-logo.svg";
-import {Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useFormik } from 'formik';
 import {loginFail, loginPending, loginSuccess} from "../../redux/login/loginSlice"
 import {useDispatch, useSelector} from "react-redux"
@@ -106,10 +106,6 @@ function SignIn() {
             <button type='submit' className="button-1 w-full my-2"> 
               Sign In
             </button>
-            <Link className="inline-block  align-baseline font-light text-sm text-blue hover:text-blue-darker" to="/forget-password"
-            >
-              Forgot Password?
-            </Link>
           </div>
         </div>
         </form>
