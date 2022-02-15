@@ -39,18 +39,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.json({ message: err.message});
 });
-mongoose.connect(CONNECTION_URL)
+mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(()=>{ console.log("DB Connected"); 
+app.listen(port, () => console.log(`Server Running on Port: http://localhost:${port}`))
 })
 .catch((err)=> console.log("Error connecting DB \n" + err.message))
-const server = http.createServer(app);
-
-const httpServer = createServer(app);
-const io = new Server(httpServer, { 
-  cors:{
-    origin:['http://localhost:3000']
-  }
-
-});
-
-httpServer.listen(port, ()=> console.log("server running on port " + port));
