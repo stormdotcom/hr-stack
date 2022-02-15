@@ -3,14 +3,14 @@ import {Container, Navbar, Nav, NavDropdown} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./styles.css"
 import DateToday from '../DateToday/DateToday';
-import {Logout,Person, Notifications} from '@mui/icons-material';
+import {Logout,Person} from '@mui/icons-material';
 import SideBar from "../SideBar/SideBar"
 import { useNavigate } from 'react-router-dom'
 import {useSelector, useDispatch} from "react-redux"
 import { logout} from "../../redux/login/loginSlice"
 import {final} from "../../redux/employee/employeeSlice"
 import Avatar from '@mui/material/Avatar';
-import NotifcationsStack from '../Notifications/NotifcationsStack'
+
 
 function NavBar() {
   const dispatch = useDispatch()
@@ -22,7 +22,6 @@ function NavBar() {
 
   }
   const {data} = useSelector(state=> state.employee)
-  const { notify } = useSelector(state=> state.notification)
     return (
         <div>
             <Navbar className='navbar' expand="lg">
@@ -32,14 +31,7 @@ function NavBar() {
     <Navbar.Toggle aria-controls="basic-navbar-nav" className='ml-auto'   />
     <Navbar.Collapse id="basic-navbar-nav" className='ml-auto'>
       <Nav className="ml-auto flex items-end">
-      {notify.length ?  <NavDropdown  title={<Notifications />} id="basic-nav-dropdown">
-          {notify.map((ele, i)=>{
-            return (
-              <NavDropdown.Item key={i} > <NotifcationsStack  text={"some text"} time={new Date(2018, 11, 24, 10, 33, 30, 0)} /> </NavDropdown.Item>
-            )
-          })}
 
-        </NavDropdown> :   <Nav.Link> <Notifications /> </Nav.Link>}
 
         <Nav.Link> {data?.selectedFile && <Avatar sx={{ width: 24, height: 24 }} src={data?.selectedFile} alt="profile-face" />  } </Nav.Link>
         <NavDropdown title={data.fullname} id="basic-nav-dropdown">

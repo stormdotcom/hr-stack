@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:4000' });
+
+const API = axios.create({ baseURL: 'http://ec2-44-201-157-239.compute-1.amazonaws.com' });
 
 export const signIn = (formData) => API.post('/admin/signin', formData);
 export const fetchStats =  () => API.get('/admin/fetchStats');

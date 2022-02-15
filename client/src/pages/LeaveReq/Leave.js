@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useSelector, useDispatch} from "react-redux"
 import NavBar from '../../components/NavBar/NavBar'
 import {getHoliday, submitLeave, checkLeaveStatus} from "../../api/employee"
@@ -15,7 +15,7 @@ function Leave() {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const {isloading, data, error1, leaveReq} = useSelector(state=> state.employee)
-	const  holiday= useRef(0);
+	const  [holiday, setHoliday]= useState(0);
 	const submitHandle = async (values)=>{
 		dispatch(initial())
 		let form= {...data, ...values}
@@ -74,7 +74,7 @@ function Leave() {
 
 	useEffect(() => {
 		getHoliday().then(res => {
-			holiday.current =res.data;
+			setHoliday(res.data.holiday)
 		}).catch(err=> dispatch(errorfetching(err.data)))
 		checkLeaveStatus(user._id).then((res)=> dispatch(fetchLeaveStatus(res.data)))
 					.catch(err => dispatch(errorfetching(err.message)))
@@ -96,7 +96,7 @@ function Leave() {
 				{error1 && <div> <Alert severity='warning'> {error1} </Alert> </div>}
                 <div className='topSecLeave'>
                     <div className='leaveInfoCard'> <h5 className='font-bold'>Causal Leave Balance</h5> <h4  className='font-bold'>{data?.leaveBalance?.casual} </h4> </div>
-                    <div className='leaveInfoCard'> <h5 className='font-bold'>Holidays this Year</h5> <h4  className='font-bold'>2 </h4>  </div>
+                    <div className='leaveInfoCard'> <h5 className='font-bold'>Holidays this Year</h5> <h4  className='font-bold'>{holiday} </h4>  </div>
                     <div className='leaveInfoCard'> <h5 className='font-bold'>Sick Leave Balance</h5> <h4  className='font-bold'>{data?.leaveBalance?.sick} </h4>  </div>
 
                 </div>

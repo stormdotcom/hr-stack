@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'ec2-3-88-132-177.compute-1.amazonaws.com' });
+// const API = axios.create({ baseURL: 'http://ec2-44-201-157-239.compute-1.amazonaws.com' });
 
-
+const API = axios.create({ baseURL: 'http://localhost:4000' });
 export const signIn = (formData) => API.post('/signin', formData);
 export const fetchEmployeeData = (id) => API.get('/fetchEmployeeData?id='+id);
 export const getTimeSheet = (id)=> API.get("/get-timesheet?id="+id)
@@ -43,9 +43,9 @@ export const getTransferInfo = (id)=> API.get('/getTransferInfo?id='+id)
 export const getPerformer = ()=> API.get('/getPerformer')
 export const getMonths = ()=> API.get('/getMonths')
 export const getNotification = (id) => API.get('/getNotification?id='+id)
-// todo
 export const getHoliday = ()=> API.get('/getHoliday')
-export const setAssetReqPriority = (form)=>API.post('/setAssetReqPriority', form)
+// todo
 
+export const setAssetReqPriority = (form)=>API.post('/setAssetReqPriority', form)
 
 

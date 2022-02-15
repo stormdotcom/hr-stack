@@ -24,7 +24,8 @@
 }
 .logoTopSec h5 {
     font-weight: 900;
-    color: #278acb
+    color: #278acb;
+    transition: all 100ms ease-in-out;
 }
 .logo {
     color:#278acb;
@@ -35,6 +36,7 @@
 .logoImage {
     fill: #278acb;
     margin-bottom: 2%;
+    transition: all 100ms ease-in-out;
 }
 #header {
     margin-right: 100px;

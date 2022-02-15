@@ -12,7 +12,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 const app = express();
 const CONNECTION_URL = "mongodb://localhost:27017/hr-management";
-const port = 4001;
+const port = 4000;
 
 app.use(cors())
 app.use(logger('dev'));

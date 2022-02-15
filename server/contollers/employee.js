@@ -14,6 +14,7 @@ import Assets from "../models/Assets.js";
 import CabReq from "../models/CabReq.js";
 import MigrationReq from "../models/MigrationReq.js";
 import Notification from "../models/Notifications.js";
+import Company from '../models/Company.js';
 
 export const getNotification = async (req, res)=>{
   const {id}= req.query
@@ -418,9 +419,11 @@ export const submitLeave = async (req, res)=>{
 }
 
 export const getHoliday = async (req, res)=> {
+  let id = '61eb06cf6b7539f49aa3fc2f'
   try {
-      const holiday=3
-      res.status(200).json({holiday})
+      const result= await Company.findOne({_id:ObjectId(id)})
+      if(!result) return res.status(400).json({message:"No data"})
+      res.status(200).json({holiday:result.holidays.length})
   } catch (error) {
       console.log(error.message)
       res.status(200).json(error.message)

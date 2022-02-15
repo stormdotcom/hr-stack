@@ -11,8 +11,6 @@ import {
 //import icons from react icons
 import {  FaHandPointer } from "react-icons/fa";
 import { FiHome, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
-import {AiTwotoneEdit} from "react-icons/ai";
-import {  GiSkills } from "react-icons/gi";
 import { BsFillCalendarWeekFill,BsViewList } from "react-icons/bs";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import Stack from "../NavBar/Stack-logo.svg"

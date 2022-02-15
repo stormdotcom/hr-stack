@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+
+// const API = axios.create({ baseURL: 'http://ec2-44-201-157-239.compute-1.amazonaws.com' });
+
 const API = axios.create({ baseURL: 'http://localhost:4000' });
 
 
