@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:4000' });
+const API = axios.create({ baseURL: 'ec2-3-88-132-177.compute-1.amazonaws.com' });
 
 
 export const signIn = (formData) => API.post('/signin', formData);

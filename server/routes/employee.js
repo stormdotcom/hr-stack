@@ -10,7 +10,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send("employee");
+  res.send("api live");
 });
 
 router.post('/signin', signin);

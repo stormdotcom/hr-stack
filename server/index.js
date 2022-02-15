@@ -12,7 +12,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 const app = express();
 const CONNECTION_URL = "mongodb://localhost:27017/hr-management";
-const port = 4000;
+const port = 4001;
 
 app.use(cors())
 app.use(logger('dev'));
@@ -52,16 +52,7 @@ const io = new Server(httpServer, {
   }
 
 });
-const socketHandler = (io, socket)=>{
-  return [io, sock]
-}
 
-// const onConnection = (socket) => {
-//   console.log("new connection ", socket.id);
-
-
-// }
-// io.on("connection", onConnection);
 httpServer.listen(port, ()=> console.log("server running on port " + port));
 
 
