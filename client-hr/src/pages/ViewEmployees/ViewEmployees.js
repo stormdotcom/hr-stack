@@ -6,6 +6,7 @@ import {getAllEmployees} from "../../api/api"
 import {Alert} from "@mui/material"
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
+
 function ViewEmployees() {
     const navigate = useNavigate()
     const [employees, setEmployees] = useState([])
@@ -14,8 +15,8 @@ function ViewEmployees() {
         getAllEmployees().then(res=> setEmployees(res.data))
         .catch(err=> seterr(err.message))
         return (()=> setEmployees([]))
-      }, [navigate]);
 
+      }, [navigate]);
   return <>
         <div className='viewPay'>
             <div className=' mx-auto'> 
@@ -37,13 +38,21 @@ function ViewEmployees() {
             <div className='flex p-10 justify-center flex-wrap'>
                {employees.map((ele, i)=>{
                    return (
+                     <div className='border p-2 rounded-md m-1'>
                     <NameCard 
                     selectedFile={ele.selectedFile}
                     fullname={ele.fullname} 
                     empID={ele.empID} 
                     desigination={ele?.Designation?.name} 
+                    project={ele?.projectAllocated.Project}
                     key={i} 
                     cardID={ele.userID} />
+                    <div className='flex justify-evenly'>
+                    <div className='text-sm button-sm-1' onClick={()=>navigate(`/change-position/${ele.userID}`) }> Change Desigination </div>
+                     <div className='text-sm button-sm-1' onClick={()=>navigate(`/change-project/${ele.userID}`) }> Allocate Project</div>
+                       </div>
+                     
+                    </div>
                    )
                })}
                 

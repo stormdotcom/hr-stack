@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 
-const API = axios.create({ baseURL: 'http://ec2-44-201-157-239.compute-1.amazonaws.com' });
-
+// const API = axios.create({ baseURL: 'https://api-hr-stack.xyz' });
+const API = axios.create({ baseURL: 'http://localhost:4000' });
 export const signIn = (formData) => API.post('/admin/signin', formData);
 export const fetchStats =  () => API.get('/admin/fetchStats');
 export const getPendingTimeSheet= ()=> API.get('/hr/getPendingTimeSheet')
@@ -25,5 +25,7 @@ export const createAnnouncement = (form)=>API.post('/hr/createAnnouncement', for
 export const getAllEmployees = ()=> API.get('/admin/getAllEmployees')
 export const addProjectTo = (form)=>API.post('/admin/addProject', form)
 export const addHolidaysTo = (form)=>API.post('/admin/addHolidays', form)
+export const updatePassword = (form)=>API.post('/admin/updatePassword', form)
+export const updateAsset = (form)=>API.post('/admin/updateAsset', form)
 // todo
 export const returnAsset=  (id) => API.get("/admin/returnAsset?id="+id)

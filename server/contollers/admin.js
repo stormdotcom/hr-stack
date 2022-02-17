@@ -10,6 +10,30 @@ import Company from "../models/Company.js";
 import AssetReq from "../models/AssetReq.js";
 import User from "../models/User.js";
 
+
+export const updateAsset = async (req, res)=>{
+    const {id, assetName, assetModel, assetCategory, assetType, description} = req.body
+    try {
+        const result = await Assets.findOneAndUpdate({_id:ObjectId(id)}, {$set:{assetName, assetModel, assetCategory, assetType, description}})
+        if(!result) return res.status(400).json({message: "Not created"})
+        res.status(200).json({status: true})  
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json(error.message)
+    }
+}
+export const updatePassword = async (req, res)=>{
+    const {id, newPassword} = req.body
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 12);
+        const result = await User.findOneAndUpdate({_id:ObjectId(id)}, {$set:{password: hashedPassword}})
+        if(!result) return res.status(400).json({message: "Not created"})
+        res.status(200).json({status: true})  
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json(error.message)
+    }
+}
 export const addHolidays = async (req, res)=>{
     const {text} = req.body
     let id = '61eb06cf6b7539f49aa3fc2f'

@@ -25,6 +25,7 @@ import SkillsReq from "./pages/Management/ManageReq/SkillsReq"
 import Seperation from "./pages/Management/ManageReq/Seperation"
 import Transfer from "./pages/Management/ManageReq/Transfer"
 import Transcations from "./pages/Transcations/Transcations"
+import ChangePostion from "./pages/ViewEmployees/ChangePostion"
 // APIs
 import { fetchEmployeeData, fetchStats as fetchAllStats } from './api/api';
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -33,6 +34,7 @@ import { logout} from "./redux/login/loginSlice"
 import { initial, fetchProfile, errorfetching, fetchStats, final} from "./redux/hr/hrSlice"
 import {  useDispatch} from "react-redux"
 import jwtDecode from "jwt-decode"
+import ChangeProject from "./pages/ViewEmployees/ChangeProject"
 
 
 
@@ -94,6 +96,8 @@ function App() {
        <Route exact path="/view-employees/performer" element={<ViewPerfomer />} />
        <Route exact path="/view-employees/:id" element={<Profile />} />
        <Route exact path="/edit-employees/:id" element={<EditProfile />} />
+       <Route exact path="/change-position/:id" element={<ChangePostion />} />
+       <Route exact path="/change-project/:id" element={<ChangeProject />} />
        <Route exact path="/transactions" element={<Transcations />} />
        <Route exact path="/timesheet" element={<Timesheet />} />
        <Route exact path="/add-employee" element={<AddEmployee />} />

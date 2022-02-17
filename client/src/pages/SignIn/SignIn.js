@@ -24,7 +24,7 @@ function SignIn() {
         localStorage.setItem('employee', JSON.stringify(res.data))
         navigate("/")
         
-      }).catch(err=> dispatch(loginFail(err.response.data.message)))
+      }).catch(err=> dispatch(loginFail(err?.response?.data.message)))
 
 
     } catch (error) { 

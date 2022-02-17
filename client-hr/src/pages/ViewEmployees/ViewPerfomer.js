@@ -37,7 +37,7 @@ function ViewPerfomer() {
              {performer &&             <div className='flex p-10 justify-center flex-wrap'>
                {performer.map((ele, i)=>{
                    return (
-                       <div className='border p-2 rounded-md'>
+                       <div className='border p-2 rounded-md m-1'>
                     <NameCard 
                     selectedFile={ele.selectedFile}
                     fullname={ele.fullname} 

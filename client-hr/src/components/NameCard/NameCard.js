@@ -15,7 +15,7 @@ function NameCard( {fullname, empID, desigination, selectedFile, cardID, project
         <h6 className='truncate font-bold text-base'> {fullname} </h6>
         <h6 className='truncate font-semibold text-sm'> {empID}</h6>
         <p className='font-semibold text-sm'> {desigination}</p>
-        <p className='font-semibold text-sm'> {project}</p>
+        <p className='font-light text-xs'>Project: {project}</p>
     </div>
   </div>;
 }

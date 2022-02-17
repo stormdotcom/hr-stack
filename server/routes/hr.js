@@ -3,7 +3,7 @@ const router = express.Router();
 import { signin, createHR, logout, fetchAllEmployeData, getPendingTimeSheet, timeSheetApprove, createEvent, getSkillsRequest, getFullData,
   getCurrentMonthTmeSheet, submitPayment,
   getAllLeaveRequest, fetchCompanyInfo,skillApprove,skillreject, createAnnouncement, getCabRequest, cabApprove, cabDecline, unsetPerformer, getMonth,
-  addDesigination,
+  addDesigination, changePostion, changeProject,
   getSperationRequest, getTransferRequest,approveSeperation,declineSeperation, getAllEmployeesBySkills, getAllManagers, submitAward, getAllEmployeesName,
   getLearningRequest, fetchStats, approveLearning, declineLearning, getAllEmployees, addDesignations, saveProfile} from "../contollers/hr.js";
 import { createUser, fetchEmployeData, getPerformer } from "../contollers/employee.js"
@@ -55,6 +55,8 @@ router.get('/getMonth', getMonth)
 router.post('/getCurrentMonthTmeSheet', getCurrentMonthTmeSheet);
 router.post('/submitPayment', submitPayment);
 router.post('/addDesigination', addDesigination);
+router.post('/changePostion', changePostion);
+router.post('/changeProject', changeProject);
 
 export default router;
 

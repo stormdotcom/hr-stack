@@ -7,7 +7,6 @@ import Management from "./pages/Management/Management"
 import AddEvents from "./pages/Management/AddEvents/AddEvents"
 import ManageReq from "./pages/Management/ManageReq/ManageReq"
 import AssetsReq from "./pages/Management/ManageReq/AssetsReq"
-import RaiseIssue from "./pages/RaiseIssue/RaiseIssue"
 import ProtectedRoute from "./routes/ProtectedRoutes/ProtectedRoute"
 import RaisedIssue from "./pages/Management/ManageReq/RaisedIssue"
 import AddAssets from "./pages/Management/AddAssets/AddAssets"
@@ -68,7 +67,6 @@ function App() {
        <Route exact path="/management/all-requests/assets" element={<AssetsReq />} />
        <Route exact path="/manage-assets" element={<AssetManagement />} />   
        <Route exact path="/management/all-requests/tickets" element={<RaisedIssue />} />
-       <Route exact path="/tickets" element={<RaiseIssue />} />
        <Route exact path="/manage-users" element={<ManageUsers />} />
       </Route>
     </Routes>

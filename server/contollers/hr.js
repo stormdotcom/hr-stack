@@ -13,6 +13,31 @@ import Skllls from '../models/SkillsReq.js';
 import CabReq from '../models/CabReq.js';
 import MigrationReq from '../models/MigrationReq.js';
 
+export const changeProject = async (req, res)=>{
+  const {id, project} =req.body
+  console.log(req.body)
+try {
+const result = await Employees.findOneAndUpdate({userID:ObjectId(id)}, {$set:{'projectAllocated.Project': project}})
+console.log(result)
+if(!result) return res.status(400).json({message:"not created"})
+res.status(200).json({status:true})
+} catch (error) {
+console.log(error.message)
+res.status(500).json({message:"Something went wrong"})
+}
+}
+
+export const changePostion = async (req, res)=>{
+      const {id, position} =req.body
+  try {
+    const result =await Employees.findOneAndUpdate({userID:ObjectId(id)}, {$set:{'Designation.name': position}})
+    if(!result) return res.status(400).json({message:"not created"})
+    res.status(200).json({status:true})
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:"Something went wrong"})
+  }
+}
 
 export const addDesigination = async (req, res)=>{
   const {text} = req.body 

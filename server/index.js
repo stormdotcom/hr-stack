@@ -7,12 +7,10 @@ import employeeRouter from './routes/employee.js';
 import hrRouter from './routes/hr.js';
 import adminRouter from "./routes/admin.js"
 import mongoose from "mongoose"
-import http from "http";
-import { createServer } from "http";
-import { Server } from "socket.io";
 const app = express();
 const CONNECTION_URL = "mongodb://localhost:27017/hr-management";
 const port = 4000;
+
 
 app.use(cors())
 app.use(logger('dev'));

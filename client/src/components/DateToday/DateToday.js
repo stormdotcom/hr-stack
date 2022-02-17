@@ -19,8 +19,11 @@ function DateToday() {
     const date = `${day}, ${today.getDate()} ${today.toLocaleDateString(locale, { month: 'long' })}\n\n`;
   
     return (
-        <p className='lg:mt-2'> {date}  <AccessTimeIcon />  &nbsp;
-         <Clock format={'HH:mm:ss'} ticking={true} timezone={'IST/Asia'} />  </p>
+      <div className='mr-5 pr-3'>        
+         <p className='lg:mt-2'> {date}  <AccessTimeIcon />  &nbsp;
+      <Clock format={'HH:mm:ss'} ticking={true} timezone={'IST/Asia'} />  </p> 
+      </div>
+
     )
 }
 

@@ -20,8 +20,9 @@ function DateToday() {
 
   
     return (
-        <p className='lg:mt-2'> {date}  <AccessTimeIcon />  &nbsp;
-        <Clock format={'HH:mm:ss'} ticking={true} timezone={'IST/Asia'} />   </p>
+      <div className='mr-1 pr-1'><p className='lg:mt-2'> {date}  <AccessTimeIcon />  &nbsp;
+      <Clock format={'HH:mm:ss'} ticking={true} timezone={'IST/Asia'} />   </p> </div>
+
     )
 }
 

@@ -6,13 +6,19 @@ import {Alert} from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux';
-import {  fetchAllAssets } from '../../../redux/requests/requestSlice'
+import {  fetchAllAssets } from '../../../redux/requests/requestSlice';
+import EditAssets from "../../Management/AddAssets/EditAssets"
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Button from '@mui/material/Button';
 import "./styles.css"
 function AssetManagement() {
     const navigate = useNavigate
     const dispatch = useDispatch()
     const [holdingAssets, setholdingAssets] = useState([])
     const [err, seterr] = useState(null)
+    const [CurrentAsset, setCurrentAsset]= useState(null)
     const {allAssets} = useSelector(state=> state.requests)
 
     useEffect(() => {
@@ -27,6 +33,17 @@ function AssetManagement() {
       };   
         
       }, [navigate, dispatch]);
+      const [open, setOpen] = React.useState(false);
+
+      const handleClickOpen = (data) => {
+        setOpen(true);
+        setCurrentAsset(data)
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+        setCurrentAsset(null)
+      };
 
   return <>
         <div className='separation '>
@@ -38,6 +55,7 @@ function AssetManagement() {
             <div className='flex px-10 py-3 justify-center flex-wrap'>
                {allAssets.map((ele, i)=>{
                    return (
+                       <div onClick={()=>handleClickOpen(ele)}>
                     <NameCard 
                     secondName={ele.assetName}
                     desigination={ele?.assetCategory} 
@@ -45,6 +63,7 @@ function AssetManagement() {
                     key={i} 
                     cardID={ele.userID} 
                     type={true}/>
+                    </div>
                    )
                })}
                 
@@ -74,6 +93,14 @@ function AssetManagement() {
             </div>
          
         </div>
+        <Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+               <EditAssets data={CurrentAsset} setOpen={setOpen} fetchAllAssets={fetchAllAssets} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
 
       <NavBar />
   </>;

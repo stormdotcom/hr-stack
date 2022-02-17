@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-// const API = axios.create({ baseURL: 'http://ec2-44-201-157-239.compute-1.amazonaws.com' });
+// const API = axios.create({ baseURL: 'https://api-hr-stack.xyz' });
 
 const API = axios.create({ baseURL: 'http://localhost:4000' });
 
@@ -49,4 +49,7 @@ export const getMonth=()=> API.get('/hr/getMonth')
 export const getCurrentMonthTmeSheet = (form) => API.post('/hr/getCurrentMonthTmeSheet', form)
 export const submitPayment = (form) => API.post('/hr/submitPayment', form)
 export const addDesiginationTo = (form) => API.post('/hr/addDesigination', form)
+export const submitProject = (form) => API.post('/hr/submitProject', form)
+export const changePostion = (form) => API.post('/hr/changePostion', form)
+export const changeProject = (form) => API.post('/hr/changeProject', form)
 

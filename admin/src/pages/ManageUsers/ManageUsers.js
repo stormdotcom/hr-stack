@@ -4,7 +4,7 @@ import { useNavigate} from 'react-router-dom'
 import {AiFillCaretRight} from "react-icons/ai"
 import { Link } from 'react-router-dom'
 import Swal from "sweetalert2"
-import {blockUser, unBlockUser, deleteUser, getAllEmployees} from "../../api/api"
+import {blockUser, unBlockUser, deleteUser, getAllEmployees, updatePassword} from "../../api/api"
 import moment from "moment"
 import "./styles.css"
 function ManageUsers() {
@@ -12,7 +12,7 @@ function ManageUsers() {
     const [users, setUsers] = useState([])
     const handleBlock = (id, name)=>{
         Swal.fire({
-            title: 'Do you want Block '+ name + ' ?',
+            text: 'Do you want Block '+ name + ' ?',
             showCancelButton: true,
             confirmButtonText: 'Block',
           }).then((result) => {
@@ -32,7 +32,7 @@ function ManageUsers() {
     }
     const handleUnBlock = (id, name)=>{
         Swal.fire({
-            title: 'Do you want Unblock '+ name + ' ?',
+            text: 'Do you want Unblock '+ name + ' ?',
             showCancelButton: true,
             confirmButtonText: 'Unblock',
           }).then((result) => {
@@ -51,11 +51,9 @@ function ManageUsers() {
     
     const handleDelete = (id, name)=>{
         Swal.fire({
-            title: 'Do you want Delete '+ name + ' ?',
-            showDenyButton: true,
+            text: 'Do you want Delete '+ name + ' ?',
             showCancelButton: true,
             confirmButtonText: 'Delete',
-            denyButtonText: `Don't Delete`,
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
@@ -67,7 +65,37 @@ function ManageUsers() {
           })
 
     }
+    const handleChangePassword = (id, name)=>{
+        Swal.fire({
+            text: 'Do you want Update password for '+ name + ' ?',
+            showCancelButton: true,
+            confirmButtonText: 'Update',
+          }).then(async(result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const { value: newPassword } = await Swal.fire({
+                    text: 'Enter New Password',
+                    input: 'text',
+                    inputLabel: 'Password for '+name,
+                    showCancelButton: true,
+                    inputValidator: (value) => {
+                      if (!value) {
+                        return 'Please Enter New Password!'
+                      }
+                    }
+                  })
+                  
+                  if (newPassword) {
+                      const formData = {id, newPassword}
+                    updatePassword(formData).then(()=>Swal.fire('User Password has been changed!', '', 'success'))
+                    .catch((err)=> Swal.fire(err.message, '', 'info'))
+                  }
 
+            }
+          })
+
+    }
+    
     
     useEffect(() => {
         getAllEmployees().then((res)=> setUsers(res.data))
@@ -139,16 +167,19 @@ function ManageUsers() {
                                         {moment(ele?.dateOfJoin).utc().format('DD-MM-YYYY')}   
                                         </td>
                                         <td className="text-sm px-6 py-4">
-                                        {ele.migration?.status ? "On Notice Period" : "Working"}
+                                        {ele.migration?.status && "On Notice Period"}
+                                        {!ele.migration?.status && "Working"}
+                                        {ele?.onBoard &&  "On Boarding"}
                                         </td>
-                                        <td className="text-sm px-6 py-4">
+                                        <td className="text-sm px-6 py-4 flex justify-evenly">
                                             {ele?.AllEmployees?.AccessStatus ? 
                                                  <div className='button-sm-2'onClick={()=>handleBlock(ele.userID, ele.fullname)}>Block </div>
                                                 :
                                                 <div className='button-sm-1'onClick={()=>handleUnBlock(ele.userID, ele.fullname)}>UnBlock </div>}
+                                          <div className='button-sm-4'onClick={()=>handleDelete(ele.userID, ele.fullname)}>Delete </div>
                                         </td>
                                         <td className="text-sm px-6 py-4">
-                                        <div className='button-sm-4'onClick={()=>handleDelete(ele.userID, ele.fullname)}>Delete </div>
+                                        <div className='button-sm-1'onClick={()=>handleChangePassword(ele.userID, ele.fullname)}>Change Password </div>
                                         </td>
                                     </tr>
                                     );
