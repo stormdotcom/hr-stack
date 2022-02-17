@@ -18,7 +18,7 @@ function ViewPaySlip() {
         <div className='viewPay'>
         <nav className="rounded-md w-full">
   <ol className="list-reset flex">
-    <li> <Link to="/selfservice">Self Service </Link></li>
+    <li> <Link to="/management">Management </Link></li>
     <li><span className="text-gray-500 mx-2">/</span></li>
     <li className="text-gray-500">View Pay-Slip</li>
   </ol>
