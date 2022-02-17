@@ -64,7 +64,13 @@ user-select: none;
 -webkit-user-select: none;
 touch-action: manipulation;
 }
-
+@media only screen and (max-width: 600px) {
+  .disbaled-button-01  {
+    padding: 5px 8px;
+    height: 40px;
+    font-size: smaller;
+  }
+}
 .button-2 {
   margin: auto;
 background-color: #FDBA22;

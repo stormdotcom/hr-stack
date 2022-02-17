@@ -16,6 +16,7 @@
     border-radius: 15px;
     border: 2px solid #919191;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    transition: all 100ms ease-out;
 
 }
 .cardStarEmployees {
@@ -31,6 +32,7 @@
     border-radius: 15px;
     border: 2px solid #919191;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    transition: all 100ms ease-out;
 }
 .homeCompanyEvents {
     display: flex;
@@ -78,20 +80,49 @@
     }
     .homeCompanyEvents {
         display: block;
+        padding: 0;
         width: 100%;
     }
     .homeEvent {
-        width: 60%;
+        width: 80%;
     }
 
   }
   @media only screen and (max-width: 600px) {
     .cardTop {
+        margin-top: 17%;
       display: block;
       width: 80%;
     }
+    .cardTop h5 {
+        font-size: small;
+    }
+    .cardTop h6 {
+        font-size: smaller;
+    }
+    .cardStarEmployees {
+        display: block;
+        width: 80%;
+    }
+
+    .cardStarEmployees  h5 {
+        font-size: small;
+    }
+    .stars5 {
+        margin-right: auto;
+    }
     .cardItem {
         align-items: flex-start;
+    }
+    .starCard h6 {
+        font-size: small;
+    }
+    .starCard p {
+        font-size: smaller;
+    }
+    .homeCompanyEvents {
+        display: block;
+        padding: 0;
     }
 
   }

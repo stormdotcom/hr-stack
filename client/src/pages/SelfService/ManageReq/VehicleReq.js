@@ -32,13 +32,16 @@ function VehicleReq() {
     return (
         <>
         <div className='viewPay'>
-        <nav className="rounded-md w-full">
-  <ol className="list-reset flex">
-    <li> <Link to="/selfservice">Self Service </Link></li>
-    <li><span className="text-gray-500 mx-2">/</span></li>
-    <li className="text-gray-500">Manage Requests</li>
-  </ol>
-  </nav>
+            <div className='navigateSelfService'> 
+            <nav className="rounded-md w-full ">
+                    <ol className="list-reset flex">
+                        <li> <Link to="/selfservice">Self Service </Link></li>
+                        <li><span className="text-gray-500 mx-2">/</span></li>
+                        <li className="text-gray-500">Manage Requests</li>
+                    </ol>
+                    </nav>
+                 </div>
+
         <div className="container my-5 tableView py-4 overflow-x-auto">
             <div className='button-groups'> 
             <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/selfservice/all-requests')}} > All Requests</div>

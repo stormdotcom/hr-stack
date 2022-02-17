@@ -29,3 +29,10 @@
        
     }
   }
+  @media only screen and (max-width: 600px) {
+    .topSecLeave  {
+        display: flex;
+        flex-direction: column;
+        margin-top: 15px;
+    }
+  }

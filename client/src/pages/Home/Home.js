@@ -37,7 +37,7 @@ function Home() {
           <div className="cardTop">
           <div className='flex justify-center cardItem'>
             <div className="homeTopIcon"> 
-            <MdBusinessCenter className="text-fourth text-4xl" />
+            <MdBusinessCenter className="text-fourth md:text-4xl " />
             </div>
             <div className='text-left'>
             <h5 className=' pl-1 font-semibold'> {data?.projectAllocated?.Project}</h5>
@@ -47,7 +47,7 @@ function Home() {
           </div>
           <div className='flex justify-center cardItem'>
             <div className="homeTopIcon"> 
-            <VscProject className="text-fourth text-4xl" />
+            <VscProject className="text-fourth  md:text-4xl" />
             </div>
             <div className='text-left'>
             <h5 className=' pl-1 font-semibold'>{data?.projectAllocated?.Status ? 1: 0 }</h5>
@@ -58,7 +58,7 @@ function Home() {
 
       <div className='flex justify-center cardItem'>
             <div className="homeTopIcon"> 
-            <FaRegCalendarTimes className="text-fourth text-4xl" />
+            <FaRegCalendarTimes className="text-fourth  md:text-4xl" />
             </div>
             <div className='text-left'>
             <h5 className=' pl-1 font-semibold'>1</h5>
@@ -67,10 +67,13 @@ function Home() {
             
           </div>
           </div>
-        {performer &&           <div className="cardStarEmployees">
+        {performer &&     <div className="cardStarEmployees">
 
-<h5 className='mt-2 mx-auto font-bold text-center'> Perfomer of Month</h5>
-  <div className='p-1 flex sm:mx-auto md:mx-auto sm:mx-auto'> <AiFillStar className="text-gold" /> <AiFillStar className="text-gold" />  <AiFillStar className="text-gold" />  <AiFillStar  className="text-gold"/>  <AiFillStar  className="text-gold"/> </div>
+<h5 className='mt-2 mx-auto font-bold sm:text-sm text-center'> Perfomer of Month</h5>
+
+ <div className='p-1 flex stars5'> <AiFillStar className="text-gold" /> <AiFillStar className="text-gold" />  <AiFillStar className="text-gold" />  <AiFillStar  className="text-gold"/>  <AiFillStar  className="text-gold"/> </div>
+
+  
 
 <div className='flex justify-around my-2 mx-auto starCard'>
   {performer.map((ele, i)=>{
@@ -101,7 +104,7 @@ function Home() {
                         <div className='homeEvent'>
                         <h6 className='mt-4 text text-center font-bold '>Events </h6>
                         <img height="150px" style={{width: "100%"}} alt="eventsWallpaper" src={event?.selectedFile}/>
-                        <div className='px-5 py-2'>
+                        <div className='lg:px-5 md:px-2 py-2'>
                           <h6 className='font-semibold my-2'>{event?.title} </h6>
                           <p className='text-sm'> {event?.description}</p>
                         </div>
@@ -111,7 +114,7 @@ function Home() {
             {announcements && <div className='homeEvent'>
             <h6 className='mt-4 text text-center font-bold '>Announcements </h6>
                 <img height="150px" style={{width: "100%"}} src={announcements?.selectedFile}  alt="announcementsWallpaper"/>
-                <div className='px-5 py-2'>
+                <div className='lg:px-5 md:px-2 py-2 py-2'>
                   <h6 className='font-semibold my-2'>{announcements?.title} </h6>
                   <p className='text-sm'> {announcements?.description}</p>
                 </div>

@@ -1,3 +1,8 @@
 .raiseIssueTable {
     overflow-x: auto;
 }
+@media only screen and (max-width: 600px) {
+    .mainForm {
+        margin-bottom: 20px;
+    }
+  }

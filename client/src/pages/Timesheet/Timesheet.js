@@ -85,11 +85,11 @@ function Timesheet() {
     return (
         <div>
             <div className='timeSheet'>
-              <div className='px-4'>
+              <div className='px-4 sm:mb-15'>
               {error && <div className='flex justify-center align-center'> <Alert severity="error">{error}!</Alert> </div>}
-                <div className='flex justify-around my-4'> 
+                <div className='flex justify-around my-4 sm:mt-15'> 
               {timeInBtn ? 
-              <button className='disbaled-button-01 grid justify-items-start' disabled>Time In </button>: 
+              <button className='disbaled-button-01 sm:button-sm-1  grid justify-items-start' disabled>Time In </button>: 
               <button className='button-1 grid justify-items-start' onClick={handleTimeIn} >Time In  </button>}  
               
               {timeOutBtn ? 

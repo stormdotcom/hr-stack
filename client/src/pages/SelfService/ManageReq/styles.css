@@ -93,3 +93,13 @@
 .button-sm-2:focus {
   background-color: #e9ad21;
 }
+.navigateSelfService {
+visibility: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+  .navigateSelfService {
+    padding-top: 100px;
+    margin-top: 50%;
+  }
+}
