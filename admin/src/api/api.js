@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 
-// const API = axios.create({ baseURL: 'https://api-hr-stack.xyz' });
-const API = axios.create({ baseURL: 'http://localhost:4000' });
+const API = axios.create({ baseURL: 'https://api-hr-stack.xyz' });
+// const API = axios.create({ baseURL: 'http://localhost:4000' });
 export const signIn = (formData) => API.post('/admin/signin', formData);
 export const fetchStats =  () => API.get('/admin/fetchStats');
 export const getPendingTimeSheet= ()=> API.get('/hr/getPendingTimeSheet')
