@@ -10,15 +10,7 @@ function viewSlip({data, currentSlip, handleClose, months}) {
       };
       
 
-    const handlePrint=()=>{
-        let content = document.getElementById("invoice-form");
-        let pri = document.getElementById("ifmcontentstoprint").contentWindow;
-        pri.document.open();
-        pri.document.write(content.innerHTML);
-        pri.document.close();
-        pri.focus();
-        pri.print();
-    }
+
     const handleDownload = ()=>{
         const input = document.getElementById('invoice-form');
         const inputHeightMm = pxToMm(input.offsetHeight);
@@ -46,9 +38,9 @@ function viewSlip({data, currentSlip, handleClose, months}) {
         ;      
       }
     return (
-        <div className='z-auto '>
+        <div className='z-auto payslipSection'>
 
-             <div className="flex items-center justify-center min-h-screen bg-gray-100 overflow-x-auto" >
+             <div className="flex items-center justify-center min-h-screen bg-gray-100 " >
             <div className="w-3/5 bg-white shadow-lg">
                 <div id="invoice-form">
                 <div className="flex justify-between p-4">
@@ -176,7 +168,6 @@ function viewSlip({data, currentSlip, handleClose, months}) {
                 <div className="p-4">
                     <div className="flex items-end justify-end space-x-3">
                     <div className='button-1 ' onClick={()=>handleDownload()}> Download</div> 
-                        <button onClick={handlePrint} className="px-4 py-2 text-sm text-green-600 bg-green-100">Print</button>
                     </div>
                 </div>
             </div>

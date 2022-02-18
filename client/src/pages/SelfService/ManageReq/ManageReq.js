@@ -75,6 +75,8 @@ function ManageReq() {
   return (
     <>
       <div className="viewPay">
+
+        <div className="container my-5 tableView py-4 overflow-x-auto">
         <nav className="rounded-md w-full">
           <ol className="list-reset flex">
             <li>
@@ -87,7 +89,6 @@ function ManageReq() {
             <li className="text-gray-500">Manage Requests</li>
           </ol>
         </nav>
-        <div className="container my-5 tableView py-4 overflow-x-auto">
           <div className="button-groups">
             <div
               className="button-5 font-semibold text-sm my-1"

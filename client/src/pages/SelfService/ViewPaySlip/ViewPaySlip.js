@@ -29,21 +29,24 @@ useEffect(()=>{
     return (
         <>
         <div className='viewPay'>
-        <nav className="rounded-md w-full">
+
+          {viewed ? 
+          <div  className="overflow-x-auto"> <ViewSlip data={data} months={months} currentSlip={currentSlip} handleClose={handleClose} /> </div> :
+        <div className='separationStatus'>
+ <nav className="rounded-md w-full  pt-10">
   <ol className="list-reset flex">
     <li> <Link to="/selfservice">Self Service </Link></li>
     <li><span className="text-gray-500 mx-2">/</span></li>
     <li className="text-gray-500">View Pay-Slip</li>
   </ol>
 </nav>
-          {viewed ? <div  className="overflow-x-auto"> <ViewSlip data={data} months={months} currentSlip={currentSlip} handleClose={handleClose} /> </div> :
-        <div className='separationStatus'>
             <h5 className='mt-4 mb-2 text-center pt-4 font-semibold'>Payment Information</h5>
      <div className="flex flex-col">
   <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
       <div className="overflow-hidden">
-        {data?.payments ?         <table className="min-w-full">
+        {data?.payments ?      
+           <table className="min-w-full">
           <thead className="border-b">
             <tr>
               <th scope="col" className="text-sm font-semibold text-gray-900 px-6 py-4 text-left">

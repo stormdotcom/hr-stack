@@ -108,14 +108,15 @@ function Seperation() {
             <div>
 
             </div>
-            <nav className="rounded-md w-full">
-  <ol className="list-reset flex">
-    <li> <Link to="/selfservice">Self Service </Link></li>
-    <li><span className="text-gray-500 mx-2">/</span></li>
-    <li className="text-gray-500">Seperation Request</li>
-  </ol>
-</nav>
+
             <div className='separationForm bg-feild p-4 '>
+            <nav className="rounded-md w-full">
+          <ol className="list-reset flex">
+            <li> <Link to="/selfservice">Self Service </Link></li>
+            <li><span className="text-gray-500 mx-2">/</span></li>
+            <li className="text-gray-500">Seperation Request</li>
+          </ol>
+        </nav>
             <form onSubmit={formik.handleSubmit}> 
             <h5 className='mt-4 mb-2 text-center font-semibold'>Employee Seperation Request</h5>
         

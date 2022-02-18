@@ -442,9 +442,9 @@ return error
         </div>
       </div>
       {/* next card */}
-      <div className=' w-16 md:w-32 lg:w-48 cardBottom'>
+      <div className=' w-16 md:w-32 lg:w-48 cardBottom overflow-x-auto'>
         
-        <div className='my-2 flex flex-col'>
+        <div className='my-2 flex flex-col '>
         <h6 className='font-bold ms-3 text-base'> Educational Details</h6>
       <div className='flex justify-start ms-3'>  
 
@@ -506,7 +506,7 @@ return error
              </div>
              </div>
       </div>
-      <div className=' w-16 md:w-32 lg:w-48 cardBottom'>
+      <div className=' w-16 md:w-32 lg:w-48 cardBottom overflow-x-auto'>
         <form onSubmit={formik2.handleSubmit}>
         <div className='my-2 flex flex-col'>
         <div className='flex ml-auto'>  

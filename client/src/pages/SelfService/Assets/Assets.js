@@ -77,15 +77,16 @@ function Assets() {
         <>
         <div className='viewPay'>
             <div className='assetRequest'>
-			<nav className="rounded-md w-full">
-  <ol className="list-reset flex">
-    <li> <Link to="/selfservice">Self Service </Link></li>
-    <li><span className="text-gray-500 mx-2">/</span></li>
-    <li className="text-gray-500">Assets</li>
-  </ol>
-</nav>
 
         <div className="container my-5 tableView py-4">
+		<nav className="rounded-md w-full">
+			<ol className="list-reset flex">
+				<li> <Link to="/selfservice">Self Service </Link></li>
+				<li><span className="text-gray-500 mx-2">/</span></li>
+				<li className="text-gray-500">Assets</li>
+			</ol>
+			</nav>
+
             <h6 className='text-center font-semibold'>Assets Holding</h6>
 			{myassets.length ? 
                         <table className="table-auto border-collapse  w-100 text-center">

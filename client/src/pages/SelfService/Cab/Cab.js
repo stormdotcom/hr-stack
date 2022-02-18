@@ -111,14 +111,15 @@ function Cab() {
         <>
         <div className='viewPay'>
             <div className='cabRequest'>
-			<nav className="rounded-md w-full">
-  <ol className="list-reset flex">
-    <li> <Link to="/selfservice">Self Service </Link></li>
-    <li><span className="text-gray-500 mx-2">/</span></li>
-    <li className="text-gray-500">Vehicle Request</li>
-  </ol>
-</nav>
+
             <div className="container mx-auto mainForm">
+			<nav className="rounded-md w-full mt-10">
+			<ol className="list-reset flex">
+				<li> <Link to="/selfservice">Self Service </Link></li>
+				<li><span className="text-gray-500 mx-2">/</span></li>
+				<li className="text-gray-500">Vehicle Request</li>
+			</ol>
+			</nav>
 			<div className="flex justify-center px-6 my-12">
 			
 				<div className="w-full  flex">
