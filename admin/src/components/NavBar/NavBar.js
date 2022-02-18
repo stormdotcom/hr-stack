@@ -27,7 +27,7 @@ function NavBar() {
     <Container>    
     <Navbar.Toggle aria-controls="basic-navbar-nav" className='ml-auto'   />
     <Navbar.Collapse id="basic-navbar-nav" className='ml-auto'>
-      <Nav className="lg:ml-auto md:ml-auto flex items-center pr-2">
+      <Nav className="ml-auto flex items-center pr-5 mr-5">
         <NavDropdown title={`${result.fullname}         `} id="basic-nav-dropdown">
         <NavDropdown.Item >  <DateToday/> </NavDropdown.Item>
           <NavDropdown.Item onClick={handleLogout}> <Logout />  Logout </NavDropdown.Item>

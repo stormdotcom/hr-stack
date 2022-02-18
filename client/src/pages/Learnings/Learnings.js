@@ -143,7 +143,7 @@ function Learnings() {
                     <div className="container mx-auto mainForm mb-4">
 			<div className="flex justify-center px-6 mb-7">
 			
-				<div className="w-full  flex">
+				<div className="w-full  flex bg-neutral-300">
 					
 					<div className="w-10/12 p-1 rounded-lg lg:rounded-l-none mb-4 mt-3">
 					<h6 className='text-center font-semibold mt-4 mb-3'>Request Learning</h6>
