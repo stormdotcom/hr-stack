@@ -24,7 +24,9 @@
 }
 @media only screen and (max-width: 600px) {
     .aboveButton {
+        
       margin-top: 8%;
-      margin-left: 4%;
+      padding-top: 10px ;
+      margin-left: 100px;
     }
   }

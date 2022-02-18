@@ -73,7 +73,7 @@ function RaiseIssue() {
 		{error && <Alert severity='warning'> {error} </Alert>}
             <h6 className='text-center font-semibold'>Ticket List</h6>
 			
-			{myticket ?  
+			{myticket>0 ?  
 			<table className="table-auto border-collapse  w-100 text-center ">
                             <thead className="bg-gray-50">
                                 <tr>
@@ -122,7 +122,7 @@ function RaiseIssue() {
 									)
 								})}  
                             </tbody>
-                        </table>: "No previous active list"}
+                        </table>: <p className='text-sm text-center'> No previous Ticket list </p>}
 
                     </div> 
                     <div className="container mx-auto mainForm">

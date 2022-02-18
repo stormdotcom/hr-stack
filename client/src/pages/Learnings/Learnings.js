@@ -145,7 +145,7 @@ function Learnings() {
 			
 				<div className="w-full  flex">
 					
-					<div className="w-full p-1 rounded-lg lg:rounded-l-none mb-4 mt-3">
+					<div className="w-10/12 p-1 rounded-lg lg:rounded-l-none mb-4 mt-3">
 					<h6 className='text-center font-semibold mt-4 mb-3'>Request Learning</h6>
 						<form onSubmit={formik.handleSubmit} className="px-2 pt-1 pb-4 mb-2" >
 							<div className="mb-4 md:flex md:justify-between">

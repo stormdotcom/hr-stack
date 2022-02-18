@@ -70,6 +70,11 @@ touch-action: manipulation;
     height: 40px;
     font-size: smaller;
   }
+  .button-1{
+    padding: 5px 8px;
+    height: 40px;
+    font-size: smaller;
+  }
 }
 .button-2 {
   margin: auto;

@@ -22,6 +22,7 @@ export const updateAsset = async (req, res)=>{
         res.status(500).json(error.message)
     }
 }
+
 export const updatePassword = async (req, res)=>{
     const {id, newPassword} = req.body
     try {
@@ -34,6 +35,7 @@ export const updatePassword = async (req, res)=>{
         res.status(500).json(error.message)
     }
 }
+
 export const addHolidays = async (req, res)=>{
     const {text} = req.body
     let id = '61eb06cf6b7539f49aa3fc2f'

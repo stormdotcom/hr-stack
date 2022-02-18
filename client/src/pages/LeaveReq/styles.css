@@ -33,6 +33,7 @@
     .topSecLeave  {
         display: flex;
         flex-direction: column;
+        padding: 20px;
         margin-top: 15px;
     }
   }

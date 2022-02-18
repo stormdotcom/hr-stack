@@ -104,7 +104,7 @@ function Home() {
                         <div className='homeEvent'>
                         <h6 className='mt-4 text text-center font-bold '>Events </h6>
                         <img height="150px" style={{width: "100%"}} alt="eventsWallpaper" src={event?.selectedFile}/>
-                        <div className='lg:px-5 md:px-2 py-2'>
+                        <div className='lg:px-5 md:px-2 px-3 py-2'>
                           <h6 className='font-semibold my-2'>{event?.title} </h6>
                           <p className='text-sm'> {event?.description}</p>
                         </div>
@@ -114,7 +114,7 @@ function Home() {
             {announcements && <div className='homeEvent'>
             <h6 className='mt-4 text text-center font-bold '>Announcements </h6>
                 <img height="150px" style={{width: "100%"}} src={announcements?.selectedFile}  alt="announcementsWallpaper"/>
-                <div className='lg:px-5 md:px-2 py-2 py-2'>
+                <div className='lg:px-5 md:px-2  px-3 py-2'>
                   <h6 className='font-semibold my-2'>{announcements?.title} </h6>
                   <p className='text-sm'> {announcements?.description}</p>
                 </div>

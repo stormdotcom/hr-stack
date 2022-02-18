@@ -11,3 +11,12 @@
     text-transform: uppercase;
     font-weight: 700;
 }
+.buttonStackTimeSheet {
+    margin-top: 100px;
+    transition: all 100ms ease-in-out;
+}
+@media only screen and (max-width: 600px) {
+    .buttonStackTimeSheet {
+        padding-top:20px ;
+    }
+}
