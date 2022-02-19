@@ -54,7 +54,7 @@ function Learnings() {
 			error.courseName="*Required"
 		  }
 		  if(!values.comments) {
-			error.courseName="*Required"
+			error.comments="*Required"
 		  }
 		  if(!values.technology) {
 			error.technology="*Required"
@@ -155,7 +155,7 @@ function Learnings() {
 									</label>
 									<input
 										className="w-full px-3 py-2 text-sm leading-tight  bg-gray-200 border rounded   focus:outline-none focus:shadow-outline"
-										id="firstName"
+										id="courseName"
 										type="text"
 										name="courseName"
 										onChange={formik.handleChange}
@@ -271,6 +271,7 @@ function Learnings() {
 										value={formik.values.comments}
                                         rows="3" cols="35"
 									></textarea>
+									 {formik.touched.comments && formik.errors.comments ? <small className='error'> {formik.errors.comments} </small> : null}
 								</div>
 
 							
