@@ -145,16 +145,19 @@ export const submitAward = async (req, res)=>{
       const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$push:{awards:{score,  Description}}})
       if(!result) return res.status(400).json(null)
       res.status(200).json({status:true})
+      return
     }
     if(awardType==='Performance') {
       const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$set:{performer:true}}, {$push:{accomplishments:{ Description}}})
       if(!result) return res.status(400).json(null)
       res.status(200).json({status:true})
+      return
     }
     if(awardType==='Contribution') {
       const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$push:{contributions:{  Description}}})
       if(!result) return res.status(400).json(null)
       res.status(200).json({status:true})
+      return
     }
     else return res.status(400).json(null)
   } catch (error) {
@@ -217,6 +220,7 @@ export const declineSeperation = async (req, res)=>{
 export const getTransferRequest = async (req, res)=>{
   try {
     const result = await MigrationReq.find({leaving:{$eq:false}, submittedStatus:{$eq:false}})
+    console.log(result)
     if(!result) return res.status(200).json(null)
     res.status(200).json(result)
   } catch (error) {
@@ -262,7 +266,8 @@ export const cabApprove = async (req, res)=>{
 export const getCabRequest = async (req, res)=>{
 
   try {
-    const result =await CabReq.find({submittedStatus: {$eq:false}, approved:{$eq: false}})
+    const result =await CabReq.find({submittedStatus: {$eq:false}, approved: {$eq:false}} )
+    console.log(result)
     if(!result) return res.status(200).json([])
     res.status(200).json(result)
   } catch (error) {

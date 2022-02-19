@@ -1,21 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
-import { useNavigate} from 'react-router-dom'
 import moment from 'moment'
 import {AiFillCaretRight} from "react-icons/ai"
 import "./styles.css"
 import { Link } from 'react-router-dom';
-import {  useSelector } from 'react-redux'
+import {  useSelector, useDispatch } from 'react-redux'
 import {leaveApprove, leaveDecline} from "../../../api/api"
 import Swal from "sweetalert2"
+import { useNavigate} from 'react-router-dom'
+import {getLeaveRequest, } from "../../../api/api"
+import {  fetchRequest,  } from '../../../redux/requests/requestSlice'
 
 function LeaveReq() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        getLeaveRequest().then(res=> dispatch(fetchRequest(res.data)))
+        .catch(err=> console.log(err.message))
+    },[navigate, dispatch])
+
 
     const { reqData} = useSelector(state => state.requests)
-
-
-
     const handleApprove = (id, userID, fromDate, toDate, leaveType)=>{
         let formData = {id, userID, fromDate, toDate,leaveType,}
         Swal.fire({
@@ -26,6 +31,8 @@ function LeaveReq() {
           }).then(async (result) => {
             if (result.isConfirmed) {
                 leaveApprove(formData).then(()=>{
+                        getLeaveRequest().then(res=> dispatch(fetchRequest(res.data)))
+                        .catch(err=> console.log(err.message))
                     Swal.fire('Approval Success!', '', 'success')
                 }).catch((err)=>{
                     console.log(err.message)
@@ -35,6 +42,7 @@ function LeaveReq() {
             } 
           })
     }
+
     const handleDecline =async (userID)=>{
         let formData={}
         const { value: text } =  Swal.fire({
@@ -50,7 +58,10 @@ function LeaveReq() {
               console.log(text)
               formData={userID:userID, data:value} 
               leaveDecline(formData)
-              .then(res=> Swal.fire('Declined and updated!', '', 'success'))
+              .then(res=> {
+                getLeaveRequest().then(res=> dispatch(fetchRequest(res.data)))
+                .catch(err=> console.log(err.message))
+                  Swal.fire('Declined and updated!', '', 'success')})
               .catch(err=> Swal.fire('Fail Updating!', '', 'info'))
             }
           })     
@@ -92,7 +103,7 @@ function LeaveReq() {
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Leave Requests </h6>
                        
-                       {reqData.length ? 
+                       {reqData.length >0 ? 
                        <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>

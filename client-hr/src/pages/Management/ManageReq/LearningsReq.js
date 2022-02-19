@@ -1,15 +1,22 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
-import { useNavigate} from 'react-router-dom'
 import {AiFillCaretRight} from "react-icons/ai"
 import { Link } from 'react-router-dom'
 import "./styles.css"
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {approveLearning, declineLearning} from "../../../api/api"
 import moment from "moment"
 import Swal from "sweetalert2"
+import { useNavigate} from 'react-router-dom'
+import {getLearningRequest} from "../../../api/api"
+import {  fetchLearning } from '../../../redux/requests/requestSlice'
 function LearningsReq() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        getLearningRequest().then(res=> dispatch(fetchLearning(res.data)))
+        .catch(err=> console.log(err.message))
+    },[navigate, dispatch])
     const {learnings} = useSelector(state => state.requests)
     const handleView = (data, name, id, type)=>{
         Swal.fire({
@@ -43,7 +50,10 @@ function LearningsReq() {
                     }   
                   }) 
                   let data = {videoURL:url, userID: userID}
-                  approveLearning(data).then((res)=> Swal.fire( 'Success!',   'Approved!',   'success' ))
+                  approveLearning(data).then((res)=> {
+                    getLearningRequest().then(res=> dispatch(fetchLearning(res.data)))
+                    .catch(err=> console.log(err.message))
+                      Swal.fire( 'Success!',   'Approved!',   'success' )})
                                         .catch((err)=> Swal.fire( 'Failed!',   'Failed Approval!',   'info' ))  
 
             } 
@@ -60,8 +70,11 @@ function LearningsReq() {
           }).then(async(result) => {
             if (result.isConfirmed) {
                 let data = {id: userID}
-                declineLearning(data).then((res)=> Swal.fire( 'Success!',   'Declined!',   'success' ))
-                                      .catch((err)=> Swal.fire( 'Failed!',   'Failed Updating!',   'info' ))  
+                declineLearning(data).then((res)=> {
+                    getLearningRequest().then(res=> dispatch(fetchLearning(res.data)))
+                    .catch(err=> console.log(err.message))
+                    Swal.fire( 'Success!',   'Declined!',   'success' )})
+                   .catch((err)=> Swal.fire( 'Failed!',   'Failed Updating!',   'info' ))  
             } 
           })
           

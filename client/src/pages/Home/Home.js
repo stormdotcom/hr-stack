@@ -20,13 +20,13 @@ function Home() {
   useEffect(() => {
     getEvents().then(res => {
       setEvent(res.data)
-    }).catch(err=> alert("Events " + err.message))
+    }).catch(err=> console.log("Events " + err.message))
     getAnnouncements().then(res => {
       setAnnouncements(res.data)
-    }).catch(err=> alert("Events " + err.message))
+    }).catch(err=> console.log("Events " + err.message))
     getPerformer().then(res => {
       setPerformer(res.data)
-    }).catch(err=> alert("Events " + err.message))
+    }).catch(err=> console.log("Events " + err.message))
   }, [navigate])
 
 

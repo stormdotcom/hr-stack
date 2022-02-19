@@ -94,7 +94,7 @@ function SkillSets() {
 			})
 		}
 		catch (err){
-			setError("Failed uploading image")
+			setError(err.message, " 	Failed uploading image")
 		}
 
 
@@ -315,7 +315,7 @@ return (
 								             
                             <div className="mb-4 md:mr-2 md:mb-0">
 									<label className="block mb-2 text-sm font-medium text-gray-700" >
-										Upload Certificate <small>(if any certification)</small>
+										Upload Certificate <small>(certification or proof of skill)</small>
 									</label>
 									<div onClick={handleClick}
 										className="w-full px-12 py-3 skillUpload"		

@@ -10,6 +10,13 @@ function Cab() {
 	const navigate = useNavigate()
 	const {data} = useSelector(state=> state.employee)
 	const [checkStatus, setCheckStatus] = useState({status:false, message:null})
+	useEffect(()=>{
+		checkCabStatus(data.userID).then((res)=> setCheckStatus({status:res.data.status, message:res.data.message}))
+		.catch(err=> console.log(err.message))
+		myCabs(data.userID).then((res)=> setCab(res.data))
+		.catch(err=> console.log(err.message))
+	}, [navigate, data])
+	console.log(checkStatus)
 	const [cab, setCab] =useState([])
 	const submitHandle = async (values)=>{
 		// let form= {...data, ...values}
@@ -101,12 +108,7 @@ function Cab() {
 			focusConfirm: false,
 		})
 	}
-	useEffect(()=>{
-		checkCabStatus(data.userID).then((res)=> setCheckStatus({status:res.data.status, message:res.data.message}))
-		.catch(err=> console.log(err.message))
-		myCabs(data.userID).then((res)=> setCab(res.data))
-		.catch(err=> console.log(err.message))
-	}, [navigate])
+
     return (
         <>
         <div className='viewPay'>

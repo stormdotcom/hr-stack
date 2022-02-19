@@ -21,7 +21,6 @@ import { createSlice } from "@reduxjs/toolkit";
             state.isloading=false
         },  
         fetchCabRequest:(state, {payload})=>{
-            console.log(payload)
             state.isloading=false;
             state.cab = payload
             state.isloading=false

@@ -50,8 +50,9 @@ export const getTransferInfo = async (req, res)=>{
   const {id} = req.query
   try {
     const result = await MigrationReq.find({userID:id, leaving:{$eq:false}})
+    console.log(result)
     if(!result) return res.status(200).json(null)
-    res.status(200).json(result)
+    res.status(200).json(result[result.length - 1])
   } catch (error) {
     console.log(error.message)
     res.status(500).json({message:"Something went wrong"})
@@ -61,6 +62,7 @@ export const getTransferInfo = async (req, res)=>{
 export const submitTransfer = async (req, res)=>{
   try {
     const result = await MigrationReq.create(req.body)
+    console.log(result)
     if(!result) return res.status(400).json({message:"request not created"})
     res.status(200).json({staus:true})
   } catch (error) {
@@ -73,7 +75,7 @@ export const getSeperationInfo = async (req, res)=>{
   try {
     const result = await MigrationReq.find({userID:id, leaving:{$eq:true}})
     if(!result) return res.status(200).json(null)
-    res.status(200).json(result[0])
+    res.status(200).json(result[result.length - 1])
   } catch (error) {
     console.log(error.message)
     res.status(500).json({message:"Something went wrong"})
@@ -117,8 +119,11 @@ export const checkCabStatus = async (req, res)=>{
 }
 
 export const submitCabRequest = async (req, res)=>{
+
+  console.log(req.body)
   try {
     const result = await CabReq.create({...req.body})
+    console.log(result)
     if(!result) return res.status(400).json({message:"not created"})
     res.status(200).json({status:true})
   } catch (error) {
@@ -164,7 +169,8 @@ export const submitProfilePhoto = async(req, res)=>{
 
 export const getAnnouncements = async (req, res)=> {
   try {
-    let events = await Events.find({isAnnouncements:{$eq:true}})
+    let events = await Events.find({isAnnouncements:{$eq:true}}).sort({_id:-1}).limit(1)
+    console.log(events)
     
     if(!events) return res.status(404).json({message:"No Events found"})
 
@@ -432,8 +438,7 @@ export const getHoliday = async (req, res)=> {
 
 export const getEvents = async (req, res)=> {
   try {
-    let events = await Events.find({isAnnouncements:{$eq:false}})
-    
+    let events = await Events.find({isAnnouncements:{$eq:false}}).sort({_id:-1}).limit(1)
     if(!events) return res.status(404).json({message:"No Events found"})
 
     res.status(200).json(events[0])

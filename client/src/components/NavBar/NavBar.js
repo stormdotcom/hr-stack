@@ -30,7 +30,7 @@ function NavBar() {
   <Container>    
     <Navbar.Toggle aria-controls="basic-navbar-nav" className='ml-auto'   />
     <Navbar.Collapse id="basic-navbar-nav" className='ml-auto'>
-    <Nav className="ml-auto flex items-end pr-2">
+    <Nav className="ml-auto flex items-center pr-5 mr-5">
         <Nav.Link> {data?.selectedFile && <Avatar sx={{ width: 24, height: 24 }} src={data?.selectedFile} alt="profile-face" />  } </Nav.Link>
         <NavDropdown title={data.fullname} id="basic-nav-dropdown">
         <NavDropdown.Item >  <DateToday/> </NavDropdown.Item>

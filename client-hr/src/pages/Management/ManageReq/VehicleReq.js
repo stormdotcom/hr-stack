@@ -1,16 +1,24 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import NavBar from '../../../components/NavBar/NavBar'
-import { useNavigate} from 'react-router-dom'
 import {AiFillCaretRight} from "react-icons/ai"
 import { Link } from 'react-router-dom'
 import Swal from "sweetalert2"
-import {useSelector} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
 import moment from "moment"
 import {cabDecline, cabApprove} from "../../../api/api"
 import "./styles.css"
+import { useNavigate} from 'react-router-dom'
+import { getCabRequest} from "../../../api/api"
+import {  fetchCabRequest } from '../../../redux/requests/requestSlice'
 function VehicleReq() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        getCabRequest().then(res=> dispatch(fetchCabRequest(res.data)))
+        .catch(err=> console.log(err.message))
+    },[navigate, dispatch])
     const {  cab } = useSelector((state) => state.requests);
+    console.log(cab)
     const handleView = (data, name, id, type) => {
         Swal.fire({
           title: "<strong>" + type + "</strong>",
@@ -39,6 +47,8 @@ function VehicleReq() {
           }).then(async (result) => {
             if (result.isConfirmed) {
                 cabApprove(id).then(()=>{
+                    getCabRequest().then(res=> dispatch(fetchCabRequest(res.data)))
+                    .catch(err=> console.log(err.message))
                     Swal.fire('Approval Success!', '', 'success')
                 }).catch((err)=>{
                     console.log(err.message)
@@ -60,10 +70,12 @@ function VehicleReq() {
               if (!value) {
                 return 'You need to write Commment !'
               }
-              console.log(text)
               formData={id:reqid, data:value} 
               cabDecline(formData)
-              .then(res=> Swal.fire('Declined and updated!', '', 'success'))
+              .then(res=> {
+                getCabRequest().then(res=> dispatch(fetchCabRequest(res.data)))
+                .catch(err=> console.log(err.message))
+                  Swal.fire('Declined and updated!', '', 'success')})
               .catch(err=> Swal.fire('Fail Updating!', '', 'info'))
             }
           })     
@@ -84,12 +96,12 @@ function VehicleReq() {
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/leave')}}> Leave Requests</div>
                 <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/vehicle')}}> Vehicle Requests</div>
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/learnings')}}> Learnings </div>
-                <div className='button-5 font-semibold text-sm my-1' style={{backgroundColor:"#3283bd"}} onClick={()=>{navigate('/management/all-requests/skills')}}> Skills Updation </div>
+                <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/skills')}}> Skills Updation </div>
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/seperation')}}> Separation Requests </div>
                 <div className='button-5 font-semibold text-sm my-1'  onClick={()=>{navigate('/management/all-requests/transfer')}}> Transfer Requests </div>
              </div>
              <h6 className='font-bold ml-2 my-2 flex'>  All Requests <AiFillCaretRight className='mx-2' /> Vehicle Requests </h6>
-             {cab.length ?   <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
+             {cab.length >0 ?   <table className="table-auto border-collapse  w-100 text-center rounded-2xl border border-gray-400">
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-4 py-2 text-xs text-gray-500 ">

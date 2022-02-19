@@ -140,12 +140,12 @@ function Learnings() {
 								</table>
 							</div> : ""}
         
-                    <div className="container mx-auto mainForm mb-4">
+                    <div className="container mx-auto mainForm  mb-4">
 			<div className="flex justify-center px-6 mb-7">
 			
 				<div className="w-full  flex bg-neutral-300">
 					
-					<div className="w-10/12 p-1 rounded-lg lg:rounded-l-none mb-4 mt-3">
+					<div className="w-10/12 p-1 rounded-lg lg:rounded-l-none mb-4 mt-3 mx-auto">
 					<h6 className='text-center font-semibold mt-4 mb-3'>Request Learning</h6>
 						<form onSubmit={formik.handleSubmit} className="px-2 pt-1 pb-4 mb-2" >
 							<div className="mb-4 md:flex md:justify-between">
@@ -295,9 +295,9 @@ function Learnings() {
 		</div>
             </div>
 			: <div className='flex justify-center mt-3 mb-5 '>
-				{learn.map((ele)=>{
+				{learn.map((ele, i)=>{
 					return (
-						<div className='videoCard'>
+						<div key={i} className='videoCard'>
 							<YouTube videoId={ele.videoID} onError={5}  title={ele.courseName}  opts={opts} onReady={onReady} />
 						<h5 className='courseName'>{ele.courseName}</h5>
 						</div>

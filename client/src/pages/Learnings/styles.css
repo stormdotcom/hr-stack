@@ -22,6 +22,7 @@
     padding: 2px 3px;
     text-overflow: clip !important;
 }
+
 @media only screen and (max-width: 600px) {
     .aboveButton {
         

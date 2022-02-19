@@ -66,6 +66,7 @@ function Profile() {
         let form = {address, userID:data.userID}
         submitAddress(form).then((res)=>{
           dispatch(fetchProfile(res.data))
+          setToggle1(true)
           setSuccess("Success Updated")
           Swal.fire('Saved!', '', 'success')
         }).catch(err => Swal.fire('Error Changing data', '', 'info'))
@@ -99,8 +100,6 @@ function Profile() {
     })
 
   }
-
-
 
   const formik2 = useFormik({
 		initialValues:{

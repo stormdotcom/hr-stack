@@ -17,7 +17,7 @@ function Performance() {
     const c = data?.contributions?.length>0 ? 1: 0
     const overall = (a+b+c) *100/3
     const leaveCount = timeSheet.filter(ele=> ele.title==="On Leave")
-    const totalDayWorked = timeSheet.length - leaveCount;
+    const totalDayWorked = timeSheet.length - leaveCount.length;
     const attenedance = (totalDayWorked/timeSheet.length ) * 100;
     const options = {
         animationEnabled: true,
@@ -39,7 +39,7 @@ function Performance() {
             indexLabel: "{y}",		
             indexLabelFontColor: "#2072bb",
             dataPoints: [
-                {"label":"Attendance","y":attenedance},
+                {"label":"Attendance","y":Math.floor(attenedance)},
                 {"label":"Project Completion","y":25},
                 {"label":"Over All Participation","y":Math.floor(overall)},
             ]

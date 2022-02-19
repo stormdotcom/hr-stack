@@ -119,12 +119,12 @@ function Transfer() {
   })
 }
     return (
-        <>        <div className='separation'>
-         
+        <>        
+        <div className='separation'>
             <div className='separationForm bg-feild p-4 '>
             <nav className="rounded-md w-full">
           <ol className="list-reset flex">
-            <li> <Link to="/selfservice">Self Service </Link></li>
+            <li> <Link to="/selfservice">Self Services </Link></li>
             <li><span className="text-gray-500 mx-2">/</span></li>
             <li className="text-gray-500">Transfer Request</li>
           </ol>
@@ -150,7 +150,8 @@ function Transfer() {
                 
             </div>
 
-            {status &&        <div className='separationStatus'>
+            {status &&       
+             <div className='separationStatus'>
             <h5 className='mt-4 mb-2 text-center pt-4 font-semibold'>Transfer Status</h5>
             <div className="flex flex-col">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">

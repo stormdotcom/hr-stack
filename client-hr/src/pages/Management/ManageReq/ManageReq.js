@@ -31,7 +31,7 @@ function ManageReq() {
     }, [navigate, dispatch])
     const {reqData, learnings, skills, cab} = useSelector(state=> state.requests)
     let isloading=false
-    
+    console.log(cab)
     if(!reqData.length && !learnings.length && !skills.length && !cab.length) isloading=true
     const handleView1 = (data, name, id, type)=>{
         Swal.fire({

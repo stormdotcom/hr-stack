@@ -112,13 +112,13 @@ function Seperation() {
             <div className='separationForm bg-feild p-4 '>
             <nav className="rounded-md w-full">
           <ol className="list-reset flex">
-            <li> <Link to="/selfservice">Self Service </Link></li>
+            <li> <Link to="/selfservice">Self Services </Link></li>
             <li><span className="text-gray-500 mx-2">/</span></li>
-            <li className="text-gray-500">Seperation Request</li>
+            <li className="text-gray-500">Separation Request</li>
           </ol>
         </nav>
             <form onSubmit={formik.handleSubmit}> 
-            <h5 className='mt-4 mb-2 text-center font-semibold'>Employee Seperation Request</h5>
+            <h5 className='mt-4 mb-2 text-center font-semibold'>Employee Separation Request</h5>
         
             <div>
             <Editor
@@ -141,7 +141,7 @@ function Seperation() {
             </div>
 
         {status &&        <div className='separationStatus'>
-            <h5 className='mt-4 mb-2 text-center pt-4 font-semibold'>Seperation Status</h5>
+            <h5 className='mt-4 mb-2 text-center pt-4 font-semibold'>Separation Status</h5>
             <div className="flex flex-col">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">

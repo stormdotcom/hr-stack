@@ -33,7 +33,7 @@ function viewSlip({data, currentSlip, handleClose, months}) {
             }
             
             pdf.addImage(imgData, 'PNG', 0, 0);
-            pdf.save(`${data.fullname} ${months[currentSlip.month-1].month} Payslip.pdf`);
+            pdf.save(`${data.fullname} Payslip.pdf`);
           });
         ;      
       }
