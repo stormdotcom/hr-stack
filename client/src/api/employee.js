@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 
-// const API = axios.create({ baseURL: 'https://api-hr-stack.xyz' });
+const API = axios.create({ baseURL: 'https://api-hr-stack.xyz' });
 
-const API = axios.create({ baseURL: 'http://localhost:4000' });
+// const API = axios.create({ baseURL: 'http://localhost:4000' });
 export const signIn = (formData) => API.post('/signin', formData);
 export const fetchEmployeeData = (id) => API.get('/fetchEmployeeData?id='+id);
 export const getTimeSheet = (id)=> API.get("/get-timesheet?id="+id)
