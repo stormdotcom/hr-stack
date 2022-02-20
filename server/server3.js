@@ -21,7 +21,9 @@ app.use(cookieParser());
 app.use('/', employeeRouter);
 app.use('/hr', hrRouter);
 app.use('/admin', adminRouter);
-
+app.get('/test3', (req, res)=>{
+  res.send("Success! running on port " +port)
+})
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

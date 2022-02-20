@@ -38,7 +38,7 @@ function Transfer() {
       denyButtonText: `Don't save`,
     }).then((result) => {
       if (result.isConfirmed) {
-        let form = {fullname:data.fullname, empID:data.empID,type:"Transfer", leaving:false, mail:textValue,   data:draftData, userID:data.userID}
+        let form = {fullname:data.fullname, empID:data.empID,type:"Transfer", leaving:false, text:textValue,   data:draftData, userID:data.userID}
         submitTransfer(form).then((res)=>{
           setEditorState(EditorState.createEmpty())
           getTransferInfo(data.userID).then(res=> setStatus(res.data))
@@ -51,6 +51,7 @@ function Transfer() {
       }
     })
   }
+  console.log(textValue)
   const formik = useFormik({
     initialValues:{
       codedText:"",

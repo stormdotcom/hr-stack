@@ -154,7 +154,7 @@ function Seperation() {
                         </DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                           {data?.data}
+                           {data?.text}
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>

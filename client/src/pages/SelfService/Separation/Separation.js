@@ -29,7 +29,7 @@ function Seperation() {
       denyButtonText: `Don't save`,
     }).then((result) => {
       if (result.isConfirmed) {
-        let form = {fullname:data.fullname, empID:data.empID,type:"Seperation", mail:textValue, leaving:true, data:draftData, userID:data.userID}
+        let form = {fullname:data.fullname, empID:data.empID,type:"Seperation", text:textValue, leaving:true, data:draftData, userID:data.userID}
         submitSeperation(form).then((res)=>{
           setEditorState(EditorState.createEmpty())
           Swal.fire('Request Saved!', '', 'success')

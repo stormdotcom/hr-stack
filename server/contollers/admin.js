@@ -149,10 +149,10 @@ export const returnAsset = async (req, res)=>{
     try {
         const result = await Assets.findOneAndUpdate({_id:ObjectId(id)}, {$set: {availableStatus: true, alloactedTo: null, alloactedDate:null}})
         if(!result) return res.status(400).json({message:"no updated"})
-        res.status(400).json({status:true})
+        res.status(200).json({status:true})
     } catch (error) {
         console.log(error.message)
-        res.status(400).json({message:"seomthing went wrong"})
+        res.status(500).json({message:"something went wrong"})
     }
 }
 
@@ -194,7 +194,6 @@ export const getAllAssetsHolding = async (req, res)=>{
 
 export const setAsset = async (req, res)=>{
     const {reqId, assetId, userID} = req.body
-    console.log(req.body)
     try {
         const result = await Assets.findOneAndUpdate({_id:ObjectId(assetId)}, {$set:{availableStatus:false, alloactedTo:ObjectId(userID), alloactedDate: new Date}})
         const result2 = await AssetReq.findOneAndUpdate({_id:ObjectId(reqId)}, {$set:{submitted:true, approved:true, submittedDate:new Date, assetID:assetId}})

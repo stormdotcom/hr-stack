@@ -59,7 +59,8 @@ export const getTransferInfo = async (req, res)=>{
   }
 }
 
-export const submitTransfer = async (req, res)=>{
+export const submitTransfer = async (req, res)=>{ 
+  console.log(req.body)
   try {
     const result = await MigrationReq.create(req.body)
     console.log(result)
@@ -70,6 +71,7 @@ export const submitTransfer = async (req, res)=>{
     res.status(500).json({message:"Something went wrong"})
   }
 }
+
 export const getSeperationInfo = async (req, res)=>{
   const {id} = req.query
   try {
@@ -83,6 +85,7 @@ export const getSeperationInfo = async (req, res)=>{
 }
 
 export const submitSeperation = async (req, res)=>{
+  console.log(req.body)
   try {
     const result = await MigrationReq.create(req.body)
     if(!result) return res.status(400).json({message:"request not created"})
