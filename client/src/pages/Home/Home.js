@@ -68,7 +68,7 @@ function Home() {
             
           </div>
           </div>
-        {performer.lenght > 1 &&     <div className="cardStarEmployees">
+        {performer &&     <div className="cardStarEmployees">
 
 <h5 className='mt-2 mx-auto font-bold sm:text-sm text-center'> Performer of Month</h5>
 

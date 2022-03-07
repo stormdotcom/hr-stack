@@ -38,7 +38,7 @@ export const getPerformer = async (req, res)=>{
       { $project:{
         performer:1, selectedFile: 1, fullname: 1, userID:1,  Designation: 1, projectAllocated:1
       } }])
-        if(!result) return res.status(200).json(null)
+        if(!result || result.length <1) return res.status(200).json(null)
       
     res.status(200).json(result)
 

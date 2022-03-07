@@ -21,14 +21,14 @@ function HomeHR() {
         showCancelButton: true,
         inputValidator: (value) => {
           if (!value) {
-            return 'You need to write Desigination Title'
+            return 'You need to write Project Title'
           }
         }
       })
       if(data) {
       let formData= {text:data}
       addProjectTo(formData).then(()=> Swal.fire('Done'))
-      .catch(()=>Swal.fire('Error adding Desigination') )
+      .catch(()=>Swal.fire('Error adding Project') )
       }
     }
     const addHolidays = async()=>{
@@ -39,7 +39,7 @@ function HomeHR() {
         showCancelButton: true,
         inputValidator: (value) => {
           if (!value) {
-            return 'You need to write Holidays Title'
+            return 'please input holiday date'
           }
         }
       })
@@ -62,7 +62,7 @@ function HomeHR() {
                  <MdPendingActions className="text-fourth text-4xl" />
                </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'> {stats?.pendingTickets}</h5>
+            <h5 className='pl-1 font-semibold'> {stats?.pendingTickets}</h5>
               <h6 className='pl-1 text-secondary'> Tickets Pending </h6>
             </div>
           </div>
@@ -71,7 +71,7 @@ function HomeHR() {
                  <FcHighPriority className="text-fourth text-4xl" />
                </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'> {stats?.highPriorityTickets}</h5>
+            <h5 className='pl-1 font-semibold'> {stats?.highPriorityTickets}</h5>
               <h6 className='pl-1 text-secondary'> High Priority Tickets  </h6>
             </div>
           </div>
@@ -80,7 +80,7 @@ function HomeHR() {
             <MdMoreTime className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>{stats?.onDelayTickets}</h5>
+            <h5 className='pl-1 font-semibold'>{stats?.onDelayTickets}</h5>
               <h6 className='pl-1 text-secondary'> Ticket On Progress</h6>
             </div>
           </div>
@@ -89,7 +89,7 @@ function HomeHR() {
             <RiComputerFill className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>{stats?.totalAssets}</h5>
+            <h5 className='pl-1 font-semibold'>{stats?.totalAssets}</h5>
               <h6 className='pl-1 text-secondary'>Total Assets</h6>
             </div>
           </div>

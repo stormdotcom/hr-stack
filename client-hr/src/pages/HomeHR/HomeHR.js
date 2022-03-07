@@ -32,8 +32,8 @@ function HomeHR() {
             indexLabel: "{y}",		
             indexLabelFontColor: "#2072bb",
             dataPoints: [
-                {"label":"Total Attendance","y":45},
-                {"label":"On Leave","y":100},
+                {"label":"Total Attendance","y":55},
+                {"label":"On Leave","y":1},
                 {"label":"Over All Performance","y":90},
             ]
         }]
@@ -65,7 +65,7 @@ function HomeHR() {
             <FaUsersSlash className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'> {stats?.employeesOnLeave}</h5>
+            <h5 className='pl-1 font-semibold'> {stats?.employeesOnLeave}</h5>
               <h6 className='pl-1 text-secondary'>Employees On Leave</h6>
             </div>
             
@@ -75,7 +75,7 @@ function HomeHR() {
             <HiOutlineUserGroup className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>{stats?.employeeCount}</h5>
+            <h5 className='pl-1 font-semibold'>{stats?.employeeCount}</h5>
               <h6 className='pl-1 text-secondary'>Total Employees</h6>
             </div>
           </div>
@@ -95,7 +95,7 @@ function HomeHR() {
             <FaRegCalendarTimes className="text-fourth text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>{stats?.notSubmittedToday}</h5>
+            <h5 className='pl-1 font-semibold'>{stats?.notSubmittedToday}</h5>
               <h6 className='pl-1 text-secondary'>Pending Timesheets</h6>
             </div>
             
