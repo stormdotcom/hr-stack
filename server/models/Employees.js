@@ -100,7 +100,7 @@ myAssets:[{
 awards:{type:Array},
 contributions:{type:Array},
 accomplishments:{type:Array},
-perfomer:{type:Boolean, default:false, required: true},
+performer:{type:Boolean, default:false, required: true},
 payments:[{
         amountPayable: {type:Number},
         allowance: {type:Number},

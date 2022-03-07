@@ -11,7 +11,6 @@ function SkillCard( {fullname, empID, desigination, selectedFile, userID, skills
     const {score} = latestSkill.reduce((acc, curr)=> ({score: acc.score + curr.score}))
     const skill = latestSkill.map((ele)=> Math.floor(ele.score+ele.selfRating /110))
     const skillSet = []
-    let obj={}
     for(let i=0; i<latestSkill.length; i++ ){
       skillSet.push({...latestSkill[i], skill:skill[i] })
 
@@ -62,15 +61,18 @@ function SkillCard( {fullname, empID, desigination, selectedFile, userID, skills
   return <div className='flex space-x-2' >
 
       <div className='flex skillCard flex-col pl-4'> 
+      <div className='items-start'> 
       <div className='flex justify-center items-center mx-auto my-auto p5 ml-auto'> 
      {selectedFile ? <Avatar sx={{ width: 100, height: 100 }}  src={selectedFile} alt="profile-face" /> 
-     : <FaUserAlt  size="50px"/> }
+     : <FaUserAlt  size="100px"/> }
 
       </div>
-      <div>        
+      <div >        
            <h6 className='truncate font-bold text-base'> {fullname} </h6>
         <h6 className='truncate font-semibold text-sm'> {empID}</h6>
-        <p className='font-semibold text-sm'> {desigination}</p> </div>
+        <p className='font-semibold text-sm'> {desigination}</p>
+         </div>
+         </div>
         <h6 className='truncate font-bold text-right text-base'> Overall Score : {score} </h6>
         <hr />
       <div className='flex flex-col'>
@@ -97,10 +99,11 @@ function SkillCard( {fullname, empID, desigination, selectedFile, userID, skills
         })}
       </div>
 
-
-             <div className='flex justify-center items-center space-x-2'>
+              <div className='items-start'> 
+              <div className='flex justify-center items-center space-x-2'>
                  <div className='button-sm-1 text-sm p-2' onClick={()=>handleAward(userID)}> Send Award</div>
              </div>
+              </div>  
     </div>
 
     
