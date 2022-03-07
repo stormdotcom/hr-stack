@@ -6,6 +6,7 @@ import {getPerformer, unsetPerformer} from "../../api/api"
 import {Alert} from "@mui/material"
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 function ViewPerfomer() {
     const navigate = useNavigate()
     const [err, seterr] = useState(null)
@@ -15,6 +16,13 @@ function ViewPerfomer() {
         .catch(err=> seterr(err.message))
         return (()=> setPerformer([]))
       }, [navigate]);
+      const handleUnsetPerformer = (id)=>{
+        unsetPerformer({userID:id}).then(()=> {
+          getPerformer().then(res=> setPerformer(res.data))
+          .catch(err=> seterr(err.message))
+          Swal.fire("Done! Remove from the list", "", "info")})
+        .catch(()=>  Swal.fire("Changes not saved", "", "error"))
+      }
 
   return <>
         <div className='viewPay'>
@@ -37,7 +45,7 @@ function ViewPerfomer() {
              {performer &&             <div className='flex p-10 justify-center flex-wrap'>
                {performer.map((ele, i)=>{
                    return (
-                       <div className='border p-2 rounded-md m-1'>
+                       <div className='border p-2 rounded-md m-1'  key ={i}>
                     <NameCard 
                     selectedFile={ele.selectedFile}
                     fullname={ele.fullname} 
@@ -46,7 +54,7 @@ function ViewPerfomer() {
                     project={`Manager: ${ele.projectAllocated?.Project}`}
                     key={i} 
                     cardID={ele.userID} />
-                    <div className='text-sm button-sm-1' onClick={()=>unsetPerformer({userID:ele.userID}) }> Remove from List </div>
+                    <div className='text-sm button-sm-1' onClick={()=>handleUnsetPerformer(ele.userID) }> Remove from List </div>
                     </div>
                    )
                })}

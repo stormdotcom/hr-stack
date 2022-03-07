@@ -9,8 +9,6 @@ function viewSlip({data, currentSlip, handleClose, months}) {
         return Math.floor(px/document.getElementById('myMm').offsetHeight);
       };
       
-
-
     const handleDownload = ()=>{
         const input = document.getElementById('invoice-form');
         const inputHeightMm = pxToMm(input.offsetHeight);

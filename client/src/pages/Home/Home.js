@@ -61,7 +61,7 @@ function Home() {
             <FaRegCalendarTimes className="text-fourth  md:text-4xl" />
             </div>
             <div className='text-left'>
-            <h5 className=' pl-1 font-semibold'>1</h5>
+            <h5 className=' pl-1 font-semibold'>0</h5>
               <h6 className='pl-1 text-secondary'>Timesheet Pending</h6>
             </div>
             
@@ -69,7 +69,7 @@ function Home() {
           </div>
         {performer &&     <div className="cardStarEmployees">
 
-<h5 className='mt-2 mx-auto font-bold sm:text-sm text-center'> Perfomer of Month</h5>
+<h5 className='mt-2 mx-auto font-bold sm:text-sm text-center'> Performer of Month</h5>
 
  <div className='p-1 flex stars5'> <AiFillStar className="text-gold" /> <AiFillStar className="text-gold" />  <AiFillStar className="text-gold" />  <AiFillStar  className="text-gold"/>  <AiFillStar  className="text-gold"/> </div>
 

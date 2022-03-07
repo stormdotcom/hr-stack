@@ -93,9 +93,3 @@ touch-action: manipulation;
 .button-4:focus {
 background-color: #e9e7e7;
 }
-
-@media only screen and (max-width: 1000px) {
-  body {
-    display: none;
-  }
-}

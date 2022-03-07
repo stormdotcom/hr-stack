@@ -94,7 +94,8 @@ function SkillSets() {
 			})
 		}
 		catch (err){
-			setError(err.message, " 	Failed uploading image")
+			setLoading(false)
+			setError(err.message + " Failed uploading image")
 		}
 
 

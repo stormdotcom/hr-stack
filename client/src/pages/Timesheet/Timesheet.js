@@ -15,7 +15,7 @@ import { Alert } from '@mui/material'
 import "./styles.css"
 import "./react-big-calendar.css"
 
-const allView = ["month", "day"]
+const allView = ["month"]
 const locales = {
     'en-IN': enIN,
   }

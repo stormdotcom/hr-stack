@@ -130,7 +130,7 @@ function AddEmployee() {
               onBlur={formik.handleBlur}
               name="password"
               id="password"
-              type="password"
+              type="text"
               placeholder="Password"
             />
              {formik.touched.password && formik.errors.password ? <small className='error'> {formik.errors.password} </small> : null}
@@ -146,7 +146,7 @@ function AddEmployee() {
               onBlur={formik.handleBlur}
               name="repassword"
               id="repassword"
-              type="repassword"
+              type="text"
               placeholder="ReType Password"
             />
                  {formik.touched.repassword && formik.errors.repassword ? <small className='error'> {formik.errors.repassword} </small> : null}

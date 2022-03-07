@@ -36,7 +36,7 @@ export const getPerformer = async (req, res)=>{
   try {
     const result = await Employees.aggregate([{ $match:{performer:{$eq:true}}}, 
       { $project:{
-        performer:1, selectedFile: 1, fullname: 1,  Designation: 1, projectAllocated:1
+        performer:1, selectedFile: 1, fullname: 1, userID:1,  Designation: 1, projectAllocated:1
       } }])
         if(!result) return res.status(200).json(null)
     res.status(200).json(result)
