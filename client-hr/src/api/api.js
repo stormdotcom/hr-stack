@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const API = axios.create({ baseURL: 'https://api-hr-stack.xyz' });
 
+// Local development
 // const API = axios.create({ baseURL: 'http://localhost:4000' });
 
 
