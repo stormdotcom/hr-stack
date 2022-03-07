@@ -25,6 +25,7 @@ function Home() {
       setAnnouncements(res.data)
     }).catch(err=> console.log("Events " + err.message))
     getPerformer().then(res => {
+      console.log(res.data)
       setPerformer(res.data)
     }).catch(err=> console.log("Events " + err.message))
   }, [navigate])
@@ -67,7 +68,7 @@ function Home() {
             
           </div>
           </div>
-        {performer &&     <div className="cardStarEmployees">
+        {performer.lenght > 1 &&     <div className="cardStarEmployees">
 
 <h5 className='mt-2 mx-auto font-bold sm:text-sm text-center'> Performer of Month</h5>
 

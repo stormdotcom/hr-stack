@@ -39,7 +39,9 @@ export const getPerformer = async (req, res)=>{
         performer:1, selectedFile: 1, fullname: 1, userID:1,  Designation: 1, projectAllocated:1
       } }])
         if(!result) return res.status(200).json(null)
+      
     res.status(200).json(result)
+
   } catch (error) {
     console.log(error.message)
     res.status(500).json({message:"Something went wrong"})
