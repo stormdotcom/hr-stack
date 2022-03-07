@@ -145,19 +145,21 @@ export const submitAward = async (req, res)=>{
       const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$push:{awards:{score,  Description}}})
       if(!result) return res.status(400).json(null)
       res.status(200).json({status:true})
-      return
+      console.log("here")
     }
-    if(awardType==='Performance') {
-      const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$set:{performer:true}}, {$push:{accomplishments:{ Description}}})
-      if(!result) return res.status(400).json(null)
+    else if(awardType==='Performance') {
+      const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$set: {performer:true}})
+      const result2 = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$push:{accomplishments:{ Description}}})
+      console.log(result)
+      if(!result && !result2) return res.status(400).json(null)
       res.status(200).json({status:true})
       return
     }
-    if(awardType==='Contribution') {
+    else if(awardType==='Contribution') {
       const result = await Employees.findOneAndUpdate({userID:ObjectId(userID)}, {$push:{contributions:{  Description}}})
       if(!result) return res.status(400).json(null)
       res.status(200).json({status:true})
-      return
+
     }
     else return res.status(400).json(null)
   } catch (error) {
